@@ -10,6 +10,9 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddTransient<IProizvodiService,ProizvodiService>();
 
+builder.Services.AddAutoMapper(typeof(Profiles));
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

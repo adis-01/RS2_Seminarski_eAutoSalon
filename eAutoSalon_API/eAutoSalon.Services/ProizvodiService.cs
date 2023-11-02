@@ -1,4 +1,6 @@
-﻿using eAutoSalon.Models;
+﻿using AutoMapper;
+using eAutoSalon.Models;
+using eAutoSalon.Models.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,27 +11,37 @@ namespace eAutoSalon.Services
 {
     public class ProizvodiService : IProizvodiService
     {
-        List<Proizvodi> _proizvodiList = new List<Proizvodi>
+        private IMapper _mapper;
+        public ProizvodiService(IMapper mapper) {
+            _mapper = mapper;
+        }
+        List<Models.Proizvodi> _proizvodiList = new List<Models.Proizvodi>
         {
-            new Proizvodi
+            new Models.Proizvodi
             {
                 ID = 0,
-                Naziv="Mlijeko"
+                Naziv="Mlijeko",
+                CijenaProizvoda=3.00,
             },
-            new Proizvodi
+            new Models.Proizvodi
             {
                 ID= 1,
-                Naziv="Cokolada"
+                Naziv="Cokolada",
+                SifraProizvoda="3AABFO032F",
+                CijenaProizvoda=2.50
             }
         };
-        public List<Proizvodi> GetAll()
+        public List<Models.ViewModels.VMProizvodi> GetAll()
         {
-            return _proizvodiList;
+            var proizvodi = _proizvodiList.ToList();
+
+            return _mapper.Map<List<Models.ViewModels.VMProizvodi>>(proizvodi);
         }
 
-        public Proizvodi GetById(int id)
+        public Models.ViewModels.VMProizvodi GetById(int id)
         {
-            return _proizvodiList.FirstOrDefault(x => x.ID == id);
+            var proizvod =  _proizvodiList.FirstOrDefault(x => x.ID == id);
+            return _mapper.Map<Models.ViewModels.VMProizvodi>(proizvod);
         }
     }
 }

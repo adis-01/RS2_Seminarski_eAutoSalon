@@ -4,15 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace eAutoSalon.Models
+namespace eAutoSalon.Models.ViewModels
 {
-    public class Proizvodi
+    public class VMProizvodi
     {
-        public int ID { get; set; }
         public string Naziv { get; set; }
-        public string? SifraProizvoda { get; set; } = null;
         public double? CijenaProizvoda { get; set; } = null;
-
-
     }
 }

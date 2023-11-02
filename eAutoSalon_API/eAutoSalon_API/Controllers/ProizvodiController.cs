@@ -1,4 +1,5 @@
 using eAutoSalon.Models;
+using eAutoSalon.Models.ViewModels;
 using eAutoSalon.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -20,13 +21,13 @@ namespace eAutoSalon_API.Controllers
 
 
         [HttpGet]
-        public List<Proizvodi> GetAll()
+        public List<eAutoSalon.Models.ViewModels.VMProizvodi> GetAll()
         {
             return _service.GetAll();
         }
 
         [HttpGet("{id}")]
-        public Proizvodi GetById(int id)
+        public eAutoSalon.Models.ViewModels.VMProizvodi GetById(int id)
         {
             return _service.GetById(id);   
         }

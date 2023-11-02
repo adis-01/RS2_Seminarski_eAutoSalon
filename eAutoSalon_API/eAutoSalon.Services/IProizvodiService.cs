@@ -1,4 +1,5 @@
 ﻿using eAutoSalon.Models;
+using eAutoSalon.Models.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ namespace eAutoSalon.Services
 {
     public interface IProizvodiService
     {
-        List<Proizvodi> GetAll();
-        Proizvodi GetById(int id);
+        List<Models.ViewModels.VMProizvodi> GetAll();
+        Models.ViewModels.VMProizvodi GetById(int id);
     }
 }
