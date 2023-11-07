@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using eAutoSalon.Models;
+using eAutoSalon.Models.InsertRequests;
 using eAutoSalon.Models.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -14,6 +15,7 @@ namespace eAutoSalon.Services
         public Profiles()
         {
             CreateMap<Models.Proizvodi, Models.ViewModels.VMProizvodi>();
+            CreateMap<ProizvodiInsertRequest, Proizvodi>();
         }
     }
 }

@@ -1,12 +1,16 @@
 using eAutoSalon.Models;
+using eAutoSalon.Models.InsertRequests;
 using eAutoSalon.Models.ViewModels;
-using eAutoSalon.Services;
+using eAutoSalon.Services.Database;
+using eAutoSalon.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace eAutoSalon_API.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("[controller]/")]
+    [Authorize]
     public class ProizvodiController : ControllerBase
     {
         private IProizvodiService _service;
@@ -21,17 +25,23 @@ namespace eAutoSalon_API.Controllers
 
 
         [HttpGet]
-        public List<eAutoSalon.Models.ViewModels.VMProizvodi> GetAll()
+        public List<VMProizvodi> GetAll()
         {
             return _service.GetAll();
         }
 
         [HttpGet("{id}")]
-        public eAutoSalon.Models.ViewModels.VMProizvodi GetById(int id)
+        public VMProizvodi GetById(int id)
         {
             return _service.GetById(id);   
         }
 
+       
+        [HttpPost]
+        public VMProizvodi Insert(ProizvodiInsertRequest req)
+        {
+            return _service.Insert(req);
+        }
         
     }
 }
