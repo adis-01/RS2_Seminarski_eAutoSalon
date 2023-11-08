@@ -1,3 +1,5 @@
+using eAutoSalon.Models.SearchObjects;
+using eAutoSalon.Models.ViewModels;
 using eAutoSalon.Services;
 using eAutoSalon.Services.Auth;
 using eAutoSalon.Services.Database;
@@ -34,7 +36,8 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
-builder.Services.AddTransient<IProizvodiService,ProizvodiService>();
+
+builder.Services.AddTransient<IKorisnikService, KorisnikService>();
 
 builder.Services.AddAutoMapper(typeof(Profiles));
 builder.Services.AddAuthentication("BasicAuthentication").AddScheme<AuthenticationSchemeOptions, BasicAuth>("BasicAuthentication", null);

@@ -2,6 +2,7 @@
 using eAutoSalon.Models;
 using eAutoSalon.Models.InsertRequests;
 using eAutoSalon.Models.ViewModels;
+using eAutoSalon.Services.Database;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,8 +15,8 @@ namespace eAutoSalon.Services
     {
         public Profiles()
         {
-            CreateMap<Models.Proizvodi, Models.ViewModels.VMProizvodi>();
-            CreateMap<ProizvodiInsertRequest, Proizvodi>();
+            CreateMap<Korisnici, VMKorisnik>();
+            CreateMap<KorisnikInsert, Korisnici>();
         }
     }
 }

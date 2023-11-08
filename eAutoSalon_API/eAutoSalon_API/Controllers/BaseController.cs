@@ -1,25 +1,20 @@
-﻿using eAutoSalon.Models.ViewModels;
-using eAutoSalon.Services.Interfaces;
+﻿using eAutoSalon.Services.Interfaces;
+using eAutoSalon.Services.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace eAutoSalon_API.Controllers
 {
-    [Route("[controller]")]
-    public class BaseController<T,TFilter> : ControllerBase where T : class where TFilter : class
+    [ApiController]
+    public class BaseController<T,TSearch> : ControllerBase where T : class where TSearch : class
     {
-        private IBaseService<T,TFilter> _service;
-        private readonly ILogger<BaseController<T, TFilter>> _logger;
-        public BaseController(IBaseService<T, TFilter> service, ILogger<BaseController<T, TFilter>> logger)
+       protected IBaseGetService<T,TSearch> _service;
+        protected ILogger<BaseController<T,TSearch>> _logger;
+
+        public BaseController(IBaseGetService<T,TSearch> service, ILogger<BaseController<T,TSearch>> logger)
         {
             _service = service;
             _logger = logger;
-        }
-
-        [HttpGet]
-        public async Task<List<T>> GetAll()
-        {
-            return await _service.GetAll();
         }
 
         [HttpGet("{id}")]
@@ -27,5 +22,12 @@ namespace eAutoSalon_API.Controllers
         {
             return await _service.GetById(id);
         }
+
+        [HttpGet]
+        public async Task<List<T>> GetAll([FromQuery]TSearch? search = null)
+        {
+            return await _service.GetAll(search);
+        }
+
     }
 }
