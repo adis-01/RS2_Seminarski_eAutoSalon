@@ -27,5 +27,12 @@ namespace eAutoSalon_API.Controllers
         {
             return await _service.Insert(req);
         }
+
+        [HttpPut("{id}")]
+        public async Task<T> Update(int id, TUpdate req)
+        {
+            return await _service.Update(id, req);
+        }
+
     }
 }

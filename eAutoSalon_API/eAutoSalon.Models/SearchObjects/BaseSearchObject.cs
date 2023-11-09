@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace eAutoSalon.Models.SearchObjects
 {
-    public class SearchObject : BaseSearchObject
+    public class BaseSearchObject
     {
-        public string? Username { get; set; } 
-        public string? FTS { get; set; }  
+        public int? PageSize { get; set; }
+        public int? Page { get; set; }
     }
 }

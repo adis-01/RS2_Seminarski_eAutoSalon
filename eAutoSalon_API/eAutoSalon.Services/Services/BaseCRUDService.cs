@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using eAutoSalon.Models.SearchObjects;
 using eAutoSalon.Services.Database;
 using eAutoSalon.Services.Interfaces;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
@@ -11,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace eAutoSalon.Services.Services
 {
-    public class BaseCRUDService<T,TDb, TSearch, TInsert, TUpdate> : BaseGetService<T,TDb,TSearch> where T : class where TDb : class where TSearch : class
+    public class BaseCRUDService<T,TDb, TSearch, TInsert, TUpdate> : BaseGetService<T,TDb,TSearch> where T : class where TDb : class where TSearch : BaseSearchObject
     {
         public BaseCRUDService(EAutoSalonDbContext context, IMapper mapper) : base(context, mapper)
         {

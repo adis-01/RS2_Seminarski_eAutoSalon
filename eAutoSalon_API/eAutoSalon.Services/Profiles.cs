@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using eAutoSalon.Models;
 using eAutoSalon.Models.InsertRequests;
+using eAutoSalon.Models.UpdateRequests;
 using eAutoSalon.Models.ViewModels;
 using eAutoSalon.Services.Database;
 using System;
@@ -17,6 +18,7 @@ namespace eAutoSalon.Services
         {
             CreateMap<Korisnici, VMKorisnik>();
             CreateMap<KorisnikInsert, Korisnici>();
+            CreateMap<KorisnikUpdate, Korisnici>();
         }
     }
 }

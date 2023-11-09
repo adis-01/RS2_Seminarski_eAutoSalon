@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using eAutoSalon.Models.SearchObjects;
 using eAutoSalon.Services.Database;
 using eAutoSalon.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace eAutoSalon.Services.Services
 {
-    public class BaseGetService<T,TDb, TSearch> : IBaseGetService<T, TSearch> where T : class where TSearch : class where TDb : class
+    public class BaseGetService<T,TDb, TSearch> : IBaseGetService<T, TSearch> where T : class where TSearch : BaseSearchObject where TDb : class
     {
         protected EAutoSalonDbContext _context;
         protected IMapper _mapper;
@@ -23,9 +24,23 @@ namespace eAutoSalon.Services.Services
 
         public virtual async Task<List<T>> GetAll(TSearch? search = null)
         {
-            var list = await _context.Set<TDb>().ToListAsync();  
+            var query =  _context.Set<TDb>().AsQueryable();
+
+            query = AddFilter(query, search);
+
+            if(search?.Page.HasValue == true && search?.PageSize.HasValue == true)
+            {
+                query=query.Take(search.PageSize.Value).Skip(search.Page.Value * search.PageSize.Value);
+            }
+
+            var list = await query.ToListAsync();
 
             return _mapper.Map<List<T>>(list);
+        }
+
+        public virtual IQueryable<TDb> AddFilter(IQueryable<TDb> query, TSearch? search=null)
+        {
+            return query;
         }
 
         public virtual async Task<T> GetById(int id)

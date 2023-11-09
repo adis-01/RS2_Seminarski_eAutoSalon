@@ -49,5 +49,24 @@ namespace eAutoSalon.Services.Services
         {
             throw new NotImplementedException();
         }
+
+        public override async Task<VMKorisnik> Update(int id, KorisnikUpdate req)
+        {
+            var korisnik = await _context.Korisnicis.FindAsync(id);
+            _mapper.Map(req, korisnik);
+            await _context.SaveChangesAsync();
+            return _mapper.Map<VMKorisnik>(korisnik);
+        }
+
+        public override IQueryable<Korisnici> AddFilter(IQueryable<Korisnici> list, SearchObject? search = null)
+        {
+            if (!string.IsNullOrWhiteSpace(search?.Username))
+                list = list.Where(x => x.Username.Contains(search.Username));
+
+            if (!string.IsNullOrWhiteSpace(search?.FTS))
+                list = list.Where(x => search.FTS.Contains(x.Username) || search.FTS.Contains(x.FirstName) || search.FTS.Contains(x.LastName));
+
+            return list;
+        }
     }
 }
