@@ -28,6 +28,8 @@ namespace eAutoSalon.Services.Services
 
             query = AddFilter(query, search);
 
+            query = AddInclude(query);
+
             if(search?.Page.HasValue == true && search?.PageSize.HasValue == true)
             {
                 query=query.Take(search.PageSize.Value).Skip(search.Page.Value * search.PageSize.Value);
@@ -36,6 +38,11 @@ namespace eAutoSalon.Services.Services
             var list = await query.ToListAsync();
 
             return _mapper.Map<List<T>>(list);
+        }
+
+        public virtual IQueryable<TDb> AddInclude(IQueryable<TDb> query)
+        {
+            return query;
         }
 
         public virtual IQueryable<TDb> AddFilter(IQueryable<TDb> query, TSearch? search=null)

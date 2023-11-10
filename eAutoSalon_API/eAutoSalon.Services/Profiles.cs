@@ -19,6 +19,8 @@ namespace eAutoSalon.Services
             CreateMap<Korisnici, VMKorisnik>();
             CreateMap<KorisnikInsert, Korisnici>();
             CreateMap<KorisnikUpdate, Korisnici>();
+            CreateMap<KorisnikUloge, VMKorisnikUloga>();
+            CreateMap<Uloge, VMUloga>();
         }
     }
 }

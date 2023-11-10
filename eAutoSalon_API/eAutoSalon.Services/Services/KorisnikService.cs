@@ -21,23 +21,7 @@ namespace eAutoSalon.Services.Services
         {
         }
 
-        //public async Task Delete(int id)
-        //{
-        //    var entity = await _context.Korisnicis.FindAsync(id);
-        //    _context.Remove(entity);
-        //    await _context.SaveChangesAsync();
-        //}
-
-        //public async Task<VMKorisnik> Insert(KorisnikInsert req)
-        //{
-        //    var korisnik = new Korisnici();
-        //    _mapper.Map(req, korisnik);
-        //    korisnik.PasswordSalt = Generator.GenerateSalt();
-        //    korisnik.PasswordHash = Generator.GenerateHash(korisnik.PasswordSalt, req.Password);
-        //    await _context.AddAsync(korisnik);
-        //    await _context.SaveChangesAsync();
-        //    return _mapper.Map<VMKorisnik>(korisnik);
-        //}
+       
 
         public override async Task BeforeInsert(KorisnikInsert? req, Korisnici entity)
         {
@@ -45,9 +29,20 @@ namespace eAutoSalon.Services.Services
             entity.PasswordHash = Generator.GenerateHash(entity.PasswordSalt, req.Password);
         }
 
-        public Task<VMKorisnik> Login(string username, string password)
+        public async Task<VMKorisnik> Login(string username, string password)
         {
-            throw new NotImplementedException();
+            var entity = await _context.Korisnicis.Include("KorisnikUloges.KuUloga").FirstOrDefaultAsync(x => x.Username == username);
+
+            if(entity == null) { return null; }
+
+      
+
+            var hash = Generator.GenerateHash(entity.PasswordSalt, password);
+
+            if(hash!=entity.PasswordHash) { return null; }
+
+            return _mapper.Map<VMKorisnik>(entity);
+
         }
 
         public override async Task<VMKorisnik> Update(int id, KorisnikUpdate req)
@@ -67,6 +62,11 @@ namespace eAutoSalon.Services.Services
                 list = list.Where(x => search.FTS.Contains(x.Username) || search.FTS.Contains(x.FirstName) || search.FTS.Contains(x.LastName));
 
             return list;
+        }
+
+        public override IQueryable<Korisnici> AddInclude(IQueryable<Korisnici> query)
+        {
+            return query.Include("KorisnikUloges.KuUloga");
         }
     }
 }

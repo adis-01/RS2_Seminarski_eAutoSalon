@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authentication;
+﻿using eAutoSalon.Services.Interfaces;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System;
@@ -14,8 +15,10 @@ namespace eAutoSalon.Services.Auth
 {
     public class BasicAuth : AuthenticationHandler<AuthenticationSchemeOptions>
     {
-        public BasicAuth(IOptionsMonitor<AuthenticationSchemeOptions> options, ILoggerFactory logger, UrlEncoder encoder, ISystemClock clock) : base(options, logger, encoder, clock)
+        IKorisnikService _service;
+        public BasicAuth(IKorisnikService service,IOptionsMonitor<AuthenticationSchemeOptions> options, ILoggerFactory logger, UrlEncoder encoder, ISystemClock clock) : base(options, logger, encoder, clock)
         {
+            _service = service;
         }
 
         protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
@@ -30,11 +33,26 @@ namespace eAutoSalon.Services.Auth
             var username = creds[0];
             var password = creds[1];
 
-            if (username == null || password == null)
+            var user = await _service.Login(username,password);
+
+            if (user == null)
                 return AuthenticateResult.Fail("Username and/or password incorrect");
+
             else
             {
-                var claimsIdentity = new ClaimsIdentity();
+
+                var claims = new List<Claim>()
+                {
+                    new Claim(ClaimTypes.Name,user.FirstName),
+                    new Claim(ClaimTypes.NameIdentifier,user.Username)
+                };
+
+                foreach(var rola in user.KorisnikUloges)
+                {
+                    claims.Add(new Claim(ClaimTypes.Role, rola.KuUloga.NazivUloge));
+                }
+
+                var claimsIdentity = new ClaimsIdentity(claims);
                 var principal = new ClaimsPrincipal(claimsIdentity);
                 var ticket = new AuthenticationTicket(principal,Scheme.Name);
                 return AuthenticateResult.Success(ticket);
