@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using eAutoSalon.Models;
 using eAutoSalon.Models.SearchObjects;
 using eAutoSalon.Services.Database;
 using eAutoSalon.Services.Interfaces;
@@ -22,11 +23,15 @@ namespace eAutoSalon.Services.Services
         {
             var entity = await _context.Set<TDb>().FindAsync(id);
 
-            if (entity != null)
+            if (entity == null)
             {
-                _context.Set<TDb>().Remove(entity);
-                await _context.SaveChangesAsync();
+                throw new UserException("Korisnik sa unesenim ID poljem nepostojeći.");
             }
+            
+            _context.Set<TDb>().Remove(entity);
+            
+            await _context.SaveChangesAsync();
+
         }
 
         public virtual async Task<T> Insert(TInsert req)
@@ -39,8 +44,15 @@ namespace eAutoSalon.Services.Services
 
             db.Add(entity);
 
+
             await _context.SaveChangesAsync();
+            await AddConnections(entity);
             return _mapper.Map<T>(entity);
+        }
+
+        public virtual async Task AddConnections(TDb entity)
+        {
+            
         }
 
         public virtual async Task BeforeInsert(TInsert? req, TDb entity)
@@ -50,7 +62,18 @@ namespace eAutoSalon.Services.Services
 
         public virtual async Task<T> Update(int id,TUpdate req)
         {
-            throw new NotImplementedException(); //TODO
+            var context =  _context.Set<TDb>();
+
+            var entity = await context.FindAsync(id);
+
+            if (entity == null)
+                throw new UserException("Korisnik sa unesenim ID poljem nepostojeći.");
+
+            _mapper.Map(req, entity);
+
+            await _context.SaveChangesAsync();
+
+            return _mapper.Map<T>(entity);
         }
     }
 }

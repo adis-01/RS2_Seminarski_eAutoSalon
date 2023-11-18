@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using eAutoSalon.Models;
 using eAutoSalon.Models.SearchObjects;
 using eAutoSalon.Services.Database;
 using eAutoSalon.Services.Interfaces;
@@ -32,7 +33,7 @@ namespace eAutoSalon.Services.Services
 
             if(search?.Page.HasValue == true && search?.PageSize.HasValue == true)
             {
-                query=query.Take(search.PageSize.Value).Skip(search.Page.Value * search.PageSize.Value);
+                query=query.Take(search.PageSize.Value).Skip((search.Page.Value  * search.PageSize.Value) - search.PageSize.Value);
             }
 
             var list = await query.ToListAsync();
@@ -55,7 +56,7 @@ namespace eAutoSalon.Services.Services
             var entity = await _context.Set<TDb>().FindAsync(id);
 
             if (entity == null)
-                return null;
+                throw new UserException("Korisnik sa unesenim ID poljem nepostojeći.");
 
             return _mapper.Map<T>(entity);
         }

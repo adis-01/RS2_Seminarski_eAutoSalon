@@ -18,11 +18,11 @@ namespace eAutoSalon.Models.InsertRequests
         [MaxLength(30)]
         public string LastName { get; set; }
         [Required]
-        public string Username { get; set; }
+        public string? Username { get; set; }
         [Required]
-        public string Password { get; set; }
+        public string? Password { get; set; }
         [Required]
-        [Compare("Password",ErrorMessage ="Šifre se ne poklapaju.")]
-        public string RepeatPassword { get; set; }
+        [Compare("Password", ErrorMessage = "Šifre se ne poklapaju.")]
+        public string? RepeatPassword { get; set; }
     }
 }

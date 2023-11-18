@@ -19,14 +19,12 @@ namespace eAutoSalon_API.Controllers
         }
 
         [HttpGet("{id}")]
-        [Authorize(Roles ="Korisnik")]
         public async Task<T> GetById(int id)
         {
             return await _service.GetById(id);
         }
 
         [HttpGet]
-        [Authorize(Roles ="Korisnik")]
         public async Task<List<T>> GetAll([FromQuery]TSearch? search = null)
         {
             return await _service.GetAll(search);

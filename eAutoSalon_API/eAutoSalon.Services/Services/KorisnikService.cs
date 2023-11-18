@@ -29,6 +29,18 @@ namespace eAutoSalon.Services.Services
             entity.PasswordHash = Generator.GenerateHash(entity.PasswordSalt, req.Password);
         }
 
+        public override async Task AddConnections(Korisnici entity)
+        {
+            var user_role = new KorisnikUloge()
+            {
+                KuKorisnikId = entity.KorisnikId,
+                KuUlogaId = 2
+            };
+
+            await _context.KorisnikUloges.AddAsync(user_role);
+            await _context.SaveChangesAsync();  
+        }
+
         public async Task<VMKorisnik> Login(string username, string password)
         {
             var entity = await _context.Korisnicis.Include("KorisnikUloges.KuUloga").FirstOrDefaultAsync(x => x.Username == username);
