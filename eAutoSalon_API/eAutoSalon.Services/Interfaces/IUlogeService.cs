@@ -1,4 +1,5 @@
 ﻿using eAutoSalon.Models.SearchObjects;
+using eAutoSalon.Models.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,9 +8,7 @@ using System.Threading.Tasks;
 
 namespace eAutoSalon.Services.Interfaces
 {
-    public interface IBaseGetService<T,TSearch> where T : class where TSearch : class
+    public interface IUlogeService : IBaseGetService<VMUloga,UlogeSearchObject>
     {
-        Task<PagedList<T>> GetAll(TSearch? search = null);
-        Task<T> GetById(int id);
     }
 }

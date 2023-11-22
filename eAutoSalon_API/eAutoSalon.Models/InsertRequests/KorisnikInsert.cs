@@ -24,5 +24,8 @@ namespace eAutoSalon.Models.InsertRequests
         [Required]
         [Compare("Password", ErrorMessage = "Šifre se ne poklapaju.")]
         public string? RepeatPassword { get; set; }
+        [EmailAddress]
+        [Required]
+        public string? Email { get; set; }
     }
 }

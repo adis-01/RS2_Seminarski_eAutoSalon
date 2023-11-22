@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 
 namespace eAutoSalon.Models.ViewModels
 {
-    public class VMUloga
+    public class VMKomentari
     {
-        public int UlogaId { get; set; }
+        public string Sadrzaj { get; set; } = null!;
 
-        public string Naziv { get; set; } = null!;
+        public virtual VMKorisnik_Komentar Korisnik { get; set; } = null!;
+
     }
 }

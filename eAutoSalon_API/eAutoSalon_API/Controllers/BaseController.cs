@@ -1,4 +1,5 @@
-﻿using eAutoSalon.Services.Interfaces;
+﻿using eAutoSalon.Services;
+using eAutoSalon.Services.Interfaces;
 using eAutoSalon.Services.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -25,7 +26,7 @@ namespace eAutoSalon_API.Controllers
         }
 
         [HttpGet]
-        public async Task<List<T>> GetAll([FromQuery]TSearch? search = null)
+        public async Task<PagedList<T>> GetAll([FromQuery]TSearch? search = null)
         {
             return await _service.GetAll(search);
         }

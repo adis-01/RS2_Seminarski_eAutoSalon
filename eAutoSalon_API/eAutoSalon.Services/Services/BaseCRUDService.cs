@@ -15,7 +15,7 @@ namespace eAutoSalon.Services.Services
 {
     public class BaseCRUDService<T,TDb, TSearch, TInsert, TUpdate> : BaseGetService<T,TDb,TSearch> where T : class where TDb : class where TSearch : BaseSearchObject
     {
-        public BaseCRUDService(EAutoSalonDbContext context, IMapper mapper) : base(context, mapper)
+        public BaseCRUDService(EAutoSalonTestContext context, IMapper mapper) : base(context, mapper)
         {
         }
 

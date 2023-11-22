@@ -9,6 +9,6 @@ namespace eAutoSalon.Models.ViewModels
     public class VMKorisnikUloga
     {
         public int KorisnikUlogeId { get; set; }
-        public virtual VMUloga KuUloga { get; set; } = null!;
+        public virtual VMUloga Uloga { get; set; } = null!;
     }
 }

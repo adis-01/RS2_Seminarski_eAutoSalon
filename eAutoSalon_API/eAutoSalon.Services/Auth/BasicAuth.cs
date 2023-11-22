@@ -49,7 +49,7 @@ namespace eAutoSalon.Services.Auth
 
                 foreach(var rola in user.KorisnikUloges)
                 {
-                    claims.Add(new Claim(ClaimTypes.Role, rola.KuUloga.NazivUloge));
+                    claims.Add(new Claim(ClaimTypes.Role, rola.Uloga.Naziv));
                 }
 
                 var claimsIdentity = new ClaimsIdentity(claims);

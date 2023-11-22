@@ -42,13 +42,17 @@ builder.Services.AddSwaggerGen(c =>
 
 
 builder.Services.AddTransient<IKorisnikService, KorisnikService>();
+builder.Services.AddTransient<IAutomobilService, AutomobilService>();
+builder.Services.AddTransient<IUlogeService, UlogeService>();
+builder.Services.AddTransient<IKomentarService, KomentarService>();
+builder.Services.AddTransient<INovostService, NovostService>();
 
 builder.Services.AddAutoMapper(typeof(Profiles));
 builder.Services.AddAuthentication("BasicAuthentication").AddScheme<AuthenticationSchemeOptions, BasicAuth>("BasicAuthentication", null);
 
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-builder.Services.AddDbContext<EAutoSalonDbContext>(options =>
+builder.Services.AddDbContext<EAutoSalonTestContext>(options =>
 {
     options.UseSqlServer(connectionString);
 });

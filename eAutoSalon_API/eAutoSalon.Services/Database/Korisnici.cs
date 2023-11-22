@@ -17,5 +17,11 @@ public partial class Korisnici
 
     public string PasswordSalt { get; set; } = null!;
 
+    public string Email { get; set; } = null!;
+
+    public string? SlikaPath { get; set; }
+
+    public virtual ICollection<Komentari> Komentaris { get; set; } = new List<Komentari>();
+
     public virtual ICollection<KorisnikUloge> KorisnikUloges { get; set; } = new List<KorisnikUloge>();
 }

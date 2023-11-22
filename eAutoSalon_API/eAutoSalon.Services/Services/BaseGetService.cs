@@ -14,31 +14,39 @@ namespace eAutoSalon.Services.Services
 {
     public class BaseGetService<T,TDb, TSearch> : IBaseGetService<T, TSearch> where T : class where TSearch : BaseSearchObject where TDb : class
     {
-        protected EAutoSalonDbContext _context;
+        protected EAutoSalonTestContext _context;
         protected IMapper _mapper;
 
-        public BaseGetService(EAutoSalonDbContext context, IMapper mapper)
+        public BaseGetService(EAutoSalonTestContext context, IMapper mapper)
         {
             _mapper = mapper;
             _context = context;
         }
 
-        public virtual async Task<List<T>> GetAll(TSearch? search = null)
+        public virtual async Task<PagedList<T>> GetAll(TSearch? search = null)
         {
             var query =  _context.Set<TDb>().AsQueryable();
 
+            PagedList<T> list = new PagedList<T>();
+
             query = AddFilter(query, search);
+
+            list.PageCount = await query.CountAsync();
 
             query = AddInclude(query);
 
             if(search?.Page.HasValue == true && search?.PageSize.HasValue == true)
             {
-                query=query.Take(search.PageSize.Value).Skip((search.Page.Value  * search.PageSize.Value) - search.PageSize.Value);
+                query=query.Skip(search.PageSize.Value  * (search.Page.Value-1)).Take(search.PageSize.Value);
             }
 
-            var list = await query.ToListAsync();
+            
 
-            return _mapper.Map<List<T>>(list);
+            var lista = await query.ToListAsync();
+
+            list.List= _mapper.Map<List<T>>(lista);
+
+            return list;
         }
 
         public virtual IQueryable<TDb> AddInclude(IQueryable<TDb> query)

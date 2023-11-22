@@ -19,7 +19,20 @@ namespace eAutoSalon.Services
             CreateMap<Korisnici, VMKorisnik>();
             CreateMap<KorisnikInsert, Korisnici>();
             CreateMap<KorisnikUpdate, Korisnici>();
+            CreateMap<Korisnici, VMKorisnik_Komentar>();
             CreateMap<KorisnikUloge, VMKorisnikUloga>();
+
+            CreateMap<Automobili, VMAutomobil>();
+            CreateMap<AutomobilInsert, Automobili>();
+            CreateMap<AutomobilUpdate, Automobili>();
+
+            CreateMap<Novosti, VMNovosti>();
+            CreateMap<NovostInsert, Novosti>();
+            CreateMap<NovostUpdate, Novosti>();
+
+            CreateMap<Komentari, VMKomentari>();
+            CreateMap<KomentarInsert, Komentari>();
+
             CreateMap<Uloge, VMUloga>();
         }
     }

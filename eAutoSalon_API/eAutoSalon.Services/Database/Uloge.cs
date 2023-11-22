@@ -7,7 +7,7 @@ public partial class Uloge
 {
     public int UlogaId { get; set; }
 
-    public string NazivUloge { get; set; } = null!;
+    public string Naziv { get; set; } = null!;
 
     public virtual ICollection<KorisnikUloge> KorisnikUloges { get; set; } = new List<KorisnikUloge>();
 }

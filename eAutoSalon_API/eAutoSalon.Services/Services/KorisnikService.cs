@@ -17,7 +17,7 @@ namespace eAutoSalon.Services.Services
 {
     public class KorisnikService : BaseCRUDService<VMKorisnik,Korisnici,SearchObject,KorisnikInsert,KorisnikUpdate>, IKorisnikService
     {
-        public KorisnikService(EAutoSalonDbContext context, IMapper mapper) : base(context, mapper)
+        public KorisnikService(EAutoSalonTestContext context, IMapper mapper) : base(context, mapper)
         {
         }
 
@@ -33,8 +33,8 @@ namespace eAutoSalon.Services.Services
         {
             var user_role = new KorisnikUloge()
             {
-                KuKorisnikId = entity.KorisnikId,
-                KuUlogaId = 2
+                KorisnikId = entity.KorisnikId,
+                UlogaId = 2
             };
 
             await _context.KorisnikUloges.AddAsync(user_role);
@@ -43,7 +43,7 @@ namespace eAutoSalon.Services.Services
 
         public async Task<VMKorisnik> Login(string username, string password)
         {
-            var entity = await _context.Korisnicis.Include("KorisnikUloges.KuUloga").FirstOrDefaultAsync(x => x.Username == username);
+            var entity = await _context.Korisnicis.Include("KorisnikUloges.Uloga").FirstOrDefaultAsync(x => x.Username == username);
 
             if(entity == null) { return null; }
 
@@ -78,7 +78,7 @@ namespace eAutoSalon.Services.Services
 
         public override IQueryable<Korisnici> AddInclude(IQueryable<Korisnici> query)
         {
-            return query.Include("KorisnikUloges.KuUloga");
+            return query.Include("KorisnikUloges.Uloga");
         }
     }
 }
