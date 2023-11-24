@@ -21,6 +21,8 @@ public partial class Korisnici
 
     public string? SlikaPath { get; set; }
 
+    public byte[]? Slika { get; set; }
+
     public virtual ICollection<Komentari> Komentaris { get; set; } = new List<Komentari>();
 
     public virtual ICollection<KorisnikUloge> KorisnikUloges { get; set; } = new List<KorisnikUloge>();

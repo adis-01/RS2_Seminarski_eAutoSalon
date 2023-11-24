@@ -6,12 +6,9 @@ using eAutoSalon.Models.ViewModels;
 using eAutoSalon.Services.Database;
 using eAutoSalon.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using Newtonsoft.Json;
+using RabbitMQ.Client;
 using System.Text;
-using System.Threading.Tasks;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace eAutoSalon.Services.Services
 {
@@ -39,10 +36,13 @@ namespace eAutoSalon.Services.Services
                 comms = comms.Skip(searchObject.PageSize.Value * (searchObject.Page.Value - 1)).Take(searchObject.PageSize.Value);
             }
 
+        
+
             var result = await comms.ToListAsync();
 
             
             list.List = _mapper.Map<List<VMKomentari>>(result);
+
 
             return list;
         }

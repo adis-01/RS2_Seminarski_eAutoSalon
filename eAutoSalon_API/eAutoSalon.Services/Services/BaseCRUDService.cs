@@ -19,7 +19,7 @@ namespace eAutoSalon.Services.Services
         {
         }
 
-        public async Task Delete(int id)
+        public virtual async Task Delete(int id)
         {
             var entity = await _context.Set<TDb>().FindAsync(id);
 

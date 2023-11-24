@@ -32,5 +32,7 @@ namespace eAutoSalon.Services.Services
             }
             return query;
         }
+
+       
     }
 }

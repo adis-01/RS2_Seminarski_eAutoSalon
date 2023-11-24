@@ -27,5 +27,6 @@ namespace eAutoSalon.Models.InsertRequests
         [EmailAddress]
         [Required]
         public string? Email { get; set; }
+        public string? SlikaBase64 { get; set; }
     }
 }

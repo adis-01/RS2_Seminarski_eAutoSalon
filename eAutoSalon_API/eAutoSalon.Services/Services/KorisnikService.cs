@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using eAutoSalon.Models;
 using eAutoSalon.Models.InsertRequests;
 using eAutoSalon.Models.SearchObjects;
 using eAutoSalon.Models.UpdateRequests;
@@ -7,6 +8,8 @@ using eAutoSalon.Services.Database;
 using eAutoSalon.Services.Helpers;
 using eAutoSalon.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
+using RabbitMQ.Client;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,6 +30,7 @@ namespace eAutoSalon.Services.Services
         {
             entity.PasswordSalt = Generator.GenerateSalt();
             entity.PasswordHash = Generator.GenerateHash(entity.PasswordSalt, req.Password);
+            entity.Slika = Convert.FromBase64String(req.SlikaBase64);
         }
 
         public override async Task AddConnections(Korisnici entity)
@@ -37,8 +41,37 @@ namespace eAutoSalon.Services.Services
                 UlogaId = 2
             };
 
+            StartRabbitMQ(entity.Email);
+
             await _context.KorisnikUloges.AddAsync(user_role);
             await _context.SaveChangesAsync();  
+        }
+
+        private void StartRabbitMQ(string email)
+        {
+            var factory = new ConnectionFactory { HostName = "localhost" };
+            using var connection = factory.CreateConnection();
+            using var channel = connection.CreateModel();
+
+            channel.QueueDeclare(queue: "hello",
+                                 durable: false,
+                                 exclusive: false,
+                                 autoDelete: false,
+                                 arguments: null);
+
+            VMEmail_Token obj = new VMEmail_Token()
+            {
+                Mail=email,
+                Token="game is the game"
+            };
+
+            string message = "Pozvana GET metoda " + DateTime.Now.ToString();
+            var body = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(obj));
+
+            channel.BasicPublish(exchange: string.Empty,
+                                 routingKey: "hello",
+                                 basicProperties: null,
+                                 body: body);
         }
 
         public async Task<VMKorisnik> Login(string username, string password)
@@ -80,5 +113,7 @@ namespace eAutoSalon.Services.Services
         {
             return query.Include("KorisnikUloges.Uloga");
         }
+
+        
     }
 }
