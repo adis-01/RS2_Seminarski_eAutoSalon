@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace eAutoSalon_API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class NovostiController : BaseCRUDController<VMNovosti, NovostiSearchObject, NovostInsert, NovostUpdate>
     {

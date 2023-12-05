@@ -29,9 +29,16 @@ namespace eAutoSalon.Services.Services
             }
             
             _context.Set<TDb>().Remove(entity);
+
+            await DeleteConns(id);
             
             await _context.SaveChangesAsync();
 
+        }
+
+        public virtual async Task DeleteConns(int id)
+        {
+           
         }
 
         public virtual async Task<T> Insert(TInsert req)
@@ -46,14 +53,10 @@ namespace eAutoSalon.Services.Services
 
 
             await _context.SaveChangesAsync();
-            await AddConnections(entity);
             return _mapper.Map<T>(entity);
         }
 
-        public virtual async Task AddConnections(TDb entity)
-        {
-            
-        }
+     
 
         public virtual async Task BeforeInsert(TInsert? req, TDb entity)
         {

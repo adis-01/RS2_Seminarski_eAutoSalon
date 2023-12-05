@@ -46,6 +46,8 @@ builder.Services.AddTransient<IAutomobilService, AutomobilService>();
 builder.Services.AddTransient<IUlogeService, UlogeService>();
 builder.Services.AddTransient<IKomentarService, KomentarService>();
 builder.Services.AddTransient<INovostService, NovostService>();
+builder.Services.AddTransient<IMailService, MailService>();
+builder.Services.AddTransient<IUposlenikService, UposlenikService>();
 
 builder.Services.AddAutoMapper(typeof(Profiles));
 builder.Services.AddAuthentication("BasicAuthentication").AddScheme<AuthenticationSchemeOptions, BasicAuth>("BasicAuthentication", null);

@@ -6,10 +6,6 @@ using Newtonsoft.Json;
 using eAutoSalon.Models.ViewModels;
 using eAutoSalon.RabbitMQ_C;
 
-string serverAddress = "smtp-mail.outlook.com";
-string mailSender = "eautosalon@outlook.com";
-string mailPass = "test_mail_123";
-int port = 587;
 
 Console.WriteLine("Hello, World!");
 

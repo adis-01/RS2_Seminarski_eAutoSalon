@@ -20,20 +20,20 @@ namespace eAutoSalon.Services.Services
 {
     public class KorisnikService : BaseCRUDService<VMKorisnik,Korisnici,SearchObject,KorisnikInsert,KorisnikUpdate>, IKorisnikService
     {
-        public KorisnikService(EAutoSalonTestContext context, IMapper mapper) : base(context, mapper)
+        IMailService _service;
+        public KorisnikService(EAutoSalonTestContext context, IMapper mapper,IMailService service) : base(context, mapper)
         {
+            _service = service;
         }
 
-       
 
-        public override async Task BeforeInsert(KorisnikInsert? req, Korisnici entity)
+        public override async Task DeleteConns(int id)
         {
-            entity.PasswordSalt = Generator.GenerateSalt();
-            entity.PasswordHash = Generator.GenerateHash(entity.PasswordSalt, req.Password);
-            entity.Slika = Convert.FromBase64String(req.SlikaBase64);
+            var context = await _context.KorisnikUloges.Where(x => x.KorisnikId == id).FirstOrDefaultAsync();
+            _context.Remove(context);
         }
 
-        public override async Task AddConnections(Korisnici entity)
+        public async Task AddConnections(Korisnici entity)
         {
             var user_role = new KorisnikUloge()
             {
@@ -41,38 +41,41 @@ namespace eAutoSalon.Services.Services
                 UlogaId = 2
             };
 
-            StartRabbitMQ(entity.Email);
+            //await _service.StartRabbitMQ(entity.Email);
 
             await _context.KorisnikUloges.AddAsync(user_role);
-            await _context.SaveChangesAsync();  
+            await _context.SaveChangesAsync();
         }
 
-        private void StartRabbitMQ(string email)
+
+        public override async Task<VMKorisnik> Insert(KorisnikInsert req)
         {
-            var factory = new ConnectionFactory { HostName = "localhost" };
-            using var connection = factory.CreateConnection();
-            using var channel = connection.CreateModel();
-
-            channel.QueueDeclare(queue: "hello",
-                                 durable: false,
-                                 exclusive: false,
-                                 autoDelete: false,
-                                 arguments: null);
-
-            VMEmail_Token obj = new VMEmail_Token()
+            if (await _context.Korisnicis.AnyAsync(x => x.Username == req.Username))
             {
-                Mail=email,
-                Token="game is the game"
-            };
+                throw new UserException("Uneseni username je već postojeći, molimo odaberite neki drugi");
+            }
 
-            string message = "Pozvana GET metoda " + DateTime.Now.ToString();
-            var body = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(obj));
+            if (await _context.Korisnicis.AnyAsync(x => x.Email == req.Email))
+            {
+                throw new UserException("Uneseni email je već postojeći, molimo odaberite neki drugi");
+            }
 
-            channel.BasicPublish(exchange: string.Empty,
-                                 routingKey: "hello",
-                                 basicProperties: null,
-                                 body: body);
+            var korisnik = new Korisnici();
+
+            _mapper.Map(req,korisnik);
+
+            korisnik.PasswordSalt = Generator.GenerateSalt();
+            korisnik.PasswordHash = Generator.GenerateHash(korisnik.PasswordSalt, req.Password!);
+            korisnik.Slika = Convert.FromBase64String(req.SlikaBase64!);
+
+            await _context.Korisnicis.AddAsync(korisnik);
+            await _context.SaveChangesAsync();
+
+            await AddConnections(korisnik);
+
+            return _mapper.Map<VMKorisnik>(korisnik);
         }
+
 
         public async Task<VMKorisnik> Login(string username, string password)
         {
@@ -114,6 +117,32 @@ namespace eAutoSalon.Services.Services
             return query.Include("KorisnikUloges.Uloga");
         }
 
-        
+        public async Task<VMKorisnik> PasswordChange(int id, KorisnikPasswordRequest req)
+        {
+            var entity = await _context.Korisnicis.FindAsync(id);
+
+            if (entity == null)
+            {
+                throw new UserException("Korisnik sa id poljem je nepostojeći.");
+            }
+
+            var hash = Generator.GenerateHash(entity.PasswordSalt, req.Stari_Pass);
+
+            if(hash!=entity.PasswordHash)
+            {
+                throw new UserException("Stari password se ne poklapa sa postojećim.");
+            }
+
+            entity.PasswordHash = Generator.GenerateHash(entity.PasswordSalt,req.Novi_Pass);
+
+            await _context.SaveChangesAsync();
+
+            return _mapper.Map<VMKorisnik>(entity);
+        }
+
+        public Task PictureChange(int id, SlikaRequest req)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
