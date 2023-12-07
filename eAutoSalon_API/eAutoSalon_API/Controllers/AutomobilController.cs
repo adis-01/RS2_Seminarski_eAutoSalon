@@ -11,11 +11,28 @@ namespace eAutoSalon_API.Controllers
 {
     [Route("[controller]")]
     [ApiController]
-    [Authorize(Roles = "Korisnik")]
     public class AutomobilController : BaseCRUDController<VMAutomobil, AutomobilSearchObject, AutomobilInsert, AutomobilUpdate>
     {
         public AutomobilController(IAutomobilService service, ILogger<BaseController<VMAutomobil, AutomobilSearchObject>> logger) : base(service, logger)
         {
+        }
+
+        [Authorize(Roles ="Administrator")]
+        public override async Task<VMAutomobil> Insert(AutomobilInsert req)
+        {
+            return await base.Insert(req);
+        }
+
+        [Authorize(Roles ="Administrator")]
+        public override async Task<VMAutomobil> Update(int id, AutomobilUpdate req)
+        {
+            return await base.Update(id, req);
+        }
+
+        [Authorize(Roles = "Administrator")]
+        public override async Task Delete(int id)
+        {
+            await base.Delete(id);
         }
     }
 }

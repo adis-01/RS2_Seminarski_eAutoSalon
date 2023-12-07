@@ -66,7 +66,8 @@ namespace eAutoSalon.Services.Services
 
             korisnik.PasswordSalt = Generator.GenerateSalt();
             korisnik.PasswordHash = Generator.GenerateHash(korisnik.PasswordSalt, req.Password!);
-            korisnik.Slika = Convert.FromBase64String(req.SlikaBase64!);
+            if (req?.SlikaBase64!=null) { korisnik.Slika = Convert.FromBase64String(req.SlikaBase64!); }
+            
 
             await _context.Korisnicis.AddAsync(korisnik);
             await _context.SaveChangesAsync();
@@ -140,9 +141,16 @@ namespace eAutoSalon.Services.Services
             return _mapper.Map<VMKorisnik>(entity);
         }
 
-        public Task PictureChange(int id, SlikaRequest req)
+        public async Task PictureChange(int id, SlikaRequest req)
         {
-            throw new NotImplementedException();
+            var entity = await _context.Korisnicis.FindAsync(id);
+
+            if (entity == null)
+                throw new UserException("Korisnik sa unesenim id-em je nepostojeći");
+
+            entity.Slika = Convert.FromBase64String(req.slika);
+
+            await _context.SaveChangesAsync();
         }
     }
 }

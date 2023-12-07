@@ -3,6 +3,7 @@ using eAutoSalon.Models.SearchObjects;
 using eAutoSalon.Models.UpdateRequests;
 using eAutoSalon.Models.ViewModels;
 using eAutoSalon.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -20,11 +21,30 @@ namespace eAutoSalon_API.Controllers
 
 
         [HttpPost("ChangePassword/{id}")]
+        [Authorize(Roles ="Korisnik")]
         public async Task<VMKorisnik> ChangePass(int id, [FromBody] KorisnikPasswordRequest req)
         {
             return await _service.PasswordChange(id, req);
         }
 
-        
+
+        [HttpPost("ChangePicture/{id}")]
+        public async Task ChangePicture(int id, [FromBody] SlikaRequest req)
+        {
+            await _service.PictureChange(id,req);
+        }
+
+        [Authorize(Roles ="Administrator")]
+        public override async Task Delete(int id)
+        {
+            await base.Delete(id);
+        }
+
+        [Authorize(Roles = "Korisnik")]
+        public override async Task<VMKorisnik> Update(int id, KorisnikUpdate req)
+        {
+            return await base.Update(id, req);
+        }
+
     }
 }

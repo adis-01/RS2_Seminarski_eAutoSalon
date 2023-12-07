@@ -17,6 +17,8 @@ public partial class EAutoSalonTestContext : DbContext
 
     public virtual DbSet<Automobili> Automobilis { get; set; }
 
+    public virtual DbSet<DodatnaOprema> DodatnaOpremas { get; set; }
+
     public virtual DbSet<Komentari> Komentaris { get; set; }
 
     public virtual DbSet<Korisnici> Korisnicis { get; set; }
@@ -27,6 +29,9 @@ public partial class EAutoSalonTestContext : DbContext
 
     public virtual DbSet<Uloge> Uloges { get; set; }
 
+    public virtual DbSet<Uposlenici> Uposlenicis { get; set; }
+
+    public virtual DbSet<ZavrseniPoslovi> ZavrseniPoslovis { get; set; }
 
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -45,9 +50,32 @@ public partial class EAutoSalonTestContext : DbContext
             entity.Property(e => e.SnagaMotora)
                 .HasMaxLength(100)
                 .IsUnicode(false);
+            entity.Property(e => e.StateMachine)
+                .HasMaxLength(255)
+                .IsUnicode(false);
             entity.Property(e => e.VrstaGoriva)
                 .HasMaxLength(100)
                 .IsUnicode(false);
+        });
+
+        modelBuilder.Entity<DodatnaOprema>(entity =>
+        {
+            entity.HasKey(e => e.OpremaId).HasName("PK__Dodatna___5C2EDCF1B108E4D6");
+
+            entity.ToTable("Dodatna_Oprema");
+
+            entity.Property(e => e.OpremaId).HasColumnName("OpremaID");
+            entity.Property(e => e.AutomobilId).HasColumnName("AutomobilID");
+            entity.Property(e => e.Naziv)
+                .HasMaxLength(255)
+                .IsUnicode(false);
+            entity.Property(e => e.Opis)
+                .HasMaxLength(255)
+                .IsUnicode(false);
+
+            entity.HasOne(d => d.Automobil).WithMany(p => p.DodatnaOpremas)
+                .HasForeignKey(d => d.AutomobilId)
+                .HasConstraintName("FK_Automobil_Oprema");
         });
 
         modelBuilder.Entity<Komentari>(entity =>
@@ -147,6 +175,52 @@ public partial class EAutoSalonTestContext : DbContext
             entity.Property(e => e.Naziv)
                 .HasMaxLength(255)
                 .IsUnicode(false);
+        });
+
+        modelBuilder.Entity<Uposlenici>(entity =>
+        {
+            entity.HasKey(e => e.UposlenikId).HasName("PK__Uposleni__B56B4D508CDFFF4F");
+
+            entity.ToTable("Uposlenici");
+
+            entity.Property(e => e.UposlenikId).HasColumnName("UposlenikID");
+            entity.Property(e => e.FirstName)
+                .HasMaxLength(255)
+                .IsUnicode(false);
+            entity.Property(e => e.Kontakt)
+                .HasMaxLength(255)
+                .IsUnicode(false);
+            entity.Property(e => e.LastName)
+                .HasMaxLength(255)
+                .IsUnicode(false);
+            entity.Property(e => e.Title)
+                .HasMaxLength(255)
+                .IsUnicode(false);
+        });
+
+        modelBuilder.Entity<ZavrseniPoslovi>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__Zavrseni__3214EC270EF257BC");
+
+            entity.ToTable("Zavrseni_Poslovi");
+
+            entity.Property(e => e.Id).HasColumnName("ID");
+            entity.Property(e => e.AutomobilId).HasColumnName("AutomobilID");
+            entity.Property(e => e.DatumProdaje).HasColumnType("date");
+            entity.Property(e => e.KorisnikId).HasColumnName("KorisnikID");
+            entity.Property(e => e.UposlenikId).HasColumnName("UposlenikID");
+
+            entity.HasOne(d => d.Automobil).WithMany(p => p.ZavrseniPoslovis)
+                .HasForeignKey(d => d.AutomobilId)
+                .HasConstraintName("FK_Automobil");
+
+            entity.HasOne(d => d.Korisnik).WithMany(p => p.ZavrseniPoslovis)
+                .HasForeignKey(d => d.KorisnikId)
+                .HasConstraintName("FK_Korisnik");
+
+            entity.HasOne(d => d.Uposlenik).WithMany(p => p.ZavrseniPoslovis)
+                .HasForeignKey(d => d.UposlenikId)
+                .HasConstraintName("FK_Uposlenik");
         });
 
         OnModelCreatingPartial(modelBuilder);
