@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace eAutoSalon.Services.Helpers
+namespace eAutoSalon.Models.ViewModels
 {
-    public class ImageHelper
+    public class VMTestnaVoznja
     {
-        
     }
 }

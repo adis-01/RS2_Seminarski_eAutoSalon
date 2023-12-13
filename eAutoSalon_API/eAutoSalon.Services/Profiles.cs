@@ -42,6 +42,8 @@ namespace eAutoSalon.Services
             CreateMap<DodatnaOpremaInsert, DodatnaOprema>();
             CreateMap<DodatnaOpremaUpdate,DodatnaOprema>();
 
+            CreateMap<TestnaVoznjaInsert,TestnaVoznja>();
+
             CreateMap<Uloge, VMUloga>();
         }
     }

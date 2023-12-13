@@ -27,13 +27,15 @@ public partial class EAutoSalonTestContext : DbContext
 
     public virtual DbSet<Novosti> Novostis { get; set; }
 
+    public virtual DbSet<TestnaVoznja> TestnaVoznjas { get; set; }
+
     public virtual DbSet<Uloge> Uloges { get; set; }
 
     public virtual DbSet<Uposlenici> Uposlenicis { get; set; }
 
     public virtual DbSet<ZavrseniPoslovi> ZavrseniPoslovis { get; set; }
 
-
+    
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Automobili>(entity =>
@@ -47,11 +49,17 @@ public partial class EAutoSalonTestContext : DbContext
             entity.Property(e => e.BrojSasije)
                 .HasMaxLength(20)
                 .IsUnicode(false);
+            entity.Property(e => e.DatumObjave).HasColumnType("datetime");
+            entity.Property(e => e.Model)
+                .HasMaxLength(255)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('not_defined')");
+            entity.Property(e => e.Proizvodjac)
+                .HasMaxLength(255)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('not_defined')");
             entity.Property(e => e.SnagaMotora)
                 .HasMaxLength(100)
-                .IsUnicode(false);
-            entity.Property(e => e.StateMachine)
-                .HasMaxLength(255)
                 .IsUnicode(false);
             entity.Property(e => e.VrstaGoriva)
                 .HasMaxLength(100)
@@ -111,6 +119,9 @@ public partial class EAutoSalonTestContext : DbContext
                 .HasMaxLength(255)
                 .IsUnicode(false);
             entity.Property(e => e.FirstName).HasMaxLength(255);
+            entity.Property(e => e.Isverified)
+                .HasDefaultValueSql("((0))")
+                .HasColumnName("ISVerified");
             entity.Property(e => e.LastName).HasMaxLength(255);
             entity.Property(e => e.PasswordHash)
                 .HasMaxLength(255)
@@ -118,10 +129,10 @@ public partial class EAutoSalonTestContext : DbContext
             entity.Property(e => e.PasswordSalt)
                 .HasMaxLength(255)
                 .IsUnicode(false);
-            entity.Property(e => e.SlikaPath)
+            entity.Property(e => e.RegisteredOn).HasColumnType("datetime");
+            entity.Property(e => e.Token)
                 .HasMaxLength(255)
-                .IsUnicode(false)
-                .HasColumnName("Slika_PATH");
+                .IsUnicode(false);
             entity.Property(e => e.Username)
                 .HasMaxLength(255)
                 .IsUnicode(false);
@@ -163,6 +174,35 @@ public partial class EAutoSalonTestContext : DbContext
             entity.Property(e => e.Tip)
                 .HasMaxLength(255)
                 .IsUnicode(false);
+        });
+
+        modelBuilder.Entity<TestnaVoznja>(entity =>
+        {
+            entity.HasKey(e => e.TestnaVoznjaId).HasName("PK__TestnaVo__07A84ABB6D4E61DD");
+
+            entity.ToTable("TestnaVoznja");
+
+            entity.Property(e => e.TestnaVoznjaId).HasColumnName("TestnaVoznjaID");
+            entity.Property(e => e.AutomobilId).HasColumnName("AutomobilID");
+            entity.Property(e => e.DatumVrijeme).HasColumnType("datetime");
+            entity.Property(e => e.KorisnikId).HasColumnName("KorisnikID");
+            entity.Property(e => e.Status)
+                .HasMaxLength(255)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('Slobodno')");
+            entity.Property(e => e.UposlenikId).HasColumnName("UposlenikID");
+
+            entity.HasOne(d => d.Automobil).WithMany(p => p.TestnaVoznjas)
+                .HasForeignKey(d => d.AutomobilId)
+                .HasConstraintName("FK_Automobil_TestnaVoznja");
+
+            entity.HasOne(d => d.Korisnik).WithMany(p => p.TestnaVoznjas)
+                .HasForeignKey(d => d.KorisnikId)
+                .HasConstraintName("FK_Korisnik_TestnaVoznja");
+
+            entity.HasOne(d => d.Uposlenik).WithMany(p => p.TestnaVoznjas)
+                .HasForeignKey(d => d.UposlenikId)
+                .HasConstraintName("FK_Uposlenik_TestnaVoznja");
         });
 
         modelBuilder.Entity<Uloge>(entity =>

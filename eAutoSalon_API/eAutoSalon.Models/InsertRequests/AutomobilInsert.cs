@@ -27,5 +27,11 @@ namespace eAutoSalon.Models.InsertRequests
         public int BrojVrata { get; set; }
         [Required]
         public int PredjeniKilometri { get; set; }
+        [Required]
+        [MinLength(3,ErrorMessage = "Marka automobila mora imati minimalno 3 slova"),MaxLength(30,ErrorMessage = "Marka automobila može imati maksimalno 30 slova")]
+        public string Proizvodjac { get; set; } = null!;
+        [Required]
+        [MaxLength(15, ErrorMessage = "Marka automobila može imati maksimalno 15 slova")]
+        public string Model { get; set; } = null!;
     }
 }

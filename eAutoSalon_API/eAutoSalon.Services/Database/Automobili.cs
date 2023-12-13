@@ -21,9 +21,15 @@ public partial class Automobili
 
     public int PredjeniKilometri { get; set; }
 
-    public string? StateMachine { get; set; }
+    public DateTime? DatumObjave { get; set; }
+
+    public string Proizvodjac { get; set; } = null!;
+
+    public string Model { get; set; } = null!;
 
     public virtual ICollection<DodatnaOprema> DodatnaOpremas { get; set; } = new List<DodatnaOprema>();
+
+    public virtual ICollection<TestnaVoznja> TestnaVoznjas { get; set; } = new List<TestnaVoznja>();
 
     public virtual ICollection<ZavrseniPoslovi> ZavrseniPoslovis { get; set; } = new List<ZavrseniPoslovi>();
 }

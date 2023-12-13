@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Mvc;
 namespace eAutoSalon_API.Controllers
 {
     [Route("[controller]")]
-    [ApiController]
     [Authorize(Roles="Administrator")]
 
     public class UlogeController : BaseController<VMUloga, UlogeSearchObject>

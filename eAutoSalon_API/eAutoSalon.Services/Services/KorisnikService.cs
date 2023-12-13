@@ -67,6 +67,7 @@ namespace eAutoSalon.Services.Services
             korisnik.PasswordSalt = Generator.GenerateSalt();
             korisnik.PasswordHash = Generator.GenerateHash(korisnik.PasswordSalt, req.Password!);
             if (req?.SlikaBase64!=null) { korisnik.Slika = Convert.FromBase64String(req.SlikaBase64!); }
+            korisnik.RegisteredOn = DateTime.Now;
             
 
             await _context.Korisnicis.AddAsync(korisnik);

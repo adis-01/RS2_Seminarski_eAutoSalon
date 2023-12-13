@@ -10,7 +10,6 @@ using Microsoft.AspNetCore.Mvc;
 namespace eAutoSalon_API.Controllers
 {
     [Route("[controller]")]
-    [ApiController]
     public class KorisniciController : BaseCRUDController<VMKorisnik, SearchObject, KorisnikInsert, KorisnikUpdate>
     {
         IKorisnikService _service;
