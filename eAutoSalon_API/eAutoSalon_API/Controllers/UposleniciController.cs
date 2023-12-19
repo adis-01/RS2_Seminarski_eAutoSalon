@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace eAutoSalon_API.Controllers
 {
     [Route("[controller]")]
+    [Authorize(Roles = "Korisnik,Urednik,Administrator")]
     public class UposleniciController : BaseCRUDController<VMUposlenik, UposlenikSearchObject, UposlenikInsert, UposlenikUpdate>
     {
         public UposleniciController(IUposlenikService service, ILogger<BaseController<VMUposlenik, UposlenikSearchObject>> logger) : base(service, logger)

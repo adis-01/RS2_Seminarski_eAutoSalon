@@ -33,6 +33,10 @@ namespace eAutoSalon.Services.Services
             return query;
         }
 
-       
+        public override IQueryable<Automobili> Order(IQueryable<Automobili> query)
+        {
+            query = query.OrderByDescending(x => x.AutomobilId);
+            return query;
+        }
     }
 }

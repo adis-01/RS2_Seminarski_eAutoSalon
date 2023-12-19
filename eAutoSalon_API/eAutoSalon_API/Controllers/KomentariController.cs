@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace eAutoSalon_API.Controllers
 {
     [Route("[controller]")]
-    [Authorize]
+    [Authorize(Roles = "Korisnik,Urednik,Administrator")]
     public class KomentariController : BaseCRUDController<VMKomentari, KomentariSearchObject, KomentarInsert, KomentarUpdate>
     {
         IKomentarService _service;
@@ -21,13 +21,17 @@ namespace eAutoSalon_API.Controllers
         }
 
 
-        [HttpGet("Komentari_Novost/{id}")]
+        [HttpGet("Comms/{id}")]
         public async Task<PagedList<VMKomentari>> GetComms(int id, [FromQuery]KomentariSearchObject? searchObject = null)
         {
             return await _service.GetAllKomentari_Novost(id,searchObject);
         }
 
-        
+        [HttpGet("History/{id}")]
+        public async Task<List<VMKomentar_Historija>> GetHistory(int id)
+        {
+            return await _service.GetHistorijuKomentara(id);
+        }
        
     }
 }

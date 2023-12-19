@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace eAutoSalon_API.Controllers
 {
     [Route("[controller]")]
+    [Authorize(Roles = "Korisnik,Urednik,Administrator")]
     public class AutomobilController : BaseCRUDController<VMAutomobil, AutomobilSearchObject, AutomobilInsert, AutomobilUpdate>
     {
         public AutomobilController(IAutomobilService service, ILogger<BaseController<VMAutomobil, AutomobilSearchObject>> logger) : base(service, logger)
@@ -33,5 +34,7 @@ namespace eAutoSalon_API.Controllers
         {
             await base.Delete(id);
         }
+
+      
     }
 }

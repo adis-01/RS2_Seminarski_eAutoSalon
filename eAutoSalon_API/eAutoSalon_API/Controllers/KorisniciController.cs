@@ -28,6 +28,7 @@ namespace eAutoSalon_API.Controllers
 
 
         [HttpPost("ChangePicture/{id}")]
+        [Authorize(Roles = "Korisnik")]
         public async Task ChangePicture(int id, [FromBody] SlikaRequest req)
         {
             await _service.PictureChange(id,req);

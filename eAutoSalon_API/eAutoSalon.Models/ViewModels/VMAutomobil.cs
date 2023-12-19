@@ -21,5 +21,8 @@ namespace eAutoSalon.Models.ViewModels
         public int BrojVrata { get; set; }
 
         public int PredjeniKilometri { get; set; }
+        public string Proizvodjac { get; set; } = null!;
+
+        public string Model { get; set; } = null!;
     }
 }

@@ -1,7 +1,10 @@
 ﻿using AutoMapper;
 using eAutoSalon.Models.InsertRequests;
+using eAutoSalon.Models.SearchObjects;
+using eAutoSalon.Models.ViewModels;
 using eAutoSalon.Services.Database;
 using eAutoSalon.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,14 +13,17 @@ using System.Threading.Tasks;
 
 namespace eAutoSalon.Services.Services
 {
-    public class TestnaVoznjaService : ITestnaVoznjaService
+    public class TestnaVoznjaService : BaseGetService<VMTestnaVoznja,TestnaVoznja,TestnaVoznjaSearchObject>,ITestnaVoznjaService
     {
-        private readonly EAutoSalonTestContext _context;
-        private readonly IMapper _mapper;
-        public TestnaVoznjaService(EAutoSalonTestContext context, IMapper mapper)
+        public TestnaVoznjaService(EAutoSalonTestContext context, IMapper mapper) : base(context, mapper)
         {
-            _context=context;
-            _mapper=mapper;
+        }
+
+        public override IQueryable<TestnaVoznja> AddInclude(IQueryable<TestnaVoznja> query)
+        {
+            return query.Include("Korisnik")
+                        .Include("Automobil")
+                        .Include("Uposlenik");
         }
 
         public async Task Cancel(int id)

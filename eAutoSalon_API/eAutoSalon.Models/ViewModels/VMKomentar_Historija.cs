@@ -6,12 +6,9 @@ using System.Threading.Tasks;
 
 namespace eAutoSalon.Models.ViewModels
 {
-    public class VMNovosti
+    public class VMKomentar_Historija
     {
-        public string Naslov { get; set; }
-        public string Sadrzaj { get; set; } = null!;
-
-        public string Tip { get; set; } = null!;
-
+        public string? Sadrzaj { get; set; }
+        public VMClanak_Komentar_Historija? Novosti { get; set; }
     }
 }

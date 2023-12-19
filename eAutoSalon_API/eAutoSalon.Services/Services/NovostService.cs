@@ -28,6 +28,11 @@ namespace eAutoSalon.Services.Services
             return query;
         }
 
-         
+        public override IQueryable<Novosti> Order(IQueryable<Novosti> query)
+        {
+            query = query.OrderByDescending(x => x.NovostiId);
+            return query;
+        }
+
     }
 }

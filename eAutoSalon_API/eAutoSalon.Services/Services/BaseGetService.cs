@@ -33,6 +33,7 @@ namespace eAutoSalon.Services.Services
 
             list.PageCount = await query.CountAsync();
 
+            query = Order(query);
             query = AddInclude(query);
 
             if(search?.Page.HasValue == true && search?.PageSize.HasValue == true)
@@ -47,6 +48,11 @@ namespace eAutoSalon.Services.Services
             list.List= _mapper.Map<List<T>>(lista);
 
             return list;
+        }
+
+        public virtual IQueryable<TDb> Order(IQueryable<TDb> query)
+        {
+            return query;
         }
 
         public virtual IQueryable<TDb> AddInclude(IQueryable<TDb> query)

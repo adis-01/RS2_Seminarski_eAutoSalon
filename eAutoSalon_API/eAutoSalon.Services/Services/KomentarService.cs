@@ -23,6 +23,12 @@ namespace eAutoSalon.Services.Services
             return query.Include("Korisnik");
         }
 
+        public override IQueryable<Komentari> Order(IQueryable<Komentari> query)
+        {
+            query = query.OrderByDescending(x => x.KomentarId);
+            return query;
+        }
+
         public async Task<PagedList<VMKomentari>> GetAllKomentari_Novost(int id, KomentariSearchObject? searchObject = null)
         {
             var comms =  _context.Komentaris.Where(x=>x.NovostiId==id).Include("Korisnik").AsQueryable();
@@ -45,6 +51,19 @@ namespace eAutoSalon.Services.Services
 
 
             return list;
+        }
+
+        public async Task<List<VMKomentar_Historija>> GetHistorijuKomentara(int id)
+        {
+            var list =  _context.Komentaris
+                .OrderByDescending(x=>x.KomentarId)
+                .Where(x => x.KorisnikId == id)
+                .Include("Novosti")
+                .AsQueryable();
+
+            await list.ToListAsync();
+
+            return _mapper.Map<List<VMKomentar_Historija>>(list);
         }
     }
 }

@@ -11,7 +11,9 @@ public partial class Novosti
 
     public string Tip { get; set; } = null!;
 
-    public string? SlikaPath { get; set; }
+    public string Naslov { get; set; } = null!;
+
+    public byte[]? Slika { get; set; }
 
     public virtual ICollection<Komentari> Komentaris { get; set; } = new List<Komentari>();
 }

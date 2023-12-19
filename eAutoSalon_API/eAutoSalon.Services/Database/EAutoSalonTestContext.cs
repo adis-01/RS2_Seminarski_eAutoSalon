@@ -35,7 +35,8 @@ public partial class EAutoSalonTestContext : DbContext
 
     public virtual DbSet<ZavrseniPoslovi> ZavrseniPoslovis { get; set; }
 
-    
+   
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Automobili>(entity =>
@@ -166,11 +167,11 @@ public partial class EAutoSalonTestContext : DbContext
             entity.ToTable("Novosti");
 
             entity.Property(e => e.NovostiId).HasColumnName("NovostiID");
-            entity.Property(e => e.Sadrzaj).HasColumnType("text");
-            entity.Property(e => e.SlikaPath)
+            entity.Property(e => e.Naslov)
                 .HasMaxLength(255)
                 .IsUnicode(false)
-                .HasColumnName("Slika_PATH");
+                .HasDefaultValueSql("('not_defined')");
+            entity.Property(e => e.Sadrzaj).HasColumnType("text");
             entity.Property(e => e.Tip)
                 .HasMaxLength(255)
                 .IsUnicode(false);

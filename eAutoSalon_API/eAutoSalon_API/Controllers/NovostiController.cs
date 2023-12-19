@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace eAutoSalon_API.Controllers
 {
     [Route("[controller]")]
+    [Authorize(Roles ="Korisnik,Urednik,Administrator")]
     public class NovostiController : BaseCRUDController<VMNovosti, NovostiSearchObject, NovostInsert, NovostUpdate>
     {
         public NovostiController(INovostService service, ILogger<BaseController<VMNovosti, NovostiSearchObject>> logger) : base(service, logger)

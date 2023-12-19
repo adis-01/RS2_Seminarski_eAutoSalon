@@ -9,7 +9,6 @@ namespace eAutoSalon_API.Controllers
 {
     [Route("[controller]")]
     [Authorize(Roles="Administrator")]
-
     public class UlogeController : BaseController<VMUloga, UlogeSearchObject>
     {
         public UlogeController(IUlogeService service, ILogger<BaseController<VMUloga, UlogeSearchObject>> logger) : base(service, logger)

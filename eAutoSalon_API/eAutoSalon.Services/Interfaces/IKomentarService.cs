@@ -13,5 +13,6 @@ namespace eAutoSalon.Services.Interfaces
     public interface IKomentarService : IBaseCRUDService<VMKomentari,KomentariSearchObject,KomentarInsert,KomentarUpdate>
     {
         Task<PagedList<VMKomentari>> GetAllKomentari_Novost(int id, KomentariSearchObject? searchObject = null);
+        Task<List<VMKomentar_Historija>> GetHistorijuKomentara(int id);
     }
 }
