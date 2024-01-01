@@ -33,7 +33,7 @@ namespace eAutoSalon.Services.Services
                 EnableSsl = true,
             };
 
-            MailMessage mailing = new (mailSender, sender)
+            MailMessage mailing = new (sender, mailSender)
             {
                 Subject = subject,
                 Body = content,
