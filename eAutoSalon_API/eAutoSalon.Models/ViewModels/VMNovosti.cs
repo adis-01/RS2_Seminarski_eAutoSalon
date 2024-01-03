@@ -8,6 +8,7 @@ namespace eAutoSalon.Models.ViewModels
 {
     public class VMNovosti
     {
+        public int NovostiId { get; set; }
         public string Naslov { get; set; }
         public string Sadrzaj { get; set; } = null!;
 

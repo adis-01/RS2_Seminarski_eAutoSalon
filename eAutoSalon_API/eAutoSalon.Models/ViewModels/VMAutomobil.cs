@@ -8,6 +8,7 @@ namespace eAutoSalon.Models.ViewModels
 {
     public class VMAutomobil
     {
+        public int AutomobilId { get; set; }
         public string BrojSasije { get; set; } = null!;
 
         public string Boja { get; set; } = null!;

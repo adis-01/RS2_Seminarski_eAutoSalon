@@ -20,13 +20,13 @@ namespace eAutoSalon_API.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<T> GetById(int id)
+        public virtual async Task<T> GetById(int id)
         {
             return await _service.GetById(id);
         }
 
         [HttpGet]
-        public async Task<PagedList<T>> GetAll([FromQuery]TSearch? search = null)
+        public virtual async Task<PagedList<T>> GetAll([FromQuery]TSearch? search = null)
         {
             return await _service.GetAll(search);
         }

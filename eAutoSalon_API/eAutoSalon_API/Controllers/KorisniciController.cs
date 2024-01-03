@@ -2,6 +2,7 @@
 using eAutoSalon.Models.SearchObjects;
 using eAutoSalon.Models.UpdateRequests;
 using eAutoSalon.Models.ViewModels;
+using eAutoSalon.Services;
 using eAutoSalon.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -25,6 +26,14 @@ namespace eAutoSalon_API.Controllers
         {
             return await _service.PasswordChange(id, req);
         }
+
+        [Authorize(Roles ="Korisnik")]
+        public override Task<PagedList<VMKorisnik>> GetAll([FromQuery] SearchObject? search = null)
+        {
+            return base.GetAll(search);
+        }
+
+        
 
 
         [HttpPost("ChangePicture/{id}")]
