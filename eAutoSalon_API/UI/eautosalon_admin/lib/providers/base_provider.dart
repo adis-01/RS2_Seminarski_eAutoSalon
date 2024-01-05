@@ -83,15 +83,30 @@ abstract class BaseProvider<T> with ChangeNotifier{
     }
   }
 
-  Future<bool> delete(int id) async{
+  Future<T> update(int id, dynamic object) async {
     var url = "$_baseUrl$_endpoint/$id";
-    print(url);
     var uri = Uri.parse(url);
     var headers = createHeaders();
-    print(headers);
+
+    var obj = jsonEncode(object);
+    var request = await http.put(uri, headers: headers, body: obj);
+
+    if(isValidResponse(request)){
+      var data = jsonDecode(request.body);
+      return fromJson(data);
+    }
+    else{
+      throw Exception("Greška");
+    }
+  }
+
+  Future<bool> delete(int id) async{
+    var url = "$_baseUrl$_endpoint/$id";
+    var uri = Uri.parse(url);
+    var headers = createHeaders();
 
     var response = await http.delete(uri, headers: headers);
-    print(response.body);
+    
     if(!isValidResponse(response)){
       throw Exception("Greška...");
     }

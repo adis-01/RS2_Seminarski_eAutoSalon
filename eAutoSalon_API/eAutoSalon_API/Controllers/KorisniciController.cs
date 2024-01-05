@@ -50,7 +50,7 @@ namespace eAutoSalon_API.Controllers
         }
 
         [Authorize(Roles = "Korisnik")]
-        public override async Task<VMKorisnik> Update(int id, KorisnikUpdate req)
+        public override async Task<VMKorisnik> Update(int id, [FromBody]KorisnikUpdate req)
         {
             return await base.Update(id, req);
         }

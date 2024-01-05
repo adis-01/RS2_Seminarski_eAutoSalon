@@ -51,7 +51,7 @@ class _UsersScreenState extends State<UsersScreen> {
                     },
                     shape: const CircleBorder(),
                     padding: const EdgeInsets.all(15),
-                    color: Colors.deepPurpleAccent,
+                    color: const Color(0xFF248BD6),
                     child: const Icon(Icons.arrow_back,
                         color: Colors.white, size: 25),
                   ),
@@ -71,7 +71,7 @@ class _UsersScreenState extends State<UsersScreen> {
                           _buildColumnHeader(),
                           const Divider(
                               thickness: 0.4,
-                              color: Colors.deepPurple,
+                              color: Colors.blueGrey,
                               indent: 20,
                               endIndent: 20),
                           const SizedBox(height: 10),
@@ -99,9 +99,46 @@ class _UsersScreenState extends State<UsersScreen> {
             color: Colors.blueGrey,
           ),
           RichText(
+            text: const TextSpan(children: [
+               TextSpan(
+                text: 'Stranica ',
+                style: TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w700,
+                  color: Colors.blueGrey
+                )
+                ),
+                TextSpan(
+                  text: "1 ",
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.black54,
+                    fontWeight: FontWeight.w700
+                  )
+                ),
+                TextSpan(
+                  text: 'od ',
+                  style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w700,
+                    color: Colors.blueGrey
+                  )
+                ),
+                TextSpan(
+                  text: '2',
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.black54,
+                    fontWeight: FontWeight.w700
+                  )
+                )
+            ]
+            )
+            ),
+          RichText(
               text: TextSpan(children: [
             const TextSpan(
-                text: 'Total number of users: ',
+                text: 'Ukupan broj korisnika: ',
                 style: TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.w700,
@@ -222,8 +259,8 @@ class _UsersScreenState extends State<UsersScreen> {
             } catch (e) {
               CustomDialogs.showError(context, e.toString());
             }
-          }, icon: const Icon(Icons.cleaning_services, size: 25, color: Colors.deepPurple,))
-        ) : const Text("  "),
+          }, icon: const Icon(Icons.cleaning_services, size: 25, color: Color(0xFF248BD6)))
+        ) : const Text(""),
         const SizedBox(width: 5),
         SizedBox(
           width: 320,
@@ -233,7 +270,7 @@ class _UsersScreenState extends State<UsersScreen> {
             decoration: const InputDecoration(
               prefixIcon: Icon(
                 Icons.search,
-                color: Colors.deepPurpleAccent,
+                color:  Color(0xFF248BD6),
               ),
               hintText: 'Pretraži korisnike...',
               border: OutlineInputBorder(
@@ -266,7 +303,7 @@ class _UsersScreenState extends State<UsersScreen> {
                   },
             style: ElevatedButton.styleFrom(
               minimumSize: const Size(50, 50),
-              backgroundColor: Colors.deepPurpleAccent,
+              backgroundColor: const Color(0xFF248BD6),
             ),
             child: const Text(
               'Pretraga',

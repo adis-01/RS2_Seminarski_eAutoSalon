@@ -24,13 +24,13 @@ namespace eAutoSalon_API.Controllers
         }
 
         [HttpPost]
-        public virtual async Task<T> Insert(TInsert req)
+        public virtual async Task<T> Insert([FromBody]TInsert req)
         {
             return await _service.Insert(req);
         }
 
         [HttpPut("{id}")]
-        public virtual async Task<T> Update(int id, TUpdate req)
+        public virtual async Task<T> Update(int id, [FromBody] TUpdate req)
         {
             return await _service.Update(id, req);
         }

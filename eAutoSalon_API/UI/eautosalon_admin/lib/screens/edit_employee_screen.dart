@@ -1,51 +1,47 @@
-
 // ignore_for_file: use_build_context_synchronously
 
-import 'package:eautosalon_admin/providers/user_provider.dart';
-import 'package:eautosalon_admin/screens/users_screen.dart';
+import 'package:eautosalon_admin/providers/employee_provider.dart';
+import 'package:eautosalon_admin/screens/employees_screen.dart';
 import 'package:eautosalon_admin/utils/dialogs.dart';
 import 'package:eautosalon_admin/widgets/master_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../models/user.dart';
+import '../models/employee.dart';
 
-class EditUser extends StatefulWidget {
-  User user;
-  EditUser({super.key, required this.user});
+class EditEmployee extends StatefulWidget {
+  Employee employee;
+  EditEmployee({super.key, required this.employee});
 
   @override
-  State<EditUser> createState() => _EditUserState();
+  State<EditEmployee> createState() => _EditEmployeeState();
 }
 
-class _EditUserState extends State<EditUser> {
+class _EditEmployeeState extends State<EditEmployee> {
 
-  late TextEditingController userId;
+  late EmployeeProvider _employeeProvider;
   late TextEditingController first;
   late TextEditingController last;
-  late TextEditingController username;
-  late TextEditingController email;
-  late UserProvider _userProvider;
+  late TextEditingController contact;
 
   @override
   void initState() {
     super.initState();
-    userId = TextEditingController(text: widget.user.korisnikId.toString());
-    first = TextEditingController(text: widget.user.firstName);
-    last = TextEditingController(text: widget.user.lastName);
-    email = TextEditingController(text: widget.user.email);
-    username=TextEditingController(text: widget.user.username);
-    _userProvider=context.read<UserProvider>();
+    _employeeProvider = context.read<EmployeeProvider>();
+      first = TextEditingController(text: widget.employee.firstName);
+      last = TextEditingController(text: widget.employee.lastName);
+      contact = TextEditingController(text: widget.employee.kontakt);
   }
 
   @override
   Widget build(BuildContext context) {
     return MasterScreen(
-      title: "Detalji korisnika ${widget.user.firstName} ${widget.user.lastName}", 
-      body: Padding(
-        padding: const EdgeInsets.all(25),
-        child: SingleChildScrollView(
-          child: Column(
+        title:
+            'Detalji uposlenika ${widget.employee.firstName} ${widget.employee.lastName}',
+        body: Padding(
+            padding: const EdgeInsets.all(25),
+            child: SingleChildScrollView(
+              child: Column(
                 children: [
                   _buildBack(context),
                   const SizedBox(height: 45),
@@ -61,17 +57,16 @@ class _EditUserState extends State<EditUser> {
                               bottomLeft: Radius.circular(15))),
                       child: Column(
                         children: [
+                          _buildImage(),
                           const SizedBox(height: 30),
                           Wrap(
                             spacing: 15,
                             runSpacing: 20,
                             alignment: WrapAlignment.spaceBetween,
                             children: [
-                              _buildInput('ID', userId, true),
-                              _buildInput('Ime', first, false),
-                              _buildInput('Prezime', last, false),
-                             _buildInput('Email',email, true),
-                             _buildInput('Username', username, false),
+                              _buildInput('Ime', first),
+                              _buildInput('Prezime', last),
+                              SizedBox(width: 280,child: _buildInput('Kontakt', contact)),
                             ],
                           ),
                           const SizedBox(height: 15),
@@ -100,40 +95,15 @@ class _EditUserState extends State<EditUser> {
                         children: const[
                           Icon(Icons.info_outline,  color:Color(0xFF248BD6)),
                           SizedBox(height: 3),
-                          Text("Popunite polja, a promjene spasite klikom na dugme - Email i ID polje se ne mogu mijenjati", style: TextStyle(fontWeight: FontWeight.w500)),
+                          Text("Popunite sva polja, a promjene spasite klikom na dugme 'Spasi'", style: TextStyle(fontWeight: FontWeight.w500)),
                         ],
                       ),
                     ),
                 ],
               ),
-        ),
-      )
-      );
-  }
-
-   Widget _buildButton() {
-    return ElevatedButton(
-        onPressed: () async {
-          try {
-            var obj = {
-              'FirstName' : first.text,
-              'LastName' : last.text,
-              'Username' : username.text
-            };
-            await _userProvider.update(widget.user.korisnikId!, obj);
-            CustomDialogs.showSuccess(context, 'Uspješno uređivanje podataka', () { 
-              Navigator.of(context).push(
-                MaterialPageRoute(builder: (builder) => const UsersScreen())
-              );
-            });
-          } catch (e) {
-            CustomDialogs.showError(context, e.toString());
-          }
-        },
-        style: ElevatedButton.styleFrom(
-            fixedSize: const Size(80, 40),
-            backgroundColor: const Color(0xFF248BD6)),
-        child: const Text('Spasi'));
+            ),
+          ),
+        );
   }
 
   Row _buildBack(BuildContext context) {
@@ -157,29 +127,76 @@ class _EditUserState extends State<EditUser> {
     );
   }
 
-
-    SizedBox _buildInput(String hint, TextEditingController controller, bool readonly) {
+  SizedBox _buildInput(String hint, TextEditingController controller) {
     return SizedBox(
       width: 200,
       height: 60,
       child: TextField(
-        readOnly: readonly,
         controller: controller,
         decoration: InputDecoration(
           labelText: hint,
           border: const OutlineInputBorder(),
-          filled: readonly,
-          fillColor: readonly ? Colors.grey[400] : null
         ),
       ),
     );
   }
 
+  Widget _buildButton() {
+    return ElevatedButton(
+        onPressed: () async {
+          try {
+            var req = {
+            'FirstName' : first.text,
+            'LastName' : last.text,
+            'Kontakt' : contact.text
+          };
+          await _employeeProvider.update(widget.employee.uposlenikId!, req);
+          CustomDialogs.showSuccess(context, 'Uspješno uređivanje podataka', () { 
+            Navigator.of(context).push(
+              MaterialPageRoute(builder: (builder)=> const EmployeesScreen())
+            );
+          });
+          } catch (e) {
+            CustomDialogs.showError(context, e.toString());
+          }
+        },
+        style: ElevatedButton.styleFrom(
+            fixedSize: const Size(80, 40),
+            backgroundColor: const Color(0xFF248BD6)),
+        child: const Text('Spasi'));
+  }
+
+  Stack _buildImage() {
+    return Stack(alignment: Alignment.bottomRight, children: [
+      Container(
+        width: 130,
+        height: 130,
+        decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            border: Border.all(width: 2, color: Colors.white)),
+        child: Image.asset(
+          "assets/images/employee.png",
+          fit: BoxFit.fill,
+        ),
+      ),
+      Positioned(
+        bottom: 0,
+        right: 0,
+        child: Container(
+          decoration: BoxDecoration(
+              color: const Color(0xFF248BD6),
+              shape: BoxShape.circle,
+              border: Border.all(width: 2, color: Colors.white)),
+          child: Tooltip(
+            message: 'Promijeni sliku',
+            child: IconButton(
+                onPressed: () {},
+                icon: const Icon(Icons.camera_alt, color: Colors.white)),
+          ),
+        ),
+      )
+    ]);
+  }
+
+
 }
-
-
-
-  
-
-
-  

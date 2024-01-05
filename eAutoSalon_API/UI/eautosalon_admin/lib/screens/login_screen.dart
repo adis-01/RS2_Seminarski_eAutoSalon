@@ -42,7 +42,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   const SizedBox(height: 20),
                   const Icon(Icons.lock,
                   size: 70,
-                  color: Colors.black
+                  color: Color(0xFF248BD6)
                   ),
                   const SizedBox(height: 10),
                   const Text('Dobrodošli, unesite svoje kredencijale i prijavite se',
@@ -92,6 +92,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       minimumSize: const Size(250, 50),
+                      backgroundColor: const Color(0xFF248BD6),
                     ),
                     onPressed: () async {
                     String username = _usernameController.text;

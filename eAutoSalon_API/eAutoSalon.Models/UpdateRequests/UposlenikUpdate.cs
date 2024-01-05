@@ -8,5 +8,8 @@ namespace eAutoSalon.Models.UpdateRequests
 {
     public class UposlenikUpdate
     {
+        public string? FirstName { get; set; }
+        public string? LastName { get; set; }
+        public string? Kontakt { get; set; }
     }
 }

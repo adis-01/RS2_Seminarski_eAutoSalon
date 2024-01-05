@@ -18,13 +18,13 @@ namespace eAutoSalon_API.Controllers
         }
 
         [Authorize(Roles ="Urednik")]
-        public override async Task<VMNovosti> Insert(NovostInsert req)
+        public override async Task<VMNovosti> Insert([FromBody] NovostInsert req)
         {
             return await base.Insert(req);
         }
 
         [Authorize(Roles ="Urednik")]
-        public override async Task<VMNovosti> Update(int id, NovostUpdate req)
+        public override async Task<VMNovosti> Update(int id, [FromBody] NovostUpdate req)
         {
             return await base.Update(id, req);
         }

@@ -17,20 +17,20 @@ namespace eAutoSalon_API.Controllers
         {
         }
 
-        [Authorize(Roles ="Administrator")]
-        public override async Task<VMUposlenik> Insert(UposlenikInsert req)
-        {
-            return await base.Insert(req);
+        [Authorize(Roles ="Korisnik")]
+        public override async Task<VMUposlenik> Insert([FromBody] UposlenikInsert req)
+        { 
+            return await base.Insert(req);    
         }
 
-        [Authorize(Roles = "Administrator")]
+        [Authorize(Roles = "Korisnik")]
         public override async Task Delete(int id)
         {
             await base.Delete(id);
         }
 
-        [Authorize(Roles = "Administrator")]
-        public override async Task<VMUposlenik> Update(int id, UposlenikUpdate req)
+        [Authorize(Roles = "Korisnik")]
+        public override async Task<VMUposlenik> Update(int id, [FromBody] UposlenikUpdate req)
         {
             return await base.Update(id, req);
         }
