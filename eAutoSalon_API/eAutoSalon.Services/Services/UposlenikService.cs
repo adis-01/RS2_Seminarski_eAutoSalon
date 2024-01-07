@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using eAutoSalon.Models;
 using eAutoSalon.Models.InsertRequests;
 using eAutoSalon.Models.SearchObjects;
 using eAutoSalon.Models.UpdateRequests;
@@ -23,6 +24,19 @@ namespace eAutoSalon.Services.Services
         {
             if (req?.SlikaBase64 != null)
                 entity.Slika = Convert.FromBase64String(req.SlikaBase64);
+        }
+
+
+        public async Task ChangePicture(int id, SlikaRequest req)
+        {
+            var entity = await _context.Uposlenicis.FindAsync(id);
+
+            if (entity == null)
+                throw new UserException("Korisnik sa unesenim id-em je nepostojeći");
+
+            entity.Slika = Convert.FromBase64String(req.slika);
+
+            await _context.SaveChangesAsync();
         }
     }
 }

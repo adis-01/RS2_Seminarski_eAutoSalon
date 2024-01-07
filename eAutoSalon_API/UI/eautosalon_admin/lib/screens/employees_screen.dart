@@ -5,6 +5,7 @@ import 'package:eautosalon_admin/models/search_result.dart';
 import 'package:eautosalon_admin/screens/edit_employee_screen.dart';
 import 'package:eautosalon_admin/screens/home_page_screen.dart';
 import 'package:eautosalon_admin/utils/dialogs.dart';
+import 'package:eautosalon_admin/utils/util.dart';
 import 'package:eautosalon_admin/widgets/master_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -154,7 +155,12 @@ class _EmployeesScreenState extends State<EmployeesScreen> {
                     fontWeight: FontWeight.w700,
                     color: Colors.black)),
             const SizedBox(height: 15),
-            Image.asset("assets/images/employee.png", width: 200, height: 100),
+           employee.slika != "" ?
+             SizedBox(
+              width: 170,
+              height: 180,
+              child: fromBase64String(employee.slika!)
+            ) : Image.asset("assets/images/no_profile_pic.png", width: 200, height: 100, color: const Color(0xFF248BD6),),
             const SizedBox(height: 15),
             Text(
               '${employee.title}',

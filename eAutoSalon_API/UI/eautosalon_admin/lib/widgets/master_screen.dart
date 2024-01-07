@@ -1,6 +1,7 @@
 import 'package:eautosalon_admin/screens/employees_screen.dart';
 import 'package:eautosalon_admin/screens/home_page_screen.dart';
 import 'package:eautosalon_admin/screens/test_drives.dart';
+import 'package:eautosalon_admin/screens/user_profile_screen.dart';
 import 'package:eautosalon_admin/screens/users_screen.dart';
 import 'package:eautosalon_admin/utils/dialogs.dart';
 import 'package:eautosalon_admin/screens/login_screen.dart';
@@ -102,6 +103,12 @@ class _MasterScreenState extends State<MasterScreen> {
                   builder: (builder) => const EmployeesScreen()));
             }),
             const SizedBox(height: 15),
+              buildListTile('Korisnički profil', Icons.settings, () {
+              Navigator.of(context).push(
+                MaterialPageRoute(builder: (builder) => UserProfileScreen(username: Authorization.username ?? "",))
+              );
+             }),
+            const SizedBox(height: 15),
             ListTile(
               contentPadding: const EdgeInsets.only(left: 22),
               leading: Image.asset("assets/images/steering_wheel.png",
@@ -131,18 +138,6 @@ class _MasterScreenState extends State<MasterScreen> {
                     builder: (builder) => const LoginScreen()));
               });
             }),
-            const SizedBox(height: 20),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Image.asset(
-                  "assets/images/logo.png",
-                  color: const Color(0xFF0F6BAE),
-                  width: 200,
-                  height: 180,
-                )
-              ],
-            )
           ],
         ),
       ),

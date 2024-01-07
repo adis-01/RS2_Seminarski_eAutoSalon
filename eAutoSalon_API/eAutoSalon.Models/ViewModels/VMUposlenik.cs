@@ -16,5 +16,6 @@ namespace eAutoSalon.Models.ViewModels
         public string Title { get; set; } = null!;
 
         public string Kontakt { get; set; } = null!;
+        public byte[] slika { get; set; }
     }
 }

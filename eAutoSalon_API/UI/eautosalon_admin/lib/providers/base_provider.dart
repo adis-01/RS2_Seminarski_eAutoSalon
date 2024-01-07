@@ -13,6 +13,7 @@ abstract class BaseProvider<T> with ChangeNotifier{
   late String _endpoint;
 
   String get baseUrl => _baseUrl;
+  String get endp => _endpoint;
 
   BaseProvider(String endpoint){
     _baseUrl=const String.fromEnvironment("baseUrl", defaultValue: "https://localhost:7173/");
@@ -87,8 +88,8 @@ abstract class BaseProvider<T> with ChangeNotifier{
     var url = "$_baseUrl$_endpoint/$id";
     var uri = Uri.parse(url);
     var headers = createHeaders();
-
     var obj = jsonEncode(object);
+  
     var request = await http.put(uri, headers: headers, body: obj);
 
     if(isValidResponse(request)){

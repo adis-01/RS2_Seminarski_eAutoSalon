@@ -13,8 +13,10 @@ namespace eAutoSalon_API.Controllers
     [Authorize(Roles = "Korisnik,Urednik,Administrator")]
     public class UposleniciController : BaseCRUDController<VMUposlenik, UposlenikSearchObject, UposlenikInsert, UposlenikUpdate>
     {
+        IUposlenikService _service;
         public UposleniciController(IUposlenikService service, ILogger<BaseController<VMUposlenik, UposlenikSearchObject>> logger) : base(service, logger)
         {
+            _service = service;
         }
 
         [Authorize(Roles ="Korisnik")]
@@ -33,6 +35,13 @@ namespace eAutoSalon_API.Controllers
         public override async Task<VMUposlenik> Update(int id, [FromBody] UposlenikUpdate req)
         {
             return await base.Update(id, req);
+        }
+
+        [HttpPost("ChangePic/{id}")]
+        [Authorize(Roles ="Korisnik,Administrator")]
+        public async Task ChangePicture (int id, [FromBody] SlikaRequest req)
+        {
+            await _service.ChangePicture(id, req);
         }
 
     }

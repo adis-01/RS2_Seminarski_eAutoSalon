@@ -12,5 +12,6 @@ namespace eAutoSalon.Services.Interfaces
 {
     public interface IUposlenikService : IBaseCRUDService<VMUposlenik,UposlenikSearchObject,UposlenikInsert,UposlenikUpdate>
     {
+        Task ChangePicture(int id, SlikaRequest req);
     }
 }

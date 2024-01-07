@@ -33,8 +33,6 @@ namespace eAutoSalon_API.Controllers
             return base.GetAll(search);
         }
 
-        
-
 
         [HttpPost("ChangePicture/{id}")]
         [Authorize(Roles = "Korisnik")]
@@ -47,6 +45,13 @@ namespace eAutoSalon_API.Controllers
         public override async Task Delete(int id)
         {
             await base.Delete(id);
+        }
+
+        [HttpGet("UserProfile")]
+        [Authorize(Roles ="Korisnik,Administrator")]
+        public async Task<VMKorisnik> GetUserProfile([FromQuery] string username)
+        {
+            return await _service.FetchUserProfile(username);
         }
 
         [Authorize(Roles = "Korisnik")]

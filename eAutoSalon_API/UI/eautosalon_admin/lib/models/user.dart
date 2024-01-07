@@ -20,9 +20,3 @@ class User{
 }
 
 
-// "korisnikId": 0,
-//       "firstName": "string",
-//       "lastName": "string",
-//       "username": "string",
-//       "email": "string",
-//       "slika": "string",

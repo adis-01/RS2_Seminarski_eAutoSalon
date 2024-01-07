@@ -33,6 +33,18 @@ namespace eAutoSalon.Services.Services
             _context.Remove(context);
         }
 
+        public async Task<VMKorisnik> FetchUserProfile(string username)
+        {
+            var entity = await _context.Korisnicis.Where(x=>x.Username == username).FirstOrDefaultAsync(); 
+
+            if(entity == null)
+            {
+                throw new UserException("Nema korisnika sa tim username-om");
+            }
+
+            return _mapper.Map<VMKorisnik>(entity);
+        }
+
         public async Task AddConnections(Korisnici entity)
         {
             var user_role = new KorisnikUloge()

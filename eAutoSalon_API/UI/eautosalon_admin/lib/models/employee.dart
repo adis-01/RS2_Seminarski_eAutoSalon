@@ -19,9 +19,3 @@ class Employee{
   Map<String,dynamic> toJson() => _$EmployeeToJson(this);
 
 }
-
-// "uposlenikId": 0,
-//       "firstName": "string",
-//       "lastName": "string",
-//       "title": "string",
-//       "kontakt": "string"

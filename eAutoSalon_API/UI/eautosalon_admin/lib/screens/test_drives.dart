@@ -11,7 +11,7 @@ class TestDrivesScreen extends StatefulWidget {
 }
 
 class _TestDrivesScreenState extends State<TestDrivesScreen> {
-  bool _activeTests = true;
+  //bool _activeTests = true;
   @override
   Widget build(BuildContext context) {
     return MasterScreen(

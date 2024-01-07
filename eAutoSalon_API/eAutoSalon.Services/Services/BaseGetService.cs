@@ -33,6 +33,16 @@ namespace eAutoSalon.Services.Services
 
             list.PageCount = await query.CountAsync();
 
+            if (search?.PageSize != null)
+            {
+                double? pageCount = list.PageCount;
+                double? pageSize = search.PageSize;
+                if(pageCount.HasValue && pageSize.HasValue)
+                {
+                    list.TotalPages = (int)Math.Ceiling(pageCount.Value / pageSize.Value);
+                }
+            }
+
             query = Order(query);
             query = AddInclude(query);
 
