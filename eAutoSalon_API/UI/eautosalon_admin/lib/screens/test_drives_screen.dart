@@ -109,7 +109,11 @@ class _TestDrivesScreenState extends State<TestDrivesScreen> {
                           border:
                               Border.all(width: 0.8, color: Colors.blueGrey),
                           borderRadius: BorderRadius.circular(15)),
-                      child: Column(
+                      child: 
+                      tableLoading ? 
+                      const Center(child: CircularProgressIndicator(),)
+                      :
+                      Column(
                         children: [
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -121,16 +125,21 @@ class _TestDrivesScreenState extends State<TestDrivesScreen> {
                               _activeTests
                                   ? Text(
                                       "Stranica $page od ${activeResult?.total ?? "null"}",
-                                      style: const TextStyle(fontSize: 16, color: Colors.blueGrey, fontWeight: FontWeight.bold),
-                                      )
+                                      style: const TextStyle(
+                                          fontSize: 16,
+                                          color: Colors.blueGrey,
+                                          fontWeight: FontWeight.bold),
+                                    )
                                   : Text(
-                                      "Stranica $page od ${finishedResult?.total ?? "null"}"),
+                                      "Stranica $page od ${finishedResult?.total ?? "null"}",
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.blueGrey,
+                                          fontSize: 16)),
                             ],
                           ),
                           const SizedBox(height: 25),
-                          tableLoading
-                              ? const Center(child: CircularProgressIndicator())
-                              : _activeTests
+                          _activeTests
                                   ? _buildActive()
                                   : _buildFinished(),
                           const SizedBox(height: 25),
@@ -138,37 +147,11 @@ class _TestDrivesScreenState extends State<TestDrivesScreen> {
                             spacing: 15,
                             runSpacing: 20,
                             children: [
-                              ElevatedButton(
-                                  onPressed: page > 1
-                                      ? () {
-                                          setState(() {
-                                            page--;
-                                            tableLoading = true;
-                                          });
-                                          fetchData();
-                                        }
-                                      : null,
-                                  style: ElevatedButton.styleFrom(
-                                      fixedSize: const Size(100, 35),
-                                      backgroundColor: const Color(0xFF248BD6)),
-                                  child: const Text('Previous')),
-                              ElevatedButton(
-                                  onPressed: 
-                                        (activeResult?.hasNext ?? false) || (finishedResult?.hasNext ?? false)
-                                      ? () {
-                                        setState(() {
-                                          page++;
-                                          tableLoading=true;
-                                        });
-                                        fetchData();
-                                      }
-                                      : null,
-                                  style: ElevatedButton.styleFrom(
-                                      fixedSize: const Size(100, 35),
-                                      backgroundColor: const Color(0xFF248BD6)),
-                                  child: const Text('Next'))
+                              buildPrevious(),
+                              buildNext(),
                             ],
-                          )
+                          ),
+                          const SizedBox(height: 10)
                         ],
                       ),
                     ),
@@ -176,6 +159,47 @@ class _TestDrivesScreenState extends State<TestDrivesScreen> {
                 )));
   }
 
+  ElevatedButton buildNext(){
+    bool hasNext;
+    if(_activeTests){
+      hasNext = activeResult?.hasNext ?? false;
+    }
+    else{
+      hasNext = finishedResult?.hasNext ?? false;
+    }
+    return ElevatedButton(
+      onPressed: 
+      hasNext ?
+      (){
+        setState(() {
+          page++;
+          tableLoading=true;
+        });
+        fetchData();
+      } : null, 
+    style: ElevatedButton.styleFrom(
+      fixedSize: const Size(100,35),
+      backgroundColor: const Color(0xFF248BD6)
+    ),
+    child: const Text('Next'));
+  }
+
+  ElevatedButton buildPrevious() {
+    return ElevatedButton(
+        onPressed: page > 1
+            ? () {
+                setState(() {
+                  page--;
+                  tableLoading = true;
+                });
+                fetchData();
+              }
+            : null,
+        style: ElevatedButton.styleFrom(
+            fixedSize: const Size(100, 35),
+            backgroundColor: const Color(0xFF248BD6)),
+        child: const Text('Previous'));
+  }
   DataTable _buildActive() {
     return DataTable(
         decoration: const BoxDecoration(color: Colors.white30),
@@ -207,7 +231,7 @@ class _TestDrivesScreenState extends State<TestDrivesScreen> {
                           try {
                             await _testProvider.cancel(test.testnaVoznjaId!);
                             CustomDialogs.showSuccess(
-                                context, 'Uspješno otkazana vožnja', () {
+                                context, 'Otkazana vožnja', () {
                               Navigator.of(context).push(MaterialPageRoute(
                                   builder: (builder) =>
                                       const TestDrivesScreen()));

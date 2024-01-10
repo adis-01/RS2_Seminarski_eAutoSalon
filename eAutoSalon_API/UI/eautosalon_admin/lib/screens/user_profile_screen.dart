@@ -1,7 +1,10 @@
 
 
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:eautosalon_admin/providers/user_provider.dart';
 import 'package:eautosalon_admin/screens/home_page_screen.dart';
+import 'package:eautosalon_admin/screens/login_screen.dart';
 import 'package:eautosalon_admin/utils/dialogs.dart';
 import 'package:eautosalon_admin/utils/util.dart';
 import 'package:eautosalon_admin/widgets/master_screen.dart';
@@ -180,7 +183,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
   
   Row _buildBack(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         MaterialButton(
           shape: const CircleBorder(),
@@ -195,6 +198,33 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
             Icons.arrow_back,
             size: 25,
             color: Colors.white,
+          ),
+        ),
+        Tooltip(
+          message: 'Izbriši profil',
+          child: MaterialButton(
+            shape: const CircleBorder(),
+            color: const Color(0xFF248BD6),
+            padding: const EdgeInsets.all(15),
+            onPressed: () {
+              CustomDialogs.showQuestion(context, 'Da li ste sigurni da želite izbrisati svoj profil?', () async{ 
+                try {
+                  await _userProvider.delete(user.korisnikId!);
+                Authorization.username = "";
+                Authorization.password="";
+                Navigator.of(context).push(
+                  MaterialPageRoute(builder: (builder) => const LoginScreen())
+                );
+                } catch (e) {
+                  CustomDialogs.showError(context, e.toString());
+                }
+              });
+            },
+            child: const Icon(
+              Icons.delete_forever_sharp,
+              size: 25,
+              color: Colors.white,
+            ),
           ),
         )
       ],

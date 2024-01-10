@@ -49,14 +49,14 @@ namespace eAutoSalon_API.Controllers
         }
 
         [HttpPut("Cancel/{id}")]
-        [Authorize(Roles = "Administrator")]
+        [Authorize(Roles = "Korisnik")]
         public async Task Cancel(int id)
         {
             await _service.Cancel(id);
         }
 
         [HttpPut("Complete/{id}")]
-        [Authorize(Roles ="Administrator")]
+        [Authorize(Roles ="Korisnik")]
         public async Task Complete (int id)
         {
             await _service.Complete(id);

@@ -89,14 +89,7 @@ class _UsersScreenState extends State<UsersScreen> {
                                 height: 20,
                               ),
                               _buildPaging(),
-                              const SizedBox(height: 20),
-                              Text(
-                                "Total: ${result?.count.toString() ?? "null"}",
-                                style: const TextStyle(
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.blueGrey),
-                              ),
+                              const SizedBox(height: 10)
                             ],
                           ),
                         ),
@@ -260,13 +253,14 @@ class _UsersScreenState extends State<UsersScreen> {
                     splashRadius: 5,
                     onPressed: () async {
                       try {
-                        _loadData();
                         setState(() {
                           page = 1;
                           _searchController.text = "";
                           clearFilters = false;
                           _disabledButton = true;
+                          tableLoading=true;
                         });
+                        _loadData();
                       } catch (e) {
                         CustomDialogs.showError(context, e.toString());
                       }
@@ -302,14 +296,13 @@ class _UsersScreenState extends State<UsersScreen> {
                 ? null
                 : () async {
                     try {
-                      var list = await _userProvider
-                          .getPaged({'FTS': _searchController.text, 'Page' : 1, 'PageSize' : pageSize});
-
                       setState(() {
                         page = 1;
-                        result = list;
                         clearFilters = true;
+                        tableLoading=true;
                       });
+                      
+                     _loadData();
                     } catch (e) {
                       CustomDialogs.showError(context, e.toString());
                     }
@@ -328,7 +321,13 @@ class _UsersScreenState extends State<UsersScreen> {
 
   void _loadData() async {
     try {
-      var params = {'Page': page, 'PageSize': pageSize};
+      dynamic params;
+      if(_disabledButton){
+        params = {'page' : page, 'pageSize' : pageSize};
+      }
+      else{
+        params = {'FTS' : _searchController.text, 'page' : page, 'pageSize' : pageSize};
+      }
       var data = await _userProvider.getPaged(params);
       setState(() {
         result = data;

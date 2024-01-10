@@ -37,7 +37,6 @@ abstract class BaseProvider<T> with ChangeNotifier{
     if(isValidResponse(request)){
       var result = SearchResult<T>();
       var data = jsonDecode(request.body);
-      result.count=data['pageCount'];
       for(var item in data['list']){
         result.list.add(fromJson(item));
       }
@@ -58,7 +57,6 @@ abstract class BaseProvider<T> with ChangeNotifier{
     if(isValidResponse(req)){
       var result = SearchResult<T>();
       var data = jsonDecode(req.body);
-      result.count=data['pageCount'];
       result.hasNext=data['hasNext'];
       result.total = data['totalPages'];
       for (var item in data['list']) {

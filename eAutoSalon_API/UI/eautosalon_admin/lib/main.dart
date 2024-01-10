@@ -1,3 +1,4 @@
+import 'package:eautosalon_admin/providers/car_provider.dart';
 import 'package:eautosalon_admin/providers/employee_provider.dart';
 import 'package:eautosalon_admin/providers/test_drive_provider.dart';
 import 'package:eautosalon_admin/providers/user_provider.dart';
@@ -11,7 +12,8 @@ void main() {
       providers: [
         ChangeNotifierProvider(create: (_) => UserProvider()),
         ChangeNotifierProvider(create: (_) =>  EmployeeProvider()),
-        ChangeNotifierProvider(create: (_) => TestDriveProvider())
+        ChangeNotifierProvider(create: (_) => TestDriveProvider()),
+        ChangeNotifierProvider(create: (_) => CarProvider())
       ],
       child: const MyApp(),
     )

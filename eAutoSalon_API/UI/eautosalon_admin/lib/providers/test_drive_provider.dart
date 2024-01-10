@@ -20,8 +20,8 @@ class TestDriveProvider extends BaseProvider<TestDrives>{
     if(isValidResponse(req)){
       var result = SearchResult<TestDrives>();
       var data =jsonDecode(req.body);
-      result.count = data['pageCount'];
       result.total = data['totalPages'];
+      result.hasNext = data['hasNext'];
       for (var item in data['list']) {
         result.list.add(fromJson(item));
       }
@@ -43,8 +43,8 @@ class TestDriveProvider extends BaseProvider<TestDrives>{
     if(isValidResponse(req)){
       var result = SearchResult<TestDrives>();
       var data =jsonDecode(req.body);
-      result.count = data['pageCount'];
       result.total = data['totalPages'];
+      result.hasNext = data['hasNext'];
       for (var item in data['list']) {
         result.list.add(fromJson(item));
       }

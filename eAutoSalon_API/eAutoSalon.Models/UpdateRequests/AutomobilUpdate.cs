@@ -10,7 +10,10 @@ namespace eAutoSalon.Models.UpdateRequests
     {
         public int PredjeniKilometri { get; set; }
         public string SnagaMotora { get; set; } = null!;
-        public string Boja { get; set; } = null!;
+        public string Proizvodjac { get; set; } = null!;
+        public string BrojSasije { get; set; } = null!;
+        public string Model { get; set; } = null!;
+        public int GodinaProizvodnje { get; set; } 
 
     }
 }
