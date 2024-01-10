@@ -49,6 +49,7 @@ namespace eAutoSalon.Services.Services
             if(search?.Page.HasValue == true && search?.PageSize.HasValue == true)
             {
                 query=query.Skip(search.PageSize.Value  * (search.Page.Value-1)).Take(search.PageSize.Value);
+                list.HasNext = search.Page < list.TotalPages;
             }
 
             

@@ -8,5 +8,5 @@ class Authorization{
 }
 
 Image fromBase64String(String image){
-  return Image.memory(base64Decode(image), width: 250, height: 150,fit: BoxFit.fill,);
+  return Image.memory(base64Decode(image),width: 150, height: 200 ,fit: BoxFit.contain,);
 }

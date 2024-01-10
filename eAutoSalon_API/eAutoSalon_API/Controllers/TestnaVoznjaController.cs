@@ -1,6 +1,7 @@
 ﻿using eAutoSalon.Models.InsertRequests;
 using eAutoSalon.Models.SearchObjects;
 using eAutoSalon.Models.ViewModels;
+using eAutoSalon.Services;
 using eAutoSalon.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authorization.Infrastructure;
@@ -31,6 +32,20 @@ namespace eAutoSalon_API.Controllers
         public async Task Insert([FromBody] TestnaVoznjaInsert req)
         {
             await _service.Insert(req);
+        }
+
+        [HttpGet("GetAktivne")]
+        [Authorize(Roles ="Korisnik")]
+        public async Task<PagedList<VMTestnaVoznja>> GetAktivne([FromQuery] TestnaVoznjaSearchObject? search = null)
+        {
+            return await _service.GetAktivneTestne(search);
+        }
+
+        [HttpGet("GetZavrsene")]
+        [Authorize(Roles ="Korisnik")]
+        public async Task<PagedList<VMTestnaVoznja>> GetZavrsene([FromQuery] TestnaVoznjaSearchObject? search = null)
+        {
+            return await _service.GetZavrseneTestne(search);
         }
 
         [HttpPut("Cancel/{id}")]

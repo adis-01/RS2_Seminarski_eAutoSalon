@@ -130,8 +130,9 @@ class _EditEmployeeState extends State<EditEmployee> {
                           ),
                         ),
                         SizedBox(
-                          width: 250,
+                          width: 200,
                           child: FormBuilderTextField(
+                            style: const TextStyle(fontSize: 15),
                             autovalidateMode: AutovalidateMode.onUserInteraction,
                             name: 'Kontakt',
                             decoration: const InputDecoration(
@@ -213,12 +214,8 @@ class _EditEmployeeState extends State<EditEmployee> {
 
   Stack _buildImage() {
     return Stack(alignment: Alignment.bottomRight, children: [
-      Container(
-        width: 130,
-        height: 130,
-        decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            border: Border.all(width: 0.5, color: Colors.white)),
+      SizedBox(
+        width: 250,
         child: 
         widget.employee.slika != "" ?
         fromBase64String(widget.employee.slika!)

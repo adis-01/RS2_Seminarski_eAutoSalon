@@ -1,4 +1,5 @@
 import 'package:eautosalon_admin/providers/employee_provider.dart';
+import 'package:eautosalon_admin/providers/test_drive_provider.dart';
 import 'package:eautosalon_admin/providers/user_provider.dart';
 import 'package:eautosalon_admin/screens/login_screen.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +10,8 @@ void main() {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => UserProvider()),
-        ChangeNotifierProvider(create: (_)=>  EmployeeProvider()),
+        ChangeNotifierProvider(create: (_) =>  EmployeeProvider()),
+        ChangeNotifierProvider(create: (_) => TestDriveProvider())
       ],
       child: const MyApp(),
     )

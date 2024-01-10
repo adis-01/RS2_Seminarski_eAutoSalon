@@ -12,6 +12,8 @@ namespace eAutoSalon.Services.Interfaces
     public interface ITestnaVoznjaService : IBaseGetService<VMTestnaVoznja,TestnaVoznjaSearchObject>
     {
         List<string> GetDostupne(int id, DateTime datum);
+        Task<PagedList<VMTestnaVoznja>> GetAktivneTestne(TestnaVoznjaSearchObject? search = null);
+        Task<PagedList<VMTestnaVoznja>> GetZavrseneTestne(TestnaVoznjaSearchObject? search = null);
         Task Insert(TestnaVoznjaInsert req);
         Task Complete(int id);
         Task Cancel(int id);

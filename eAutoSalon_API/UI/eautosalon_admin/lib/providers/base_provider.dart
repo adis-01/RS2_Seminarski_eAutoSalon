@@ -48,6 +48,30 @@ abstract class BaseProvider<T> with ChangeNotifier{
     }
   }
 
+  Future<SearchResult<T>> getPaged(dynamic params) async{
+    var queryString = getQueryString(params);
+    var url = "$_baseUrl$_endpoint?$queryString";
+    var uri = Uri.parse(url);
+    var headers = createHeaders();
+
+    var req = await http.get(uri, headers: headers);
+    if(isValidResponse(req)){
+      var result = SearchResult<T>();
+      var data = jsonDecode(req.body);
+      result.count=data['pageCount'];
+      result.hasNext=data['hasNext'];
+      result.total = data['totalPages'];
+      for (var item in data['list']) {
+        result.list.add(fromJson(item));
+      }
+      return result;
+    }
+    else{
+      throw Exception("Greška");
+    }
+  }
+
+
   Future<T> getById(int id) async{
     var url = "$_baseUrl$_endpoint$id";
     var uri = Uri.parse(url);

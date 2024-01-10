@@ -1,6 +1,6 @@
 import 'package:eautosalon_admin/screens/employees_screen.dart';
 import 'package:eautosalon_admin/screens/home_page_screen.dart';
-import 'package:eautosalon_admin/screens/test_drives.dart';
+import 'package:eautosalon_admin/screens/test_drives_screen.dart';
 import 'package:eautosalon_admin/screens/user_profile_screen.dart';
 import 'package:eautosalon_admin/screens/users_screen.dart';
 import 'package:eautosalon_admin/utils/dialogs.dart';
@@ -105,7 +105,7 @@ class _MasterScreenState extends State<MasterScreen> {
             const SizedBox(height: 15),
               buildListTile('Korisnički profil', Icons.settings, () {
               Navigator.of(context).push(
-                MaterialPageRoute(builder: (builder) => UserProfileScreen(username: Authorization.username ?? "",))
+                MaterialPageRoute(builder: (builder) => const UserProfileScreen())
               );
              }),
             const SizedBox(height: 15),

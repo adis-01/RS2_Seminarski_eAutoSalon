@@ -1,18 +1,19 @@
 
-import 'dart:convert';
-import 'package:eautosalon_admin/screens/edit_user_screen.dart';
+
+import 'package:eautosalon_admin/providers/user_provider.dart';
 import 'package:eautosalon_admin/screens/home_page_screen.dart';
+import 'package:eautosalon_admin/utils/dialogs.dart';
 import 'package:eautosalon_admin/utils/util.dart';
 import 'package:eautosalon_admin/widgets/master_screen.dart';
 import 'package:eautosalon_admin/widgets/password_change.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-
+import 'package:provider/provider.dart';
 import '../models/user.dart';
+import '../widgets/edit_profile_dialog.dart';
+import '../widgets/user_picture_dialog.dart';
 
 class UserProfileScreen extends StatefulWidget {
-  String username;
-  UserProfileScreen({super.key, required this.username});
+  const UserProfileScreen({super.key});
 
   @override
   State<UserProfileScreen> createState() => _UserProfileScreenState();
@@ -21,20 +22,20 @@ class UserProfileScreen extends StatefulWidget {
 class _UserProfileScreenState extends State<UserProfileScreen> {
 
   bool isLoading = true;
-  late String firstName;
-  late String lastName;
-  late String email;
+  late User user;
+  late UserProvider _userProvider;
 
   @override
   void initState() {
     super.initState();
-    fetchData();
+    _userProvider = context.read<UserProvider>();
+    fetch();
   }
 
   @override
   Widget build(BuildContext context) {
     return MasterScreen(
-      title: 'User profile',
+      title: 'Korisnički profil',
        body: isLoading ?
         const Center(child: CircularProgressIndicator()) 
         : Padding(
@@ -61,7 +62,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
   Container buildUserProfileColumn() {
     return Container(
                     padding: const EdgeInsets.all(15),
-                    width: 450,
+                    width: 500,
                     decoration:const BoxDecoration(
                       color: Colors.white38,
                       borderRadius:  BorderRadius.only(
@@ -73,7 +74,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                       children: [
                         Container(
                           width: double.infinity,
-                          height: 200,
+                          height: 250,
                           decoration: BoxDecoration(
                             border: Border.all(
                               width: 0.1,
@@ -84,29 +85,42 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                               topRight: Radius.circular(15)
                             )
                           ),
-                          child: Image.asset("assets/images/employee.png", ),
-                        ),
-                        const SizedBox(height: 15),
-                        Text('$firstName $lastName',  textAlign: TextAlign.center,
-                        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20, color: Colors.blueGrey),
-                        ),
-                        const SizedBox(height: 10),
-                        const Divider(thickness: 0.3, color: Colors.blueGrey, indent: 40, endIndent: 40),
-                        const SizedBox(height: 10),
-                        Row(
-                          children: [
-                            const Icon(Icons.mail, size: 25, color: Colors.blueGrey,),
-                            const SizedBox(width: 15),
-                            Text(email, style: const TextStyle(fontSize: 18, color: Color(0xFF248BD6), fontStyle: FontStyle.italic, fontWeight: FontWeight.w600))
-                          ],
+                          child: user.slika != "" ? fromBase64String(user.slika!) : Image.asset("assets/images/no_profile_pic.png"),
                         ),
                         const SizedBox(height: 20),
-                        Row(
-                          children: [
-                            const Icon(Icons.person_outline, size: 25, color: Colors.blueGrey),
-                            const SizedBox(width: 15),
-                            Text(widget.username, style: const TextStyle(fontSize: 18, color: Color(0xFF248BD6), fontStyle: FontStyle.italic, fontWeight: FontWeight.w600))
-                          ],
+                        Text('${user.firstName ?? "null"} ${user.lastName ?? "null"}',  textAlign: TextAlign.center,
+                        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20, color: Colors.black87),
+                        ),
+                        const SizedBox(height: 25),
+                        SizedBox(
+                          width: 350,
+                          child: TextField(
+                            readOnly: true,
+                            decoration: InputDecoration(
+                              filled: true,
+                              fillColor: const Color(0xFFC6CDFF),
+                              border: const OutlineInputBorder(),
+                              hintText: user.email ?? "null",
+                              hintStyle: const TextStyle(color: Colors.black, fontWeight: FontWeight.w600),
+                              prefixIcon: const Icon(Icons.mail,size:25, color: Colors.black87,),
+
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                        SizedBox(
+                          width: 350,
+                          child: TextField(
+                            readOnly: true,
+                            decoration: InputDecoration(
+                              filled: true,
+                              fillColor: const Color(0xFFC6CDFF),
+                              border: const OutlineInputBorder(),
+                              hintText: Authorization.username ?? "null",
+                              hintStyle: const TextStyle(color: Colors.black, fontWeight: FontWeight.w600),
+                              prefixIcon: const Icon(Icons.person_outline_outlined,size:25, color: Colors.black87,)
+                            ),
+                          ),
                         ),
                         const SizedBox(height: 30),
                         Wrap(
@@ -121,7 +135,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                 splashColor: const Color(0xFF83B8FF),
                                 onPressed: (){
                                   showDialog(context: context, builder: (context){
-                                    return PasswordChange();
+                                    return PasswordChange(korisnikId: user.korisnikId!,);
                                   });
                                 },
                                 icon: const Icon(Icons.password, color: Color(0xFF248BD6)),
@@ -134,10 +148,25 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                 iconSize: 30,
                                 splashColor: const Color(0xFF83B8FF),
                                 onPressed: (){
-                                  
+                                  showDialog(context: context, builder: (context){
+                                    return EditProfile(user: user);
+                                  });
                                 },
                                 icon: const Icon(Icons.edit, color: Color(0xFF248BD6)),
                               ),
+                            ),
+                            Tooltip(
+                              message: 'Promijeni sliku',
+                              child: IconButton(
+                                splashRadius: 30,
+                                iconSize: 30,
+                                splashColor: const Color(0xFF83B8FF),
+                                onPressed: (){
+                                  showDialog(context: context, builder: (context){
+                                    return UserPicture(korisnikId: user.korisnikId!);
+                                  });
+                                }, 
+                              icon: const Icon(Icons.camera_alt, color: Color(0xFF248BD6))),
                             )
                           ],
                         ),
@@ -147,30 +176,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                   );
   }
 
-  Future<void> fetchData() async{
-    var url = "https://localhost:7173/Korisnici/UserProfile?username=${widget.username}";
-    var uri = Uri.parse(url);
-    String username = Authorization.username ?? "";
-    String pass = Authorization.password ?? "";
-    var creds = "Basic ${base64Encode(utf8.encode('$username:$pass'))}";
-    var headers = {
-      "Content-Type" : "application/json",
-      "Authorization" : creds
-    };
-   var req = await http.get(uri, headers: headers);
-   if(req.statusCode == 200){
-    var obj = jsonDecode(req.body);
-    setState(() {
-      firstName = obj['firstName'];
-      lastName = obj['lastName'];
-      email = obj['email'];
-      isLoading=false;
-    });
-   }
-   else{
-    throw Exception('Error: ${jsonDecode(req.body)}');
-   }
-  }
+  
   
   Row _buildBack(BuildContext context) {
     return Row(
@@ -193,6 +199,18 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
         )
       ],
     );
+  }
+  
+  Future<void> fetch() async{
+    try {
+      var data = await _userProvider.fetchData();
+      setState(() {
+        user = data;
+        isLoading=false;
+      });
+    } catch (e) {
+      CustomDialogs.showError(context, e.toString());
+    }
   }
 
 }

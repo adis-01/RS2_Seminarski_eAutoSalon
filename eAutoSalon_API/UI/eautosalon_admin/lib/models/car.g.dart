@@ -1,0 +1,33 @@
+// GENERATED CODE - DO NOT MODIFY BY HAND
+
+part of 'car.dart';
+
+// **************************************************************************
+// JsonSerializableGenerator
+// **************************************************************************
+
+Automobil _$AutomobilFromJson(Map<String, dynamic> json) => Automobil(
+      json['automobilId'] as int?,
+      json['brojSasije'] as String?,
+      json['boja'] as String?,
+      json['godinaProizvodnje'] as int?,
+      json['snagaMotora'] as String?,
+      json['vrstaGoriva'] as String?,
+      json['brojVrata'] as int?,
+      json['predjeniKilometri'] as int?,
+      json['proizvodjac'] as String?,
+      json['model'] as String?,
+    );
+
+Map<String, dynamic> _$AutomobilToJson(Automobil instance) => <String, dynamic>{
+      'automobilId': instance.automobilId,
+      'brojSasije': instance.brojSasije,
+      'boja': instance.boja,
+      'godinaProizvodnje': instance.godinaProizvodnje,
+      'snagaMotora': instance.snagaMotora,
+      'vrstaGoriva': instance.vrstaGoriva,
+      'brojVrata': instance.brojVrata,
+      'predjeniKilometri': instance.predjeniKilometri,
+      'proizvodjac': instance.proizvodjac,
+      'model': instance.model,
+    };

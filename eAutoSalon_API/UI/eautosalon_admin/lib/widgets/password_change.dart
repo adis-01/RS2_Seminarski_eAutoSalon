@@ -1,12 +1,17 @@
 
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:eautosalon_admin/providers/user_provider.dart';
+import 'package:eautosalon_admin/screens/login_screen.dart';
 import 'package:eautosalon_admin/utils/dialogs.dart';
+import 'package:eautosalon_admin/utils/util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:provider/provider.dart';
 
 class PasswordChange extends StatefulWidget {
-  const PasswordChange({super.key});
+  int korisnikId;
+  PasswordChange({super.key, required this.korisnikId});
 
   @override
   State<PasswordChange> createState() => _PasswordChangeState();
@@ -27,6 +32,7 @@ class _PasswordChangeState extends State<PasswordChange> {
   @override
   Widget build(BuildContext context) {
     return Dialog(
+      backgroundColor: Colors.grey[200],
       child: SingleChildScrollView(
         child: Container(
           width: 450,
@@ -37,12 +43,18 @@ class _PasswordChangeState extends State<PasswordChange> {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                IconButton(
-                  splashRadius: 25,
-                  onPressed: (){
-                  Navigator.of(context).pop();
-                }, 
-                icon: const Icon(Icons.close, size: 25, color: Color(0xFF248BD6),)
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Icon(Icons.password, size: 25, color: Color(0xFF248BD6),),
+                    IconButton(
+                      splashRadius: 25,
+                      onPressed: (){
+                      Navigator.of(context).pop();
+                    }, 
+                    icon: const Icon(Icons.close, size: 25, color: Color(0xFF248BD6),)
+                    ),
+                  ],
                 ),
                 const SizedBox(height: 10),
                 SizedBox(
@@ -53,7 +65,7 @@ class _PasswordChangeState extends State<PasswordChange> {
                     validator: FormBuilderValidators.required(context, errorText: 'Polje obavezno'),
                     decoration: InputDecoration(
                       border: const OutlineInputBorder(), 
-                      labelText: 'Stara lozinka',
+                      labelText: 'Trenutna lozinka',
                       suffix: IconButton(
                         color: Colors.blueGrey,
                         onPressed: (){
@@ -129,14 +141,18 @@ class _PasswordChangeState extends State<PasswordChange> {
                     ElevatedButton(onPressed: () async{
                       if(_formKey.currentState!=null){
                         if(_formKey.currentState!.saveAndValidate()){
-                          CustomDialogs.showSuccess(context, 'Uspješno promijenjena lozinka', () {
-                            Navigator.of(context).pop();
-                           });
-                          // try {
-                            
-                          // } catch (e) {
-                            
-                          // }
+                          try {
+                            await _userProvider.changePass(widget.korisnikId, _formKey.currentState!.value);
+                            CustomDialogs.showSuccess(context, 'Uspješna promjena lozinke, logirajte se ponovno', () { 
+                                Authorization.username = "";
+                                Authorization.password = "";
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(builder: (builder) => const LoginScreen())
+                                );
+                            });
+                          } catch (e) {
+                            CustomDialogs.showError(context, e.toString());
+                          }
                         }
                       }
                     }, 

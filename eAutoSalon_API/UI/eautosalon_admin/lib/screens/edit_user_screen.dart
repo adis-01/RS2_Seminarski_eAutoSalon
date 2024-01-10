@@ -158,7 +158,7 @@ class _EditUserState extends State<EditUser> {
                               ]),
                             ),
                           ),
-                          SizedBox(width:250,child: buildReadOnly('Email', 'Email')),
+                         buildReadOnly('Email', 'Email'),
                         ],
                       ),
                       const SizedBox(height: 15),
@@ -178,6 +178,7 @@ class _EditUserState extends State<EditUser> {
     return SizedBox(
       width: 200,
       child: FormBuilderTextField(
+        style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
         readOnly: true,
         name: fieldname,
         decoration: InputDecoration(

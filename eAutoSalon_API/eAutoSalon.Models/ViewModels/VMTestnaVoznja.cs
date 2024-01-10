@@ -8,6 +8,7 @@ namespace eAutoSalon.Models.ViewModels
 {
     public class VMTestnaVoznja
     {
+        public int TestnaVoznjaId { get; set; }
         public DateTime DatumVrijeme { get; set; }
 
         public string Status { get; set; } = null!;

@@ -3,7 +3,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:eautosalon_admin/providers/employee_provider.dart';
-import 'package:eautosalon_admin/screens/edit_employee_screen.dart';
+import 'package:eautosalon_admin/screens/employees_screen.dart';
 import 'package:eautosalon_admin/utils/dialogs.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -113,7 +113,7 @@ class _EmployeePictureChangeState extends State<EmployeePictureChange> {
                               await _employeeProvider.changePic(widget.employee.uposlenikId!, map);
                               CustomDialogs.showSuccess(context, 'Uspješno spremljena slika', () {
                                 Navigator.of(context).push(
-                                  MaterialPageRoute(builder: (builder) => EditEmployee(employee: widget.employee))
+                                  MaterialPageRoute(builder: (builder) => const EmployeesScreen())
                                 );
                                });
                             }

@@ -5,7 +5,6 @@ import 'package:eautosalon_admin/models/search_result.dart';
 import 'package:eautosalon_admin/screens/edit_employee_screen.dart';
 import 'package:eautosalon_admin/screens/home_page_screen.dart';
 import 'package:eautosalon_admin/utils/dialogs.dart';
-import 'package:eautosalon_admin/utils/util.dart';
 import 'package:eautosalon_admin/widgets/master_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -119,7 +118,7 @@ class _EmployeesScreenState extends State<EmployeesScreen> {
                       onPressed: () {
                         CustomDialogs.showQuestion(
                             context,
-                            'Izbrisati uposlenika ${employee.firstName} ${employee.lastName}?',
+                            'Izbrisati uposlenika ${employee.firstName ?? "null"} ${employee.lastName ?? "null"}?',
                             () async{
                               try {
                                 await _employeeProvider.delete(employee.uposlenikId!);
@@ -149,18 +148,11 @@ class _EmployeesScreenState extends State<EmployeesScreen> {
                 )
               ],
             ),
-            Text('${employee.firstName} ${employee.lastName}',
+            Text('${employee.firstName ?? "null"} ${employee.lastName ?? "null"}',
                 style: const TextStyle(
                     fontSize: 17,
                     fontWeight: FontWeight.w700,
                     color: Colors.black)),
-            const SizedBox(height: 15),
-           employee.slika != "" ?
-             SizedBox(
-              width: 170,
-              height: 180,
-              child: fromBase64String(employee.slika!)
-            ) : Image.asset("assets/images/no_profile_pic.png", width: 200, height: 100, color: const Color(0xFF248BD6),),
             const SizedBox(height: 15),
             Text(
               '${employee.title}',

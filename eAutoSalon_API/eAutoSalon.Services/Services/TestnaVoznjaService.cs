@@ -36,8 +36,46 @@ namespace eAutoSalon.Services.Services
         public async Task Complete(int id)
         {
             var entity = await _context.TestnaVoznjas.FindAsync(id);
-            entity!.Status = "Zavrseno";
+            entity!.Status = "Zavrsena";
             await _context.SaveChangesAsync();
+        }
+
+        public async Task<PagedList<VMTestnaVoznja>> GetAktivneTestne(TestnaVoznjaSearchObject? search = null)
+        {
+            var query = _context.TestnaVoznjas.Where(x=>x.Status=="Aktivna")
+                .Include("Korisnik").Include("Automobil").Include("Uposlenik")
+                .OrderByDescending(i => i.TestnaVoznjaId).AsQueryable();
+
+            var list = new PagedList<VMTestnaVoznja>
+            {
+                PageCount = await query.CountAsync()
+            };
+
+            if (search?.PageSize != null)
+            {
+                double? pageCount = list.PageCount;
+                double? pageSize = search.PageSize;
+                if (pageCount.HasValue && pageSize.HasValue)
+                {
+                    list.TotalPages = (int)Math.Ceiling(pageCount.Value / pageSize.Value);
+                }
+            }
+
+   
+
+            if (search?.Page.HasValue == true && search?.PageSize.HasValue == true)
+            {
+                query = query.Skip(search.PageSize.Value * (search.Page.Value - 1)).Take(search.PageSize.Value);
+                list.HasNext = search.Page.Value < list.PageCount;
+            }
+
+
+
+            var lista = await query.ToListAsync();
+
+            list.List = _mapper.Map<List<VMTestnaVoznja>>(lista);
+
+            return list;
         }
 
         public List<string> GetDostupne(int id, DateTime datum)
@@ -70,12 +108,52 @@ namespace eAutoSalon.Services.Services
             return dostupni_termini;
         }
 
+        public async Task<PagedList<VMTestnaVoznja>> GetZavrseneTestne(TestnaVoznjaSearchObject? search = null)
+        {
+            var query = _context.TestnaVoznjas.Where(x => x.Status == "Zavrsena" || x.Status == "Otkazana")
+                .Include("Korisnik").Include("Automobil").Include("Uposlenik")
+                .OrderByDescending(i => i.TestnaVoznjaId).AsQueryable();
+
+            var list = new PagedList<VMTestnaVoznja>
+            {
+                PageCount = await query.CountAsync()
+            };
+
+            if (search?.PageSize != null)
+            {
+                double? pageCount = list.PageCount;
+                double? pageSize = search.PageSize;
+                if (pageCount.HasValue && pageSize.HasValue)
+                {
+                    list.TotalPages = (int)Math.Ceiling(pageCount.Value / pageSize.Value);
+                }
+            }
+
+            query.Include("Korisnik")
+                .Include("Automobil")
+                .Include("Uposlenik");
+
+            if (search?.Page.HasValue == true && search?.PageSize.HasValue == true)
+            {
+                query = query.Skip(search.PageSize.Value * (search.Page.Value - 1)).Take(search.PageSize.Value);
+                list.HasNext = search.Page.Value < list.PageCount; 
+            }
+
+
+
+            var lista = await query.ToListAsync();
+
+            list.List = _mapper.Map<List<VMTestnaVoznja>>(lista);
+
+            return list;
+        }
+
         public async Task Insert(TestnaVoznjaInsert req)
         {
             var testna = new TestnaVoznja();
             _mapper.Map(req, testna);
             await _context.TestnaVoznjas.AddAsync(testna);
-            testna.Status = "Rezervisano";
+            testna.Status = "Aktivna";
             await _context.SaveChangesAsync();
         }
     }

@@ -1,8 +1,12 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:eautosalon_admin/providers/employee_provider.dart';
 import 'package:eautosalon_admin/screens/employees_screen.dart';
 import 'package:eautosalon_admin/utils/dialogs.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:provider/provider.dart';
@@ -17,6 +21,9 @@ class InsertEmployee extends StatefulWidget {
 class _InsertEmployeeState extends State<InsertEmployee> {
   final _formKey = GlobalKey<FormBuilderState>();
   late EmployeeProvider _employeeProvider;
+  String hint = "Klik za upload";
+  File? image;
+  String? base64image;
 
   @override
   void initState() {
@@ -145,6 +152,39 @@ class _InsertEmployeeState extends State<InsertEmployee> {
                                     color: Colors.black87,
                                     fontWeight: FontWeight.bold))),
                       ]),
+                    ),
+                    SizedBox(
+                      width: 250,
+                      child: FormBuilderField(
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        name: 'slikaBase64',
+                        builder: (field){
+                          return InputDecorator(
+                          decoration: InputDecoration(
+                            contentPadding: const EdgeInsets.symmetric(vertical: 10),
+                            border: const OutlineInputBorder(),
+                            labelText: 'Slika',
+                            suffixIcon: const Icon(
+                              Icons.upload,
+                              color: Colors.blueGrey,
+                            ),
+                            errorText: field.errorText,
+                          ),
+                          child: ListTile(
+                            title: Text(hint,style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600, color: Colors.blueGrey),),
+                            onTap: uploadImage,
+                          )
+                          );
+                        },
+                        validator: (field){
+                          if(image == null){
+                            return 'Polje je obavezno';
+                          }
+                          else{
+                            return null;
+                          }
+                        }
+                      ),
                     )
                   ],
                 ),
@@ -157,7 +197,16 @@ class _InsertEmployeeState extends State<InsertEmployee> {
           );
   }
 
- 
+  Future<void> uploadImage() async{
+    var result = await FilePicker.platform.pickFiles(type: FileType.image);
+    if(result != null && result.files.single.path != null){
+      image = File(result.files.single.path!);
+      base64image = base64Encode(image!.readAsBytesSync());
+      setState(() {
+        hint = result.files.single.name.toString();
+      });
+    }
+  }
 
   Row _buildHeader(BuildContext context) {
     return Row(
@@ -206,7 +255,9 @@ class _InsertEmployeeState extends State<InsertEmployee> {
               try {
                 if(_formKey.currentState != null){
                   if(_formKey.currentState!.saveAndValidate()){
-                    await _employeeProvider.insert(_formKey.currentState!.value);
+                    Map<String,dynamic> map = Map.from(_formKey.currentState!.value);
+                    map['slikaBase64'] = base64image;
+                    await _employeeProvider.insert(map);
                     CustomDialogs.showSuccess(context, 'Uspješno dodan novi uposlenik', () {
                       Navigator.of(context).push(
                         MaterialPageRoute(builder: (builder) => const EmployeesScreen())

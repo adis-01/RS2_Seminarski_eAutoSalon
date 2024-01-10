@@ -20,9 +20,12 @@ class _UsersScreenState extends State<UsersScreen> {
   SearchResult<User>? result;
   bool _disabledButton = true;
   bool isLoading = true;
+  bool tableLoading = true;
   bool clearFilters = false;
   final _searchController = TextEditingController();
   late UserProvider _userProvider;
+  int pageSize = 5;
+  int page = 1;
 
   @override
   void initState() {
@@ -35,56 +38,114 @@ class _UsersScreenState extends State<UsersScreen> {
   Widget build(BuildContext context) {
     return MasterScreen(
         title: 'Korisnici',
-        body: isLoading ? 
-        const Center(child: CircularProgressIndicator())
-        : Padding(
-          padding: const EdgeInsets.all(25),
-          child: Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  MaterialButton(
-                    onPressed: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (builder) => const HomePageScreen()));
-                    },
-                    shape: const CircleBorder(),
-                    padding: const EdgeInsets.all(15),
-                    color: const Color(0xFF248BD6),
-                    child: const Icon(Icons.arrow_back,
-                        color: Colors.white, size: 25),
-                  ),
-                  _buildSearchBar(),
-                ],
-              ),
-              const SizedBox(height: 25),
-              Expanded(
-                  child: Center(
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color:const Color.fromARGB(255, 205, 197, 209),
-                      ),
-                      child: Column(
+        body: isLoading
+            ? const Center(child: CircularProgressIndicator())
+            : Padding(
+                padding: const EdgeInsets.all(25),
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          _buildColumnHeader(),
-                          const Divider(
-                              thickness: 0.4,
-                              color: Colors.blueGrey,
-                              indent: 20,
-                              endIndent: 20),
-                          const SizedBox(height: 10),
-                          _buildDataTable(),
+                          MaterialButton(
+                            onPressed: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (builder) =>
+                                      const HomePageScreen()));
+                            },
+                            shape: const CircleBorder(),
+                            padding: const EdgeInsets.all(15),
+                            color: const Color(0xFF248BD6),
+                            child: const Icon(Icons.arrow_back,
+                                color: Colors.white, size: 25),
+                          ),
+                          _buildSearchBar(),
                         ],
                       ),
-                    ),
+                      const SizedBox(height: 25),
+                      Center(
+                        child: tableLoading ? const CircularProgressIndicator()
+                        : Container(
+                          padding: const EdgeInsets.all(15),
+                          margin: const EdgeInsets.only(
+                              left: 30, right: 30, top: 30, bottom: 30),
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              border: Border.all(
+                                  width: 0.8, color: Colors.blueGrey)),
+                          child: Column(
+                            children: [
+                              _buildColumnHeader(),
+                              const Divider(
+                                  thickness: 0.4,
+                                  color: Colors.blueGrey,
+                                  indent: 20,
+                                  endIndent: 20),
+                              const SizedBox(height: 10),
+                              _buildDataTable(),
+                              const SizedBox(
+                                height: 20,
+                              ),
+                              _buildPaging(),
+                              const SizedBox(height: 20),
+                              Text(
+                                "Total: ${result?.count.toString() ?? "null"}",
+                                style: const TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.blueGrey),
+                              ),
+                            ],
+                          ),
+                        ),
+                      )
+                    ],
                   ),
-              ),
-            ],
-          ),
-        )
-        );
+                ),
+              ));
+  }
+
+  Wrap _buildPaging() {
+    return Wrap(
+      spacing: 15,
+      runSpacing: 20,
+      children: [
+        ElevatedButton(
+                onPressed: page > 1 ? () {
+                  setState(() {
+                    page--;
+                    tableLoading = true;
+                  });
+                 try {
+                    _loadData();
+                  } catch (e) {
+                    CustomDialogs.showError(context, e.toString());
+                  }
+                } : null,
+                style: ElevatedButton.styleFrom(
+                    fixedSize: const Size(100, 35),
+                    backgroundColor: const Color(0xFF248BD6)),
+                child: const Text('Previous')),
+            ElevatedButton(
+                onPressed: result != null && result!.hasNext! ? () {
+                  setState(() {
+                    page++;
+                    tableLoading = true;
+                  });
+                  try {
+                    _loadData();
+                  } catch (e) {
+                    CustomDialogs.showError(context, e.toString());
+                  }
+                } : null,
+                style: ElevatedButton.styleFrom(
+                    fixedSize: const Size(100, 35),
+                    backgroundColor: const Color(0xFF248BD6)),
+                child: const Text('Next'))
+      ],
+    );
   }
 
   Widget _buildColumnHeader() {
@@ -98,169 +159,121 @@ class _UsersScreenState extends State<UsersScreen> {
             size: 35,
             color: Colors.blueGrey,
           ),
-          RichText(
-            text: const TextSpan(children: [
-               TextSpan(
-                text: 'Stranica ',
-                style: TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w700,
-                  color: Colors.blueGrey
-                )
-                ),
-                TextSpan(
-                  text: "1 ",
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.black54,
-                    fontWeight: FontWeight.w700
-                  )
-                ),
-                TextSpan(
-                  text: 'od ',
-                  style: TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w700,
-                    color: Colors.blueGrey
-                  )
-                ),
-                TextSpan(
-                  text: '2',
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.black54,
-                    fontWeight: FontWeight.w700
-                  )
-                )
-            ]
-            )
-            ),
-          RichText(
-              text: TextSpan(children: [
-            const TextSpan(
-                text: 'Ukupan broj korisnika: ',
-                style: TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w700,
-                    color: Colors.blueGrey)),
-            TextSpan(
-                text: result?.count.toString() ?? "0",
-                style: const TextStyle(
-                    fontSize: 16,
-                    color: Colors.black54,
-                    fontWeight: FontWeight.w700))
-          ]))
+          Text("Stranica $page od ${result!.total ?? "null"}",
+              style: const TextStyle(
+                  fontSize: 16,
+                  color: Colors.blueGrey,
+                  fontWeight: FontWeight.bold))
         ],
       ),
     );
   }
 
   Widget _buildDataTable() {
-    return Expanded(
-      child: SingleChildScrollView(
-        child: DataTable(
-            border: TableBorder.all(
-                color: Colors.blueGrey,
-                borderRadius: BorderRadius.circular(5),
-                width: 0.5),
-            columns: const [
-              DataColumn(
-                  label: Expanded(
-                      child: Text('Username',
-                          style: TextStyle(
-                              fontSize: 15, fontWeight: FontWeight.w700)))),
-              DataColumn(
-                  label: Expanded(
-                      child: Text('First name',
-                          style: TextStyle(
-                              fontSize: 15, fontWeight: FontWeight.w700)))),
-              DataColumn(
-                  label: Expanded(
-                      child: Text('Last name',
-                          style: TextStyle(
-                              fontSize: 15, fontWeight: FontWeight.w700)))),
-              DataColumn(
-                  label: Expanded(
-                      child: Text('Profile picture',
-                          style: TextStyle(
-                              fontSize: 15, fontWeight: FontWeight.w700)))),
-              DataColumn(
-                  label: Expanded(
-                      child: Text('Edit',
-                          style: TextStyle(
-                              fontSize: 15, fontWeight: FontWeight.w700)))),
-              DataColumn(
-                  label: Expanded(
-                      child: Text('Delete',
-                          style: TextStyle(
-                              fontSize: 15, fontWeight: FontWeight.w700)))),
-            ],
-            rows:  
-            result?.list.map((User user) => 
-            DataRow(cells:[
-              DataCell(Text(user.username ?? "username")),
-              DataCell(Text(user.firstName ?? "fname")),
-              DataCell(Text(user.lastName ?? "lname")),
-              const DataCell(Icon(Icons.person, size: 30)),
-              DataCell(
-                IconButton(
-                  splashRadius: 15,
-                  onPressed: (){
-                    Navigator.of(context).push(
-                      MaterialPageRoute(builder: (builder) => EditUser(user: user))
-                    );
-                  },
-                  icon: const Icon(Icons.edit),
-                )
-              ),
-              DataCell(
-                IconButton(
-                  splashRadius: 15,
-                  onPressed: (){
-                    CustomDialogs.showQuestion(context, 
-                    'Izbrisati korisnika ${user.firstName} ${user.lastName}?',
-                     () async{ 
-                      try {
-                        await _userProvider.delete(user.korisnikId!);
-                        _loadData();
-                      } catch (e) {
-                        CustomDialogs.showError(context, e.toString());
-                      }
-                     });
-                  },
-                  icon: const Icon(Icons.delete),
-                )
-              )
-            ]
-            )).toList()
-             ?? []
-             ),
-      ),
-    );
+    return DataTable(
+        decoration: const BoxDecoration(color: Colors.white30),
+        border: TableBorder.all(
+            color: Colors.blueGrey,
+            borderRadius: BorderRadius.circular(5),
+            width: 0.5),
+        columns: const [
+          DataColumn(
+              label: Expanded(
+                  child: Text('Username',
+                      style: TextStyle(
+                          fontSize: 15, fontWeight: FontWeight.w700)))),
+          DataColumn(
+              label: Expanded(
+                  child: Text('First name',
+                      style: TextStyle(
+                          fontSize: 15, fontWeight: FontWeight.w700)))),
+          DataColumn(
+              label: Expanded(
+                  child: Text('Last name',
+                      style: TextStyle(
+                          fontSize: 15, fontWeight: FontWeight.w700)))),
+          DataColumn(
+              label: Expanded(
+                  child: Text('Email',
+                      style: TextStyle(
+                          fontSize: 15, fontWeight: FontWeight.w700)))),
+          DataColumn(
+              label: Expanded(
+                  child: Text('Edit',
+                      style: TextStyle(
+                          fontSize: 15, fontWeight: FontWeight.w700)))),
+          DataColumn(
+              label: Expanded(
+                  child: Text('Delete',
+                      style: TextStyle(
+                          fontSize: 15, fontWeight: FontWeight.w700)))),
+        ],
+        rows: result?.list
+                .map((User user) => DataRow(cells: [
+                      DataCell(Text(user.username ?? "username")),
+                      DataCell(Text(user.firstName ?? "fname")),
+                      DataCell(Text(user.lastName ?? "lname")),
+                      DataCell(Text(user.email ?? "email")),
+                      DataCell(IconButton(
+                        splashRadius: 15,
+                        onPressed: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (builder) => EditUser(user: user)));
+                        },
+                        icon: Icon(
+                          Icons.edit,
+                          color: Colors.indigo[400],
+                        ),
+                      )),
+                      DataCell(IconButton(
+                        splashRadius: 15,
+                        onPressed: () {
+                          CustomDialogs.showQuestion(context,
+                              'Izbrisati korisnika ${user.firstName} ${user.lastName}?',
+                              () async {
+                            try {
+                              await _userProvider.delete(user.korisnikId!);
+                              _loadData();
+                            } catch (e) {
+                              CustomDialogs.showError(context, e.toString());
+                            }
+                          });
+                        },
+                        icon: Icon(
+                          Icons.delete,
+                          color: Colors.red[400],
+                        ),
+                      ))
+                    ]))
+                .toList() ??
+            []);
   }
 
   Widget _buildSearchBar() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
-
-            clearFilters ? Tooltip(
-          message: 'Očisti filtere',
-          child: IconButton(
-            splashRadius: 5,
-            onPressed: () async{
-            try {
-              _loadData();
-              setState(() {
-                _searchController.text="";
-                clearFilters=false;
-                _disabledButton=true;
-              });
-            } catch (e) {
-              CustomDialogs.showError(context, e.toString());
-            }
-          }, icon: const Icon(Icons.cleaning_services, size: 25, color: Color(0xFF248BD6)))
-        ) : const Text(""),
+        clearFilters
+            ? Tooltip(
+                message: 'Očisti filtere',
+                child: IconButton(
+                    splashRadius: 5,
+                    onPressed: () async {
+                      try {
+                        _loadData();
+                        setState(() {
+                          page = 1;
+                          _searchController.text = "";
+                          clearFilters = false;
+                          _disabledButton = true;
+                        });
+                      } catch (e) {
+                        CustomDialogs.showError(context, e.toString());
+                      }
+                    },
+                    icon: const Icon(Icons.cleaning_services,
+                        size: 25, color: Color(0xFF248BD6))))
+            : const Text(""),
         const SizedBox(width: 5),
         SizedBox(
           width: 320,
@@ -270,7 +283,7 @@ class _UsersScreenState extends State<UsersScreen> {
             decoration: const InputDecoration(
               prefixIcon: Icon(
                 Icons.search,
-                color:  Color(0xFF248BD6),
+                color: Color(0xFF248BD6),
               ),
               hintText: 'Pretraži korisnike...',
               border: OutlineInputBorder(
@@ -290,13 +303,13 @@ class _UsersScreenState extends State<UsersScreen> {
                 : () async {
                     try {
                       var list = await _userProvider
-                          .getAll(filters: {'FTS': _searchController.text});
+                          .getPaged({'FTS': _searchController.text, 'Page' : 1, 'PageSize' : pageSize});
 
-                        setState(() {
-                          result = list;
-                          clearFilters = true;
-                        });
-
+                      setState(() {
+                        page = 1;
+                        result = list;
+                        clearFilters = true;
+                      });
                     } catch (e) {
                       CustomDialogs.showError(context, e.toString());
                     }
@@ -309,17 +322,19 @@ class _UsersScreenState extends State<UsersScreen> {
               'Pretraga',
               style: TextStyle(fontSize: 15),
             ))
-          ],
-        );
+      ],
+    );
   }
 
   void _loadData() async {
     try {
-      var data = await _userProvider.getAll();
-    setState(() {
-      result=data;
-      isLoading=false;
-    });
+      var params = {'Page': page, 'PageSize': pageSize};
+      var data = await _userProvider.getPaged(params);
+      setState(() {
+        result = data;
+        isLoading = false;
+        tableLoading = false;
+      });
     } catch (e) {
       CustomDialogs.showError(context, e.toString());
     }
