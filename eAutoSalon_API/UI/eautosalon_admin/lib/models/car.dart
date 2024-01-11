@@ -1,4 +1,5 @@
 
+import 'package:intl/intl.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'car.g.dart';
@@ -15,6 +16,8 @@ class Automobil {
   int? predjeniKilometri;
   String? proizvodjac;
   String? model;
+  String? slika;
+  double? cijena;
 
   Automobil(
       this.automobilId,
@@ -26,7 +29,12 @@ class Automobil {
       this.brojVrata,
       this.predjeniKilometri,
       this.proizvodjac,
-      this.model);
+      this.model,
+      this.slika,
+      this.cijena
+      );
+
+  String get formattedPrice { return NumberFormat.currency(locale: 'en_US', symbol: '').format(cijena);}
 
   factory Automobil.fromJson(Map<String,dynamic> json) => _$AutomobilFromJson(json);
 

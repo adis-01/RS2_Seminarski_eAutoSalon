@@ -14,6 +14,7 @@ namespace eAutoSalon.Models.UpdateRequests
         public string BrojSasije { get; set; } = null!;
         public string Model { get; set; } = null!;
         public int GodinaProizvodnje { get; set; } 
+        public decimal Cijena { get; set; } 
 
     }
 }

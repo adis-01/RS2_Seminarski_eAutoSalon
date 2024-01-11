@@ -2,6 +2,7 @@
 using eAutoSalon.Models.SearchObjects;
 using eAutoSalon.Models.UpdateRequests;
 using eAutoSalon.Models.ViewModels;
+using eAutoSalon.Services;
 using eAutoSalon.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -13,11 +14,13 @@ namespace eAutoSalon_API.Controllers
     [Authorize(Roles = "Korisnik,Urednik,Administrator")]
     public class AutomobilController : BaseCRUDController<VMAutomobil, AutomobilSearchObject, AutomobilInsert, AutomobilUpdate>
     {
+        IAutomobilService _service;
         public AutomobilController(IAutomobilService service, ILogger<BaseController<VMAutomobil, AutomobilSearchObject>> logger) : base(service, logger)
         {
+            _service = service;
         }
 
-        [Authorize(Roles ="Administrator")]
+        [Authorize(Roles ="Korisnik")]
         public override async Task<VMAutomobil> Insert([FromBody] AutomobilInsert req)
         {
             return await base.Insert(req);
@@ -33,6 +36,13 @@ namespace eAutoSalon_API.Controllers
         public override async Task Delete(int id)
         {
             await base.Delete(id);
+        }
+
+        [Authorize(Roles ="Korisnik")]
+        [HttpGet("Aktivni")]
+        public async Task<PagedList<VMAutomobil>> GetAktivne([FromQuery]AutomobilSearchObject? search = null)
+        {
+            return await _service.GetAktivne(search);
         }
 
       

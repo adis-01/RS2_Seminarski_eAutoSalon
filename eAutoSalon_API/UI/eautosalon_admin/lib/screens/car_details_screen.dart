@@ -1,16 +1,20 @@
 
 // ignore_for_file: use_build_context_synchronously
 
+import 'package:eautosalon_admin/models/car.dart';
 import 'package:eautosalon_admin/providers/car_provider.dart';
 import 'package:eautosalon_admin/screens/home_page_screen.dart';
 import 'package:eautosalon_admin/utils/dialogs.dart';
+import 'package:eautosalon_admin/utils/util.dart';
+import 'package:eautosalon_admin/widgets/car_accessories_dialog.dart';
 import 'package:eautosalon_admin/widgets/edit_car_dialog.dart';
 import 'package:eautosalon_admin/widgets/master_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class CarDetails extends StatefulWidget {
-  const CarDetails({super.key});
+  Automobil automobil;
+  CarDetails({super.key, required this.automobil});
 
   @override
   State<CarDetails> createState() => _CarDetailsState();
@@ -26,7 +30,7 @@ class _CarDetailsState extends State<CarDetails> {
   @override
   Widget build(BuildContext context) {
     return MasterScreen(
-      title: 'Detalji', 
+      title: '${widget.automobil.proizvodjac ?? "null"} ${widget.automobil.model ?? "null"}', 
       body: Container(
         padding: const EdgeInsets.all(25),
         child: SingleChildScrollView(
@@ -63,26 +67,26 @@ class _CarDetailsState extends State<CarDetails> {
                   primary: true,
                   child: Column(
                     children: [
-                      buildDetail('Cijena', '\$99.999'),
+                      buildDetail('Cijena', '\$${widget.automobil.formattedPrice}'),
                       const SizedBox(height: 3),
-                      buildDetail('Boja', 'Bijela'),
+                      buildDetail('Boja', widget.automobil.boja ?? "null"),
                       const SizedBox(height: 3),
-                      buildDetail('Godina proizvodnje', '2016'),
+                      buildDetail('Godina proizvodnje', widget.automobil.godinaProizvodnje.toString()),
                       const SizedBox(height: 3),
-                      buildDetail('Snaga motora', '150KS'),
+                      buildDetail('Snaga motora', widget.automobil.snagaMotora ?? "null"),
                       const SizedBox(height: 3),
-                      buildDetail('Vrsta goriva', 'Benzin'),
+                      buildDetail('Vrsta goriva', widget.automobil.vrstaGoriva ?? "null"),
                       const SizedBox(height: 3),
-                      buildDetail('Predjeni kilometri', '0'),
+                      buildDetail('Predjeni kilometri', widget.automobil.predjeniKilometri.toString()),
                       const SizedBox(height: 3),
-                      buildDetail('Broj vrata', '4/5'),
+                      buildDetail('Broj vrata', widget.automobil.brojVrata.toString()),
                       const SizedBox(height: 3),
-                      buildDetail('Broj šasije', '17'),
+                      buildDetail('Broj šasije', widget.automobil.brojSasije ?? "null"),
                       const SizedBox(height: 10),
                       ElevatedButton(
                         onPressed: (){
                           showDialog(context: context, builder: (context){
-                            return const Placeholder();
+                            return const CarAcc();
                           });
                         }, 
                       style:ElevatedButton.styleFrom(backgroundColor: const Color(0xFF248BD6), minimumSize: const Size(50, 45)),
@@ -131,7 +135,8 @@ class _CarDetailsState extends State<CarDetails> {
                   children: [
                     buildIconButtons(),
                     const SizedBox(height: 5),
-                  Image.network("https://img.freepik.com/free-psd/white-car-isolated_176382-1488.jpg?w=1060&t=st=1704911316~exp=1704911916~hmac=fb4b166588486ffbd0b0f3804e8374a0e4ae2eff11a202e48e80f89c7a75825a",height: 180,width: double.infinity, fit: BoxFit.cover)
+                widget.automobil.slika != "" ? SizedBox(height: 180,width: double.infinity, child: fromBase64String(widget.automobil.slika!))
+                : const SizedBox(height: 180,width: double.infinity, child: Center(child: Icon(Icons.photo, size: 50, color: Colors.black,)),)
                   ],
                 ),
               );
@@ -147,7 +152,7 @@ class _CarDetailsState extends State<CarDetails> {
                             splashRadius: 5,
                             onPressed: (){
                              showDialog(context: context, builder: (context){
-                              return const EditCar();
+                              return EditCar(automobil: widget.automobil);
                              });
                             },
                             icon: const Icon(Icons.edit, color: Colors.black87, size: 25,),
@@ -158,14 +163,14 @@ class _CarDetailsState extends State<CarDetails> {
                           child: IconButton(
                             splashRadius: 5,
                             onPressed: (){
-                              //  CustomDialogs.showQuestion(context, 'Da li želite izbrisati automobil?', () async{ 
-                              //   try {
-                              //     await _carProvider.delete(widget.automobilId);
-                              //     Navigator.of(context).push(MaterialPageRoute(builder: (builder) => const HomePageScreen()));
-                              //   } catch (e) {
-                              //     CustomDialogs.showError(context, e.toString());
-                              //   }
-                              // });
+                               CustomDialogs.showQuestion(context, 'Da li želite izbrisati automobil?', () async{ 
+                                try {
+                                  await _carProvider.delete(widget.automobil.automobilId!);
+                                  Navigator.of(context).push(MaterialPageRoute(builder: (builder) => const HomePageScreen()));
+                                } catch (e) {
+                                  CustomDialogs.showError(context, e.toString());
+                                }
+                              });
                             },
                             icon: Icon(Icons.delete, color: Colors.red[300], size: 25,),
                           ),

@@ -8,6 +8,9 @@ namespace eAutoSalon.Models.ViewModels
 {
     public class VMAutomobil
     {
+        public string Proizvodjac { get; set; } = null!;
+
+        public string Model { get; set; } = null!;
         public int AutomobilId { get; set; }
         public string BrojSasije { get; set; } = null!;
 
@@ -22,8 +25,8 @@ namespace eAutoSalon.Models.ViewModels
         public int BrojVrata { get; set; }
 
         public int PredjeniKilometri { get; set; }
-        public string Proizvodjac { get; set; } = null!;
+        public byte[]? Slika { get; set; } = null!;
+        public decimal Cijena { get; set; } 
 
-        public string Model { get; set; } = null!;
     }
 }

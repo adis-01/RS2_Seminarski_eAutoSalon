@@ -27,6 +27,12 @@ public partial class Automobili
 
     public string Model { get; set; } = null!;
 
+    public string State { get; set; } = null!;
+
+    public byte[]? Slika { get; set; }
+
+    public decimal? Cijena { get; set; }
+
     public virtual ICollection<DodatnaOprema> DodatnaOpremas { get; set; } = new List<DodatnaOprema>();
 
     public virtual ICollection<TestnaVoznja> TestnaVoznjas { get; set; } = new List<TestnaVoznja>();

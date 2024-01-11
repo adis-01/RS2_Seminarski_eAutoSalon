@@ -120,7 +120,7 @@ class _UsersScreenState extends State<UsersScreen> {
                 style: ElevatedButton.styleFrom(
                     fixedSize: const Size(100, 35),
                     backgroundColor: const Color(0xFF248BD6)),
-                child: const Text('Previous')),
+                child: const Text('Prethodna')),
             ElevatedButton(
                 onPressed: result != null && result!.hasNext! ? () {
                   setState(() {
@@ -136,7 +136,7 @@ class _UsersScreenState extends State<UsersScreen> {
                 style: ElevatedButton.styleFrom(
                     fixedSize: const Size(100, 35),
                     backgroundColor: const Color(0xFF248BD6)),
-                child: const Text('Next'))
+                child: const Text('Sljedeća'))
       ],
     );
   }

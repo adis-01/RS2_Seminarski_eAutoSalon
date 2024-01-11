@@ -181,7 +181,7 @@ class _TestDrivesScreenState extends State<TestDrivesScreen> {
       fixedSize: const Size(100,35),
       backgroundColor: const Color(0xFF248BD6)
     ),
-    child: const Text('Next'));
+    child: const Text('Sljedeća'));
   }
 
   ElevatedButton buildPrevious() {
@@ -198,7 +198,7 @@ class _TestDrivesScreenState extends State<TestDrivesScreen> {
         style: ElevatedButton.styleFrom(
             fixedSize: const Size(100, 35),
             backgroundColor: const Color(0xFF248BD6)),
-        child: const Text('Previous'));
+        child: const Text('Prethodna'));
   }
   DataTable _buildActive() {
     return DataTable(

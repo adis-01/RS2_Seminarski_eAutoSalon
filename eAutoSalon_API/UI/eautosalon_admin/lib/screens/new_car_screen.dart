@@ -1,5 +1,12 @@
+// ignore_for_file: use_build_context_synchronously
+
+import 'dart:convert';
+import 'dart:io';
 import 'package:eautosalon_admin/providers/car_provider.dart';
+import 'package:eautosalon_admin/screens/home_page_screen.dart';
+import 'package:eautosalon_admin/utils/dialogs.dart';
 import 'package:eautosalon_admin/widgets/master_screen.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:provider/provider.dart';
@@ -14,6 +21,9 @@ class NewCarScreen extends StatefulWidget {
 class _NewCarScreenState extends State<NewCarScreen> {
   final _formKey = GlobalKey<FormBuilderState>();
   late CarProvider _carProvider;
+  File? _image;
+  String? _base64image;
+  String hint = "Klik za upload slike";
 
   @override
   void initState() {
@@ -26,7 +36,7 @@ class _NewCarScreenState extends State<NewCarScreen> {
     return MasterScreen(
       title: 'Novi automobil',
       body: Container(
-        padding: const EdgeInsets.all(25),
+        padding: const EdgeInsets.all(20),
         child: SingleChildScrollView(
           child: Column(
             children: [
@@ -55,11 +65,10 @@ class _NewCarScreenState extends State<NewCarScreen> {
       child: Column(
         children: [
           Wrap(
-            
             children: const [
               Icon(Icons.info_outline_rounded,
                   color: Color(0xFF248BD6), size: 25),
-              SizedBox(width: 10),
+              SizedBox(width: 5),
               Text(
                 "Popunite sva polja, a podatke spasite klikom na dugme",
                 style: TextStyle(
@@ -69,18 +78,40 @@ class _NewCarScreenState extends State<NewCarScreen> {
               ),
             ],
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: 5),
           const Divider(
               color: Colors.blueGrey,
               thickness: 0.3,
               endIndent: 10,
               indent: 10),
-          const SizedBox(height: 10),
+          const SizedBox(height: 5),
           buildInputs(),
-          const SizedBox(height: 15),
-          const Divider(thickness: 0.3, indent: 10, endIndent: 10, color: Colors.blueGrey,),
-          const SizedBox(height: 15),
-          buildButtons(context)
+          const SizedBox(height: 10),
+          const Divider(
+            thickness: 0.3,
+            indent: 10,
+            endIndent: 10,
+            color: Colors.blueGrey,
+          ),
+          const SizedBox(height: 10),
+          buildButtons(context),
+          const SizedBox(height: 10),
+          Container(
+            padding: const EdgeInsets.all(15),
+            width: double.infinity,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(15),
+              border: Border.all(width: 0.2),
+            ),
+            child: const Text(
+              "Nakon unosа osnovnih podataka, slijedi dodatna forma koja omogućava unos informacija o dodatnoj opremi automobila.",
+              style: TextStyle(
+                  fontSize: 15,
+                  fontStyle: FontStyle.italic,
+                  color: Colors.blueGrey,
+                  fontWeight: FontWeight.w500),
+            ),
+          )
         ],
       ),
     );
@@ -88,177 +119,230 @@ class _NewCarScreenState extends State<NewCarScreen> {
 
   Wrap buildInputs() {
     return Wrap(
-          runAlignment: WrapAlignment.center,
-          spacing: 20,
-          runSpacing: 10,
-          children: [
-            SizedBox(
-              width: 250,
-              child: FormBuilderTextField(
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-                name: 'Proizvodjac',
-                decoration: const InputDecoration(
-                  labelText: 'Proizvođač',
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(15))),
-                ),
-                validator: FormBuilderValidators.compose([
-                  FormBuilderValidators.required(context,
-                      errorText: 'Polje obavezno')
-                ]),
-              ),
+      runAlignment: WrapAlignment.center,
+      spacing: 20,
+      runSpacing: 10,
+      children: [
+        SizedBox(
+          width: 250,
+          child: FormBuilderTextField(
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+            name: 'Proizvodjac',
+            decoration: const InputDecoration(
+              labelText: 'Proizvođač',
+              border: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(15))),
             ),
-            SizedBox(
-              width: 250,
-              child: FormBuilderTextField(
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-                name: 'Model',
-                decoration: const InputDecoration(
-                  labelText: 'Model',
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(15))),
-                ),
-                validator: FormBuilderValidators.compose([
-                  FormBuilderValidators.required(context,
-                      errorText: 'Polje obavezno')
-                ]),
-              ),
+            validator: FormBuilderValidators.compose([
+              FormBuilderValidators.required(context,
+                  errorText: 'Polje obavezno')
+            ]),
+          ),
+        ),
+        SizedBox(
+          width: 250,
+          child: FormBuilderTextField(
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+            name: 'Model',
+            decoration: const InputDecoration(
+              labelText: 'Model',
+              border: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(15))),
             ),
-            SizedBox(
-              width: 250,
-              child: FormBuilderTextField(
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-                name: 'Boja',
-                decoration: const InputDecoration(
-                  labelText: 'Boja',
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(15))),
-                ),
-                validator: FormBuilderValidators.compose([
-                  FormBuilderValidators.required(context,
-                      errorText: 'Polje obavezno')
-                ]),
-              ),
+            validator: FormBuilderValidators.compose([
+              FormBuilderValidators.required(context,
+                  errorText: 'Polje obavezno')
+            ]),
+          ),
+        ),
+        SizedBox(
+          width: 250,
+          child: FormBuilderTextField(
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+            name: 'Boja',
+            decoration: const InputDecoration(
+              labelText: 'Boja',
+              border: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(15))),
             ),
-            SizedBox(
-              width: 250,
-              child: FormBuilderTextField(
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-                name: 'BrojSasije',
-                decoration: const InputDecoration(
-                  labelText: 'Broj šasije',
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(15))),
-                ),
-                validator: FormBuilderValidators.compose([
-                  FormBuilderValidators.required(context,
-                      errorText: 'Polje obavezno'),
-                  FormBuilderValidators.minLength(context, 17,
-                      errorText: 'Tačno 17 znakova'),
-                  FormBuilderValidators.maxLength(context, 17,
-                      errorText: 'Tačno 17 znakova')
-                ]),
-              ),
+            validator: FormBuilderValidators.compose([
+              FormBuilderValidators.required(context,
+                  errorText: 'Polje obavezno')
+            ]),
+          ),
+        ),
+        SizedBox(
+          width: 250,
+          child: FormBuilderTextField(
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+            name: 'BrojSasije',
+            decoration: const InputDecoration(
+              labelText: 'Broj šasije',
+              border: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(15))),
             ),
-            SizedBox(
-              width: 250,
-              child: FormBuilderTextField(
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-                name: 'GodinaProizvodnje',
-                decoration: const InputDecoration(
-                  labelText: 'Godina proizvodnje',
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(15))),
-                ),
-                validator: FormBuilderValidators.compose([
-                  FormBuilderValidators.required(context, errorText: 'Polje obavezno'),
-                  FormBuilderValidators.numeric(context, errorText: 'Samo brojevi')
-                ]),
-              ),
+            validator: FormBuilderValidators.compose([
+              FormBuilderValidators.required(context,
+                  errorText: 'Polje obavezno'),
+              FormBuilderValidators.minLength(context, 17,
+                  errorText: 'Tačno 17 znakova'),
+              FormBuilderValidators.maxLength(context, 17,
+                  errorText: 'Tačno 17 znakova')
+            ]),
+          ),
+        ),
+        SizedBox(
+          width: 250,
+          child: FormBuilderTextField(
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+            name: 'GodinaProizvodnje',
+            decoration: const InputDecoration(
+              labelText: 'Godina proizvodnje',
+              border: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(15))),
             ),
-            SizedBox(
-              width: 250,
-              child: FormBuilderTextField(
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-                name: 'PredjeniKilometri',
-                decoration: const InputDecoration(
-                  labelText: 'Kilometraža',
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(15))),
-                ),
-                validator: FormBuilderValidators.compose([
-                  FormBuilderValidators.required(context, errorText: 'Polje obavezno'),
-                  FormBuilderValidators.numeric(context, errorText: 'Samo brojevi')
-                ]),
-              ),
+            validator: FormBuilderValidators.compose([
+              FormBuilderValidators.required(context,
+                  errorText: 'Polje obavezno'),
+              FormBuilderValidators.numeric(context, errorText: 'Samo brojevi')
+            ]),
+          ),
+        ),
+        SizedBox(
+          width: 250,
+          child: FormBuilderTextField(
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+            name: 'PredjeniKilometri',
+            decoration: const InputDecoration(
+              labelText: 'Kilometraža',
+              border: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(15))),
             ),
-            SizedBox(
-              width: 250,
-              child: FormBuilderTextField(
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-                name: 'SnagaMotora',
-                decoration: const InputDecoration(
-                  labelText: 'Snaga motora',
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(15))),
-                ),
-                validator: FormBuilderValidators.compose([
-                  FormBuilderValidators.required(context, errorText: 'Polje obavezno'),
-                ]),
-              ),
+            validator: FormBuilderValidators.compose([
+              FormBuilderValidators.required(context,
+                  errorText: 'Polje obavezno'),
+              FormBuilderValidators.numeric(context, errorText: 'Samo brojevi')
+            ]),
+          ),
+        ),
+        SizedBox(
+          width: 250,
+          child: FormBuilderTextField(
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+            name: 'SnagaMotora',
+            decoration: const InputDecoration(
+              labelText: 'Snaga motora',
+              border: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(15))),
             ),
-            SizedBox(
-              width: 250,
-              child: FormBuilderTextField(
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-                name: 'BrojVrata',
-                decoration: const InputDecoration(
-                  labelText: 'Broj vrata',
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(15))),
-                ),
-                validator: FormBuilderValidators.compose([
-                  FormBuilderValidators.required(context, errorText: 'Polje obavezno'),
-                ]),
-              ),
+            validator: FormBuilderValidators.compose([
+              FormBuilderValidators.required(context,
+                  errorText: 'Polje obavezno'),
+            ]),
+          ),
+        ),
+        SizedBox(
+          width: 250,
+          child: FormBuilderTextField(
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+            name: 'BrojVrata',
+            decoration: const InputDecoration(
+              labelText: 'Broj vrata',
+              border: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(15))),
             ),
-            buildDropdown(),
-          ],
-        );
+            validator: FormBuilderValidators.compose([
+              FormBuilderValidators.required(context,
+                  errorText: 'Polje obavezno'),
+            ]),
+          ),
+        ),
+        buildDropdown(),
+         SizedBox(
+                    width: 250,
+                    child: FormBuilderTextField(
+                       autovalidateMode: AutovalidateMode.onUserInteraction,
+                      name: 'Cijena',
+                      validator: FormBuilderValidators.compose([
+                        FormBuilderValidators.required(context, errorText: 'Polje je obavezno'),
+                        FormBuilderValidators.numeric(context, errorText: 'Samo brojevi, primjer 25321.99')
+                      ]),
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
+                        labelText: 'Cijena'
+                      ),
+                    ),
+                  ),
+         FormBuilderField(
+            name: 'slikaBase64',
+            validator: (value) {
+              if (_image == null) {
+                return 'Polje je obavezno';
+              } else {
+                return null;
+              }
+            },
+            builder: (field) {
+              return SizedBox(
+                width: 250,
+                child: TextField(
+                  readOnly: true,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
+                    hintText: hint,
+                    suffixIcon: const Icon(Icons.upload),
+                    errorText: field.errorText
+                  ),
+                  onTap: uploadImage,
+                ),
+              );
+            },
+          ),
+      ],
+    );
+  }
+
+  Future<void> uploadImage() async {
+    var result = await FilePicker.platform.pickFiles(type: FileType.image);
+    if (result != null && result.files.single.path != null) {
+      _image = File(result.files.single.path!);
+      _base64image = base64Encode(_image!.readAsBytesSync());
+      setState(() {
+        hint = result.files.single.name.toString();
+      });
+    }
   }
 
   SizedBox buildDropdown() {
     return SizedBox(
-                    width: 250,
-                    child: FormBuilderDropdown(
-                      decoration: const InputDecoration(
-                        labelText: 'Gorivo',
-                        border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(15))),
-                      ),
-                      name: 'VrstaGoriva', 
-                      initialValue: 'Benzin',
-                      dropdownColor: const Color(0xFF83B8FF),
-                      items: const [
-                      DropdownMenuItem(
-                          value: "Benzin",
-                          child: Text("Benzin",
-                              style: TextStyle(
-                                  color: Colors.black87,
-                                  fontWeight: FontWeight.bold))),
-                      DropdownMenuItem(
-                          value: "Dizel",
-                          child: Text("Dizel",
-                              style: TextStyle(
-                                  color: Colors.black87,
-                                  fontWeight: FontWeight.bold))),
-                      DropdownMenuItem(
-                          value: "Plin",
-                          child: Text("Plin",
-                              style: TextStyle(
-                                  color: Colors.black87,
-                                  fontWeight: FontWeight.bold))),
-                    ]),
-                  );
+      width: 250,
+      child: FormBuilderDropdown(
+          decoration: const InputDecoration(
+            labelText: 'Gorivo',
+            border: OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(15))),
+          ),
+          name: 'VrstaGoriva',
+          initialValue: 'Benzin',
+          dropdownColor: const Color(0xFF83B8FF),
+          items: const [
+            DropdownMenuItem(
+                value: "Benzin",
+                child: Text("Benzin",
+                    style: TextStyle(
+                        color: Colors.black87, fontWeight: FontWeight.bold))),
+            DropdownMenuItem(
+                value: "Dizel",
+                child: Text("Dizel",
+                    style: TextStyle(
+                        color: Colors.black87, fontWeight: FontWeight.bold))),
+            DropdownMenuItem(
+                value: "Plin",
+                child: Text("Plin",
+                    style: TextStyle(
+                        color: Colors.black87, fontWeight: FontWeight.bold))),
+          ]),
+    );
   }
 
   Row buildBack(BuildContext context) {
@@ -285,7 +369,20 @@ class _NewCarScreenState extends State<NewCarScreen> {
             minimumSize: const Size(100, 50)),
         onPressed: () async {
           if (_formKey.currentState != null) {
-            if (_formKey.currentState!.saveAndValidate()) {}
+            if (_formKey.currentState!.saveAndValidate()) {
+              Map<String,dynamic> map = Map.from(_formKey.currentState!.value);
+              map['slikaBase64'] = _base64image;
+              try {
+                await _carProvider.insert(map);
+                CustomDialogs.showSuccess(
+                    context, 'Uspješno dodan novi automobil', () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (builder) => const HomePageScreen()));
+                });
+              } catch (e) {
+                CustomDialogs.showError(context, e.toString());
+              }
+            }
           }
         },
         child: const Text('Spasi'));

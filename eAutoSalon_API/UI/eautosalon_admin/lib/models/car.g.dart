@@ -17,6 +17,8 @@ Automobil _$AutomobilFromJson(Map<String, dynamic> json) => Automobil(
       json['predjeniKilometri'] as int?,
       json['proizvodjac'] as String?,
       json['model'] as String?,
+      json['slika'] as String?,
+      (json['cijena'] as num?)?.toDouble(),
     );
 
 Map<String, dynamic> _$AutomobilToJson(Automobil instance) => <String, dynamic>{
@@ -30,4 +32,6 @@ Map<String, dynamic> _$AutomobilToJson(Automobil instance) => <String, dynamic>{
       'predjeniKilometri': instance.predjeniKilometri,
       'proizvodjac': instance.proizvodjac,
       'model': instance.model,
+      'slika': instance.slika,
+      'cijena': instance.cijena,
     };

@@ -35,8 +35,6 @@ public partial class EAutoSalonTestContext : DbContext
 
     public virtual DbSet<ZavrseniPoslovi> ZavrseniPoslovis { get; set; }
 
-   
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Automobili>(entity =>
@@ -50,6 +48,7 @@ public partial class EAutoSalonTestContext : DbContext
             entity.Property(e => e.BrojSasije)
                 .HasMaxLength(20)
                 .IsUnicode(false);
+            entity.Property(e => e.Cijena).HasColumnType("decimal(18, 2)");
             entity.Property(e => e.DatumObjave).HasColumnType("datetime");
             entity.Property(e => e.Model)
                 .HasMaxLength(255)
@@ -62,6 +61,10 @@ public partial class EAutoSalonTestContext : DbContext
             entity.Property(e => e.SnagaMotora)
                 .HasMaxLength(100)
                 .IsUnicode(false);
+            entity.Property(e => e.State)
+                .HasMaxLength(255)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('Prodano')");
             entity.Property(e => e.VrstaGoriva)
                 .HasMaxLength(100)
                 .IsUnicode(false);

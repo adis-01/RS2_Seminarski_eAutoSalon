@@ -2,13 +2,17 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:eautosalon_admin/providers/car_provider.dart';
+import 'package:eautosalon_admin/screens/home_page_screen.dart';
 import 'package:eautosalon_admin/utils/dialogs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:provider/provider.dart';
 
+import '../models/car.dart';
+
 class EditCar extends StatefulWidget {
-  const EditCar({super.key});
+  Automobil automobil;
+  EditCar({super.key, required this.automobil});
 
   @override
   State<EditCar> createState() => _EditCarState();
@@ -24,20 +28,22 @@ class _EditCarState extends State<EditCar> {
   void initState() {
     super.initState();
     _carProvider = context.read<CarProvider>();
-    // _initialValue = {
-    //   'Proizvodjac' : widget.auto.proizvodjac,
-    //   'Model' : widget.auto.model,
-    //   'BrojSasije' : widget.auto.brojSasije,
-    //   'GodinaProizvodnje' : widget.auto.godinaProizvodnje,
-    //   'SnagaMotora' : wiget.auto.snagaMotora
-    // };
+    _initialValue = {
+      'Proizvodjac' : widget.automobil.proizvodjac,
+      'Model' : widget.automobil.model,
+      'BrojSasije' : widget.automobil.brojSasije,
+      'GodinaProizvodnje' : widget.automobil.godinaProizvodnje.toString(),
+      'SnagaMotora' : widget.automobil.snagaMotora,
+      'Cijena' : widget.automobil.cijena.toString()
+    };
   }
 
   @override
   Widget build(BuildContext context) {
     return Dialog(
+      backgroundColor: Colors.grey[300],
       child: Container(
-        width: 500,
+        width: 600,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(15)
         ),
@@ -73,8 +79,8 @@ class _EditCarState extends State<EditCar> {
 
   Wrap buildButtons(BuildContext context) {
     return Wrap(
-                spacing: 20,
-                runSpacing: 10,
+                spacing: 30,
+                runSpacing: 15,
                 children: [
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFF248BD6), minimumSize: const Size(75,40)),
@@ -87,14 +93,14 @@ class _EditCarState extends State<EditCar> {
                     onPressed: () async{
                       if(_formKey.currentState != null){
                         if(_formKey.currentState!.saveAndValidate()){
-                          // try {
-                          //   await _carProvider.update(widget.auto.automobilId, _formKey.currentState!.value);
-                          //   CustomDialogs.showSuccess(context, "Uspješno uređivanje podataka", () {
-                          //     Navigator.of(context).push(MaterialPageRoute(builder: (builder) => const EditCar()));
-                          //    });
-                          // } catch (e) {
-                          //   CustomDialogs.showError(context, e.toString());
-                          // }
+                          try {
+                            await _carProvider.update(widget.automobil.automobilId!, _formKey.currentState!.value);
+                            CustomDialogs.showSuccess(context, "Uspješno uređivanje podataka", () {
+                              Navigator.of(context).push(MaterialPageRoute(builder: (builder) => const HomePageScreen()));
+                             });
+                          } catch (e) {
+                            CustomDialogs.showError(context, e.toString());
+                          }
                         }
                       }
                     }, child: const Text('Spasi'))
@@ -105,10 +111,10 @@ class _EditCarState extends State<EditCar> {
   Wrap buildInputs(BuildContext context) {
     return Wrap(
                 spacing: 15,
-                runSpacing: 10,
+                runSpacing: 20,
                 children: [
                   SizedBox(
-                    width: 200,
+                    width: 230,
                     child: FormBuilderTextField(
                        autovalidateMode: AutovalidateMode.onUserInteraction,
                       name: 'Proizvodjac',
@@ -122,7 +128,7 @@ class _EditCarState extends State<EditCar> {
                     ),
                   ),
                    SizedBox(
-                    width: 200,
+                    width: 230,
                     child: FormBuilderTextField(
                        autovalidateMode: AutovalidateMode.onUserInteraction,
                       name: 'Model',
@@ -136,7 +142,7 @@ class _EditCarState extends State<EditCar> {
                     ),
                   ),
                    SizedBox(
-                    width: 200,
+                    width: 230,
                     child: FormBuilderTextField(
                        autovalidateMode: AutovalidateMode.onUserInteraction,
                       name: 'SnagaMotora',
@@ -150,7 +156,7 @@ class _EditCarState extends State<EditCar> {
                     ),
                   ),
                    SizedBox(
-                    width: 200,
+                    width: 230,
                     child: FormBuilderTextField(
                        autovalidateMode: AutovalidateMode.onUserInteraction,
                       name: 'BrojSasije',
@@ -166,7 +172,7 @@ class _EditCarState extends State<EditCar> {
                     ),
                   ),
                    SizedBox(
-                    width: 200,
+                    width: 230,
                     child: FormBuilderTextField(
                        autovalidateMode: AutovalidateMode.onUserInteraction,
                       name: 'GodinaProizvodnje',
@@ -179,15 +185,23 @@ class _EditCarState extends State<EditCar> {
                         labelText: 'Godina proizvodnje'
                       ),
                     ),
+                  ),
+                  SizedBox(
+                    width: 230,
+                    child: FormBuilderTextField(
+                       autovalidateMode: AutovalidateMode.onUserInteraction,
+                      name: 'Cijena',
+                      validator: FormBuilderValidators.compose([
+                        FormBuilderValidators.required(context, errorText: 'Polje je obavezno'),
+                        FormBuilderValidators.numeric(context, errorText: 'Samo brojevi, primjer 25321.99')
+                      ]),
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
+                        labelText: 'Cijena'
+                      ),
+                    ),
                   )
                 ],
               );
   }
 }
-
-//  public intPredjeniKilometri { get; set; }
-//  //SnagaMotora { get; set; } = null!;
-// // Proizvodjac { get; set; } = null!;
-// // BrojSasije { get; set; } = null!;
-// // Model { get; set; } = null!;
-// GodinaProizvodnje { get; set; } 

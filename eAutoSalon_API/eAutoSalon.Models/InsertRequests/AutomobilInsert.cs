@@ -19,5 +19,7 @@ namespace eAutoSalon.Models.InsertRequests
         public int PredjeniKilometri { get; set; }
         public string Proizvodjac { get; set; } = null!;
         public string Model { get; set; } = null!;
+        public string? slikaBase64 { get; set; } = null!;
+        public decimal Cijena { get; set; }
     }
 }

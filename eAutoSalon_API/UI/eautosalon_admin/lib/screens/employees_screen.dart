@@ -83,10 +83,10 @@ class _EmployeesScreenState extends State<EmployeesScreen> {
                                 spacing: 15,
                                 runSpacing: 15,
                                 children: result?.list
-                                        .map((Employee item) => Padding(
-                                              padding: const EdgeInsets.all(15),
-                                              child: _buildCard(context, item),
-                                            ))
+                                        .map(
+                                          (Employee item) =>
+                                              _buildCard(context, item),
+                                        )
                                         .toList() ??
                                     []),
                           ))
@@ -100,6 +100,7 @@ class _EmployeesScreenState extends State<EmployeesScreen> {
 
   Container _buildCard(BuildContext context, Employee employee) {
     return Container(
+      padding: const EdgeInsets.all(15),
       width: 280,
       decoration: const BoxDecoration(
           color: Color(0xFFC6CDFF),
@@ -116,21 +117,22 @@ class _EmployeesScreenState extends State<EmployeesScreen> {
                   child: IconButton(
                       splashRadius: 0.1,
                       onPressed: () {
-                        CustomDialogs.showQuestion(
-                            context,
+                        CustomDialogs.showQuestion(context,
                             'Izbrisati uposlenika ${employee.firstName ?? "null"} ${employee.lastName ?? "null"}?',
-                            () async{
-                              try {
-                                await _employeeProvider.delete(employee.uposlenikId!);
-                                CustomDialogs.showSuccess(context, 'Uspješno obrisan uposlenik', () {
-                                  Navigator.of(context).push(
-                                    MaterialPageRoute(builder: (builder) => const EmployeesScreen())
-                                  );
-                                 });
-                              } catch (e) {
-                                CustomDialogs.showError(context, e.toString());
-                              }
+                            () async {
+                          try {
+                            await _employeeProvider
+                                .delete(employee.uposlenikId!);
+                            CustomDialogs.showSuccess(
+                                context, 'Uspješno obrisan uposlenik', () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (builder) =>
+                                      const EmployeesScreen()));
                             });
+                          } catch (e) {
+                            CustomDialogs.showError(context, e.toString());
+                          }
+                        });
                       },
                       icon: Icon(Icons.delete_outline,
                           color: Colors.red[270], size: 25)),
@@ -148,7 +150,8 @@ class _EmployeesScreenState extends State<EmployeesScreen> {
                 )
               ],
             ),
-            Text('${employee.firstName ?? "null"} ${employee.lastName ?? "null"}',
+            Text(
+                '${employee.firstName ?? "null"} ${employee.lastName ?? "null"}',
                 style: const TextStyle(
                     fontSize: 17,
                     fontWeight: FontWeight.w700,

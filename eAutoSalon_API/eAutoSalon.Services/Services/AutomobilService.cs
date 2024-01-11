@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 
 namespace eAutoSalon.Services.Services
 {
+
     public class AutomobilService : BaseCRUDService<VMAutomobil, Automobili, AutomobilSearchObject, AutomobilInsert, AutomobilUpdate>, IAutomobilService
     {
         public AutomobilService(EAutoSalonTestContext context, IMapper mapper) : base(context, mapper)
@@ -37,6 +38,52 @@ namespace eAutoSalon.Services.Services
         {
             query = query.OrderByDescending(x => x.AutomobilId);
             return query;
+        }
+
+        public override async Task<VMAutomobil> Insert(AutomobilInsert req)
+        {
+            Automobili entity = new Automobili();
+
+            _mapper.Map(req, entity);
+            if (!string.IsNullOrEmpty(req?.slikaBase64)) { entity.Slika = Convert.FromBase64String(req.slikaBase64);}
+            entity.DatumObjave = DateTime.Now;
+            entity.State = "Aktivan";
+            await _context.AddAsync(entity);
+            await _context.SaveChangesAsync();
+
+            return _mapper.Map<VMAutomobil>(entity);
+        }
+
+        public async Task<PagedList<VMAutomobil>> GetAktivne(AutomobilSearchObject? search = null)
+        {
+            var query = _context.Automobilis.Where(x=>x.State == "Aktivan").OrderByDescending(x=>x.AutomobilId).AsQueryable();
+
+            var list = new PagedList<VMAutomobil>()
+            {
+               PageCount = await query.CountAsync(),
+            };
+
+            if (search?.PageSize != null)
+            {
+                double? pageCount = list.PageCount;
+                double? pageSize = search.PageSize;
+                if (pageCount.HasValue && pageSize.HasValue)
+                {
+                    list.TotalPages = (int)Math.Ceiling(pageCount.Value / pageSize.Value);
+                }
+            }
+
+            if (search?.Page.HasValue == true && search?.PageSize.HasValue == true)
+            {
+                query = query.Skip(search.PageSize.Value * (search.Page.Value - 1)).Take(search.PageSize.Value);
+                list.HasNext = search.Page.Value < list.TotalPages;
+            }
+
+            var lista = await query.ToListAsync();
+
+            list.List = _mapper.Map<List<VMAutomobil>>(lista);
+
+            return list;
         }
     }
 }

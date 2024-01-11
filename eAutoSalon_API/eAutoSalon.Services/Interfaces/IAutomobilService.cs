@@ -12,5 +12,6 @@ namespace eAutoSalon.Services.Interfaces
 {
     public interface IAutomobilService : IBaseCRUDService<VMAutomobil,AutomobilSearchObject,AutomobilInsert,AutomobilUpdate>
     {
+        Task<PagedList<VMAutomobil>> GetAktivne(AutomobilSearchObject? search = null);
     }
 }
