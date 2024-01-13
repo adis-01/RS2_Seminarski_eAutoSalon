@@ -24,6 +24,7 @@ class _NewCarScreenState extends State<NewCarScreen> {
   File? _image;
   String? _base64image;
   String hint = "Klik za upload slike";
+  bool insertLoading = false;
 
   @override
   void initState() {
@@ -34,8 +35,9 @@ class _NewCarScreenState extends State<NewCarScreen> {
   @override
   Widget build(BuildContext context) {
     return MasterScreen(
+      floatingEnabled: false,
       title: 'Novi automobil',
-      body: Container(
+      body: !insertLoading ? Container(
         padding: const EdgeInsets.all(20),
         child: SingleChildScrollView(
           child: Column(
@@ -55,7 +57,7 @@ class _NewCarScreenState extends State<NewCarScreen> {
             ],
           ),
         ),
-      ),
+      ) : const Center(child: CircularProgressIndicator(),),
     );
   }
 
@@ -104,7 +106,7 @@ class _NewCarScreenState extends State<NewCarScreen> {
               border: Border.all(width: 0.2),
             ),
             child: const Text(
-              "Nakon unosа osnovnih podataka, slijedi dodatna forma koja omogućava unos informacija o dodatnoj opremi automobila.",
+              "Opciju za dodavanje opreme novog/već postojećeg automobila možete naći na detaljima istog",
               style: TextStyle(
                   fontSize: 15,
                   fontStyle: FontStyle.italic,
@@ -341,6 +343,16 @@ class _NewCarScreenState extends State<NewCarScreen> {
                 child: Text("Plin",
                     style: TextStyle(
                         color: Colors.black87, fontWeight: FontWeight.bold))),
+             DropdownMenuItem(
+                value: "Hibrid",
+                child: Text("Hibrid",
+                    style: TextStyle(
+                        color: Colors.black87, fontWeight: FontWeight.bold))),
+            DropdownMenuItem(
+                value: "Elektro",
+                child: Text("Elektro",
+                    style: TextStyle(
+                        color: Colors.black87, fontWeight: FontWeight.bold))),
           ]),
     );
   }
@@ -374,12 +386,18 @@ class _NewCarScreenState extends State<NewCarScreen> {
               map['slikaBase64'] = _base64image;
               try {
                 await _carProvider.insert(map);
+                setState(() {
+                  insertLoading=false;
+                });
                 CustomDialogs.showSuccess(
                     context, 'Uspješno dodan novi automobil', () {
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (builder) => const HomePageScreen()));
                 });
               } catch (e) {
+                setState(() {
+                  insertLoading=false;
+                });
                 CustomDialogs.showError(context, e.toString());
               }
             }

@@ -38,6 +38,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return MasterScreen(
+      floatingEnabled: false,
       title: 'Korisnički profil',
        body: isLoading ?
         const Center(child: CircularProgressIndicator()) 

@@ -20,6 +20,7 @@ class InsertEmployee extends StatefulWidget {
 
 class _InsertEmployeeState extends State<InsertEmployee> {
   final _formKey = GlobalKey<FormBuilderState>();
+  bool insertLoading = false;
   late EmployeeProvider _employeeProvider;
   String hint = "Klik za upload";
   File? image;
@@ -39,7 +40,7 @@ class _InsertEmployeeState extends State<InsertEmployee> {
             color: Colors.grey[300],
             padding: const EdgeInsets.all(25),
             width: 650,
-            child: _buildForm(context)
+            child: !insertLoading ? _buildForm(context) : const Center(child: CircularProgressIndicator())
             ),
       ),
     );
@@ -252,12 +253,18 @@ class _InsertEmployeeState extends State<InsertEmployee> {
             )),
         ElevatedButton(
             onPressed: () async {
+              setState(() {
+                insertLoading = true;
+              });
               try {
                 if(_formKey.currentState != null){
                   if(_formKey.currentState!.saveAndValidate()){
                     Map<String,dynamic> map = Map.from(_formKey.currentState!.value);
                     map['slikaBase64'] = base64image;
                     await _employeeProvider.insert(map);
+                    setState(() {
+                      insertLoading=false;
+                    });
                     CustomDialogs.showSuccess(context, 'Uspješno dodan novi uposlenik', () {
                       Navigator.of(context).push(
                         MaterialPageRoute(builder: (builder) => const EmployeesScreen())
@@ -266,6 +273,9 @@ class _InsertEmployeeState extends State<InsertEmployee> {
                   }
                 }
               } catch (e) {
+                setState(() {
+                  insertLoading=false;
+                });
                 CustomDialogs.showError(context, e.toString());
               }
             },

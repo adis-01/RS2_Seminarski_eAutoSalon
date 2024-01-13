@@ -58,6 +58,15 @@ namespace eAutoSalon.Services.Services
         {
             var query = _context.Automobilis.Where(x=>x.State == "Aktivan").OrderByDescending(x=>x.AutomobilId).AsQueryable();
 
+            if (!string.IsNullOrWhiteSpace(search?.FTS))
+            {
+                query = query.
+                    Where(x => search.FTS.Contains(x.Boja) ||
+                    search.FTS.Contains(x.GodinaProizvodnje.ToString()) ||
+                    search.FTS.Contains(x.VrstaGoriva) ||
+                    search.FTS.Contains(x.PredjeniKilometri.ToString()));
+            }
+
             var list = new PagedList<VMAutomobil>()
             {
                PageCount = await query.CountAsync(),

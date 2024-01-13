@@ -39,6 +39,7 @@ class _EditUserState extends State<EditUser> {
   @override
   Widget build(BuildContext context) {
     return MasterScreen(
+      floatingEnabled: false,
         title:
             "Detalji korisnika ${widget.user.firstName} ${widget.user.lastName}",
         body: Padding(

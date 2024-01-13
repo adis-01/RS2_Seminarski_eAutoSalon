@@ -1,3 +1,4 @@
+
 import 'package:eautosalon_admin/screens/employees_screen.dart';
 import 'package:eautosalon_admin/screens/home_page_screen.dart';
 import 'package:eautosalon_admin/screens/test_drives_screen.dart';
@@ -12,7 +13,9 @@ import '../utils/util.dart';
 class MasterScreen extends StatefulWidget {
   String title;
   Widget body;
-  MasterScreen({super.key, required this.title, required this.body});
+  bool floatingEnabled;
+  VoidCallback? onFloatingPressed;
+  MasterScreen({super.key, required this.title, required this.body, required this.floatingEnabled, this.onFloatingPressed});
 
   @override
   State<MasterScreen> createState() => _MasterScreenState();
@@ -23,6 +26,14 @@ class _MasterScreenState extends State<MasterScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[300],
+      floatingActionButton: widget.floatingEnabled ? 
+      FloatingActionButton(
+        tooltip: 'Dodaj',
+        backgroundColor: const Color(0xFF0F6BAE),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+        onPressed: widget.onFloatingPressed,
+        child: const Icon(Icons.add, size: 25, color: Colors.white,),
+      ) : null, 
       appBar: AppBar(
         actions: const [
           Padding(

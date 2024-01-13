@@ -33,7 +33,13 @@ class _EmployeesScreenState extends State<EmployeesScreen> {
   @override
   Widget build(BuildContext context) {
     return MasterScreen(
+      floatingEnabled: true,
         title: 'Uposlenici',
+        onFloatingPressed: (){
+          showDialog(context: context, builder: (context){
+            return const InsertEmployee();
+          });
+        },
         body: isLoading
             ? const Center(child: CircularProgressIndicator())
             : Padding(
@@ -41,7 +47,7 @@ class _EmployeesScreenState extends State<EmployeesScreen> {
                 child: Column(
                   children: [
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         MaterialButton(
                           shape: const CircleBorder(),
@@ -57,22 +63,6 @@ class _EmployeesScreenState extends State<EmployeesScreen> {
                             color: Colors.white,
                           ),
                         ),
-                        Tooltip(
-                          message: 'Novi uposlenik',
-                          child: MaterialButton(
-                            shape: const CircleBorder(),
-                            color: const Color(0xFF248BD6),
-                            padding: const EdgeInsets.all(15),
-                            onPressed: () {
-                              _openInsertEmployee();
-                            },
-                            child: const Icon(
-                              Icons.add,
-                              size: 25,
-                              color: Colors.white,
-                            ),
-                          ),
-                        )
                       ],
                     ),
                     const SizedBox(height: 25),
@@ -180,13 +170,7 @@ class _EmployeesScreenState extends State<EmployeesScreen> {
     );
   }
 
-  void _openInsertEmployee() {
-    showDialog(
-        context: context,
-        builder: (context) {
-          return const InsertEmployee();
-        });
-  }
+
 
   void _loadData() async {
     try {

@@ -37,6 +37,7 @@ class _UsersScreenState extends State<UsersScreen> {
   @override
   Widget build(BuildContext context) {
     return MasterScreen(
+      floatingEnabled: false,
         title: 'Korisnici',
         body: isLoading
             ? const Center(child: CircularProgressIndicator())

@@ -37,6 +37,7 @@ class _TestDrivesScreenState extends State<TestDrivesScreen> {
   @override
   Widget build(BuildContext context) {
     return MasterScreen(
+        floatingEnabled: false,
         title: 'Testne vožnje',
         body: isLoading
             ? const Center(child: CircularProgressIndicator())

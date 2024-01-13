@@ -35,6 +35,7 @@ public partial class EAutoSalonTestContext : DbContext
 
     public virtual DbSet<ZavrseniPoslovi> ZavrseniPoslovis { get; set; }
 
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Automobili>(entity =>
@@ -72,22 +73,19 @@ public partial class EAutoSalonTestContext : DbContext
 
         modelBuilder.Entity<DodatnaOprema>(entity =>
         {
-            entity.HasKey(e => e.OpremaId).HasName("PK__Dodatna___5C2EDCF1B108E4D6");
+            entity.HasKey(e => e.OpremaId).HasName("PK__DodatnaO__5C2EDCF157A6BC46");
 
-            entity.ToTable("Dodatna_Oprema");
+            entity.ToTable("DodatnaOprema");
 
             entity.Property(e => e.OpremaId).HasColumnName("OpremaID");
+            entity.Property(e => e.Abskocinice).HasColumnName("ABSKocinice");
             entity.Property(e => e.AutomobilId).HasColumnName("AutomobilID");
-            entity.Property(e => e.Naziv)
-                .HasMaxLength(255)
-                .IsUnicode(false);
-            entity.Property(e => e.Opis)
-                .HasMaxLength(255)
-                .IsUnicode(false);
+            entity.Property(e => e.StartStop).HasColumnName("Start_Stop");
+            entity.Property(e => e.Usbport).HasColumnName("USBPort");
 
             entity.HasOne(d => d.Automobil).WithMany(p => p.DodatnaOpremas)
                 .HasForeignKey(d => d.AutomobilId)
-                .HasConstraintName("FK_Automobil_Oprema");
+                .HasConstraintName("FK__DodatnaOp__Autom__4F47C5E3");
         });
 
         modelBuilder.Entity<Komentari>(entity =>

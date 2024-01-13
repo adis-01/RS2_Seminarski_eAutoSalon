@@ -1,3 +1,4 @@
+import 'package:eautosalon_admin/providers/accesories_provider.dart';
 import 'package:eautosalon_admin/providers/car_provider.dart';
 import 'package:eautosalon_admin/providers/employee_provider.dart';
 import 'package:eautosalon_admin/providers/test_drive_provider.dart';
@@ -13,7 +14,8 @@ void main() {
         ChangeNotifierProvider(create: (_) => UserProvider()),
         ChangeNotifierProvider(create: (_) =>  EmployeeProvider()),
         ChangeNotifierProvider(create: (_) => TestDriveProvider()),
-        ChangeNotifierProvider(create: (_) => CarProvider())
+        ChangeNotifierProvider(create: (_) => CarProvider()),
+        ChangeNotifierProvider(create: (_) => DodatnaOpremaProvider()),
       ],
       child: const MyApp(),
     )

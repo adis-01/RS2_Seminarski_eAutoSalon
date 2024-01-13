@@ -23,6 +23,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
   late CarProvider _carProvider;
   SearchResult<Automobil>? result;
   bool isLoading = true;
+  bool searchDisabled = true;
   TextEditingController _searchController = TextEditingController();
 
   @override
@@ -35,21 +36,24 @@ class _HomePageScreenState extends State<HomePageScreen> {
   @override
   Widget build(BuildContext context) {
     return MasterScreen(
+      floatingEnabled: true,
+      onFloatingPressed: (){
+        Navigator.of(context).push(MaterialPageRoute(builder: (builder) => const NewCarScreen()));
+      },
         title: 'Automobili',
         body: isLoading
             ? const Center(
                 child: CircularProgressIndicator(),
               )
             : SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.all(30),
+                child: Container(
+                  padding: const EdgeInsets.all(25),
+                  margin: const EdgeInsets.only(top: 30),
                   child: Column(
                     children: [
-                      buildNew(context),
-                      const SizedBox(height: 5),
                       result?.count != 0
                           ? Wrap(
-                              spacing: 15,
+                              spacing: 10,
                               runSpacing: 10,
                               children: result?.list
                                       .map((Automobil item) =>
@@ -179,44 +183,6 @@ class _HomePageScreenState extends State<HomePageScreen> {
           )
         ],
       ),
-    );
-  }
-
-  Widget buildNew(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        SizedBox(
-          width: 220,
-          child: TextField(
-            decoration: InputDecoration(
-                border:
-                    OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
-                hintText: 'Pretraži automobile...',
-                hintStyle: const TextStyle(
-                    fontSize: 16,
-                    color: Colors.blueGrey,
-                    fontStyle: FontStyle.italic)),
-          ),
-        ),
-        Tooltip(
-          message: 'Novi automobil',
-          child: MaterialButton(
-            padding: const EdgeInsets.all(15),
-            shape: const CircleBorder(),
-            color: const Color(0xFF248BD6),
-            onPressed: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: (builder) => const NewCarScreen()));
-            },
-            child: const Icon(
-              Icons.add,
-              size: 25,
-              color: Colors.white,
-            ),
-          ),
-        ),
-      ],
     );
   }
 
