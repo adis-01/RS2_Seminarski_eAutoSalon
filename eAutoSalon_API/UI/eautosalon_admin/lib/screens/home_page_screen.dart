@@ -2,8 +2,10 @@ import 'package:eautosalon_admin/models/car.dart';
 import 'package:eautosalon_admin/providers/car_provider.dart';
 import 'package:eautosalon_admin/screens/car_details_screen.dart';
 import 'package:eautosalon_admin/screens/new_car_screen.dart';
+import 'package:eautosalon_admin/screens/unactive_carstate_screen.dart';
 import 'package:eautosalon_admin/utils/dialogs.dart';
 import 'package:eautosalon_admin/utils/util.dart';
+import 'package:eautosalon_admin/widgets/filter_car_dialog.dart';
 import 'package:eautosalon_admin/widgets/master_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -23,8 +25,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
   late CarProvider _carProvider;
   SearchResult<Automobil>? result;
   bool isLoading = true;
-  bool searchDisabled = true;
-  TextEditingController _searchController = TextEditingController();
+  bool clearFilters = false;
 
   @override
   void initState() {
@@ -48,9 +49,68 @@ class _HomePageScreenState extends State<HomePageScreen> {
             : SingleChildScrollView(
                 child: Container(
                   padding: const EdgeInsets.all(25),
-                  margin: const EdgeInsets.only(top: 30),
                   child: Column(
                     children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              Tooltip(
+                            message: 'Filter podataka',
+                            child: MaterialButton(
+                              shape: const CircleBorder(),
+                              padding: const EdgeInsets.all(15),
+                              color: const Color(0xFF248BD6),
+                              onPressed: () async{
+                                var result = await showDialog(context: context, builder: (context) => const FilterCarDialog());
+                                if(result!=null){
+                                  Map<String,dynamic> map = Map.from(result);
+                                  map['Page'] = 1;
+                                  map['PageSize'] = _pageSize;
+                                  setState(() {
+                                    isLoading=true;
+                                  });
+                                  fetchPaged(map);
+                                }
+                              },
+                              child: const Icon(Icons.filter_alt_rounded, color: Colors.white),
+                            ),
+                          ),
+                          const SizedBox(width: 10),
+                          clearFilters ? Tooltip(
+                                message: 'Očisti filtere',
+                                child: MaterialButton(
+                                  shape: const CircleBorder(),
+                                  padding: const EdgeInsets.all(15),
+                                  color: const Color(0xFF248BD6),
+                                  onPressed: (){
+                                    setState(() {
+                                      clearFilters=false;
+                                      isLoading=true;
+                                      fetchData();
+                                    });
+                                  },
+                                  child: const Icon(Icons.cleaning_services, color: Colors.white),
+                                ),
+                              ) : const Text(""),
+                            ],
+                          ),
+                          Tooltip(
+                            message: 'Završeni oglasi',
+                            child: MaterialButton(
+                              shape: const CircleBorder(),
+                              padding: const EdgeInsets.all(15),
+                              color: const Color(0xFF248BD6),
+                              onPressed: (){
+                                Navigator.of(context).push(MaterialPageRoute(builder: (builder) => const PastCarsScreen()));
+                              },
+                              child: const Icon(Icons.paste, color: Colors.white),
+                            ),
+                          )
+                        ],
+                      ),
+                      const SizedBox(height: 10),
                       result?.count != 0
                           ? Wrap(
                               spacing: 10,
@@ -63,12 +123,14 @@ class _HomePageScreenState extends State<HomePageScreen> {
                             )
                           : const Text("No data"),
                       const SizedBox(height: 25),
-                      result?.count != 0 ? buildPagingArrows() : const Text("")
+                      (result?.total ?? 0) > 0 ? buildPagingArrows() : const Text("")
                     ],
                   ),
                 ),
               ));
   }
+
+  
 
   Row buildPagingArrows() {
     return Row(
@@ -84,8 +146,9 @@ class _HomePageScreenState extends State<HomePageScreen> {
                     setState(() {
                       isLoading = true;
                       _currentPage--;
-                      fetchData();
                     });
+                    
+                      fetchData();
                   }
                 : null,
             child: const Icon(Icons.arrow_back, size: 20, color: Colors.white)),
@@ -106,8 +169,8 @@ class _HomePageScreenState extends State<HomePageScreen> {
                     setState(() {
                       isLoading = true;
                       _currentPage++;
-                      fetchData();
                     });
+                    fetchData();
                   }
                 : null,
             child: const Icon(
@@ -198,4 +261,19 @@ class _HomePageScreenState extends State<HomePageScreen> {
       CustomDialogs.showError(context, e.toString());
     }
   }
+
+  Future<void> fetchPaged(dynamic request) async{
+    try {
+      var data = await _carProvider.getFiltered(request);
+      setState(() {
+        result = data;
+        isLoading=false;
+        clearFilters=true;
+      });
+    } catch (e) {
+      CustomDialogs.showError(context, e.toString());
+    }
+  }
+  
+  
 }

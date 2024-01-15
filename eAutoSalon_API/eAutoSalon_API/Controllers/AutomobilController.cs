@@ -45,6 +45,33 @@ namespace eAutoSalon_API.Controllers
             return await _service.GetAktivne(search);
         }
 
+        [Authorize(Roles = "Korisnik")]
+        [HttpGet("Zavrseni")]
+        public async Task<PagedList<VMAutomobil>> GetProdane([FromQuery] AutomobilSearchObject? search = null)
+        {
+            return await _service.GetProdane(search);
+        }
+
+        [Authorize(Roles ="Korisnik")]
+        [HttpPost("PromijeniStatus/{automobilId}")]
+        public async Task PromijeniStatus(int automobilId)
+        {
+            await _service.PromijeniStatus(automobilId);
+        }
+
+        [Authorize(Roles ="Korisnik,Administrator")]
+        [HttpGet("GetProizvodjace")]
+        public async Task<List<string>> GetProizvodjace()
+        {
+            return await _service.GetProizvodjace();
+        }
+
+        [Authorize(Roles = "Korisnik,Administrator")]
+        [HttpGet("GetFiltered")]
+        public async Task<PagedList<VMAutomobil>> GetFiltered([FromQuery]AutomobilSearchObject? search = null)
+        {
+            return await _service.GetFiltered(search);
+        }
       
     }
 }

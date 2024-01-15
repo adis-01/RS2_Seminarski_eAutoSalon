@@ -86,28 +86,58 @@ class _CarDetailsState extends State<CarDetails> {
               ],
             ),
             const SizedBox(height: 20),
-            ElevatedButton(
-                onPressed: () {
-                  showDialog(
-                      context: context,
-                      builder: (context) {
-                        return CarAcc(
-                          automobil: widget.automobil,
-                        );
-                      });
-                },
-                style: ElevatedButton.styleFrom(
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                    backgroundColor: const Color(0xFF248BD6),
-                    minimumSize: const Size(60, 45)),
-                child: const Text("Dodatna oprema",
-                    style: TextStyle(color: Colors.white))),
+            Wrap(
+              spacing: 20,
+              runSpacing: 10,
+              children: [ 
+                ElevatedButton(
+                  onPressed: () {
+                    showDialog(
+                        context: context,
+                        builder: (context) {
+                          return CarAcc(
+                            automobil: widget.automobil,
+                          );
+                        });
+                  },
+                  style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                      backgroundColor: const Color(0xFF248BD6),
+                      minimumSize: const Size(60, 45)),
+                  child: const Text("Dodatna oprema",
+                      style: TextStyle(color: Colors.white))),
+
+                  Tooltip(
+                    message: 'Ukoliko je automobil prodan, promijenite status istog',
+                    child: ElevatedButton(
+                    onPressed: () {
+                      try {
+                       CustomDialogs.showQuestion(context, 'Promijeniti status automobila?', () { 
+                         changeState();
+                        CustomDialogs.showSuccess(context, 'Uspješno promijenjen status', () { 
+                          Navigator.of(context).push(MaterialPageRoute(builder: (builder) => const HomePageScreen()));
+                        });
+                       });
+                      } catch (e) {
+                        CustomDialogs.showError(context, e.toString());
+                      }
+                    },
+                    style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                        backgroundColor: const Color(0xFF248BD6),
+                        minimumSize: const Size(60, 45)),
+                    child: const Text("Promijeni status",
+                        style: TextStyle(color: Colors.white))),
+                  )
+              ],
+            ),
             const SizedBox(height: 5)
           ],
         ),
       ),
     );
   }
+
 
   SizedBox buildDetail(String label, String value) {
     return SizedBox(
@@ -195,20 +225,6 @@ class _CarDetailsState extends State<CarDetails> {
           ),
         ),
         Tooltip(
-          message: 'Promijeni status - Auto kupljen',
-          child: IconButton(
-            splashRadius: 5,
-            onPressed: () {
-              
-            },
-            icon: const Icon(
-              Icons.check_circle,
-              color: Colors.black87,
-              size: 25,
-            ),
-          ),
-        ),
-        Tooltip(
           message: 'Obriši',
           child: IconButton(
             splashRadius: 5,
@@ -250,5 +266,9 @@ class _CarDetailsState extends State<CarDetails> {
         color: Colors.white,
       ),
     );
+  }
+
+  Future<void> changeState() async{
+    await _carProvider.promijeniState(widget.automobil.automobilId!);
   }
 }

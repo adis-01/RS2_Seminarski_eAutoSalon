@@ -141,6 +141,12 @@ class _MasterScreenState extends State<MasterScreen> {
             const SizedBox(height: 15),
             buildListTile('Izvještaj', Icons.report, () {}),
             const SizedBox(height: 15),
+            const Divider(
+                color: Colors.black54,
+                thickness: 0.5,
+                indent: 10,
+                endIndent: 10),
+            const SizedBox(height: 15),
             buildListTile('Odjava', Icons.logout, () {
               CustomDialogs.showQuestion(
                   context, 'Da li ste sigurni da se želite odjaviti?', () {

@@ -8,10 +8,11 @@ namespace eAutoSalon.Models.SearchObjects
 {
     public class AutomobilSearchObject : BaseSearchObject
     {
-        public string? Boja { get; set; } = null!;
+        public string? Proizvodjac { get; set; } = null!;
         public int? GodinaProizvodnje { get; set; }
         public string? VrstaGoriva { get; set; } = null!;
         public int? BrojVrata { get; set; }
+        public int? PredjenaKilometraza { get; set; }
         public string? FTS { get; set; }
     }
 }
