@@ -57,7 +57,7 @@ namespace eAutoSalon.Services.Services
 
         public override async Task<VMAutomobil> Insert(AutomobilInsert req)
         {
-            Automobili entity = new Automobili();
+            Automobili entity = new();
 
             _mapper.Map(req, entity);
             if (!string.IsNullOrEmpty(req?.slikaBase64)) { entity.Slika = Convert.FromBase64String(req.slikaBase64);}
@@ -70,6 +70,7 @@ namespace eAutoSalon.Services.Services
         }
 
 
+       
 
 
         public async Task<PagedList<VMAutomobil>> GetAktivne(AutomobilSearchObject? search = null)

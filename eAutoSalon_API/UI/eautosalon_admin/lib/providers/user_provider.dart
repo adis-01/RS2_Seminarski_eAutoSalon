@@ -44,6 +44,25 @@ class UserProvider extends BaseProvider<User> {
     }
   }
 
+  Future<List<String>> getRoles(String username) async{
+    var url = "$baseUrl$endp/GetRoles?username=$username";
+    var uri = Uri.parse(url);
+    var headers = createHeaders();
+    
+    var req = await http.get(uri,headers: headers);
+    if(isValidResponse(req)){
+      List<String> roles = [];
+      var data = jsonDecode(req.body);
+      for (var item in data) {
+        roles.add(item);
+      }
+      return roles;
+    }
+    else{
+      throw Exception('Greška...');
+    }
+  }
+
   @override
   User fromJson(data) {
     return User.fromJson(data);

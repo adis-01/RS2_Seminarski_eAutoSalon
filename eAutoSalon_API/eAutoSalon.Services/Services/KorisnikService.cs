@@ -13,6 +13,7 @@ using RabbitMQ.Client;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -57,6 +58,21 @@ namespace eAutoSalon.Services.Services
 
             await _context.KorisnikUloges.AddAsync(user_role);
             await _context.SaveChangesAsync();
+        }
+
+        public async Task<List<string>> GetRoles(string username)
+        {
+            var entity = await _context.Korisnicis.Include(x => x.KorisnikUloges).ThenInclude(s => s.Uloga).Where(x => x.Username == username).FirstOrDefaultAsync();
+            if (entity != null)
+            {
+                List<string> roles = new List<string>();
+                foreach (var item in entity.KorisnikUloges)
+                {
+                    roles.Add(item.Uloga.Naziv);
+                }
+                return roles;
+            }
+            return new List<string>();
         }
 
 

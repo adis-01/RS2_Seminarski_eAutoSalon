@@ -15,6 +15,7 @@ namespace eAutoSalon.Services.Interfaces
         Task<VMKorisnik> Login(string username, string password);
         Task<VMKorisnik> PasswordChange(int id,KorisnikPasswordRequest req);
         Task PictureChange(int id,SlikaRequest req);
+        Task<List<string>> GetRoles(string username);
         Task<VMKorisnik> FetchUserProfile(string username);
     }
 }

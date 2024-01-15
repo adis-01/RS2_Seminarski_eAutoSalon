@@ -47,6 +47,13 @@ namespace eAutoSalon_API.Controllers
             await base.Delete(id);
         }
 
+        [Authorize(Roles ="Korisnik,Administrator,Urednik")]
+        [HttpGet("GetRoles")]
+        public async Task<List<string>> GetRoles([FromQuery] string username)
+        {
+            return await _service.GetRoles(username);
+        }
+
         [HttpGet("UserProfile")]
         [Authorize(Roles ="Korisnik,Administrator")]
         public async Task<VMKorisnik> GetUserProfile([FromQuery] string username)

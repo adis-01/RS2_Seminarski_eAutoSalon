@@ -1,8 +1,8 @@
 // ignore_for_file: use_build_context_synchronously
 
-import 'dart:convert';
 
 import 'package:eautosalon_admin/providers/user_provider.dart';
+import 'package:eautosalon_admin/screens/news_screen.dart';
 import 'package:eautosalon_admin/utils/dialogs.dart';
 import 'package:eautosalon_admin/utils/util.dart';
 import 'package:flutter/material.dart';
@@ -127,14 +127,17 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Future<void> login(String username, String password) async{
-    Authorization.username = username;
-    Authorization.password = password;
-    try {
-      var data = await _userProvider.fetchData();
-      Navigator.of(context).push(MaterialPageRoute(builder: (builder) => const HomePageScreen()));
-    } catch (e) {
-      CustomDialogs.showError(context, e.toString());
-    }
+    // Authorization.username = username;
+    // Authorization.password = password;
+    // try {
+    //   var data = await _userProvider.getRoles(username);
+    //   if(data.contains("Administrator")){
+    //     Navigator.of(context).push(MaterialPageRoute(builder: (builder) => const HomePageScreen()));
+    //   }
+    // } catch (e) {
+    //   CustomDialogs.showError(context, e.toString());
+    // }
+    Navigator.of(context).push(MaterialPageRoute(builder: (builder) => const NewsScreen()));
   }
 
 }
