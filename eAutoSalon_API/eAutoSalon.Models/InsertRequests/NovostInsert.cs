@@ -10,8 +10,9 @@ namespace eAutoSalon.Models.InsertRequests
     public class NovostInsert
     {
         public string Naslov { get; set; }
+        public int KorisnikId { get; set; }
         public string Sadrzaj { get; set; } = null!;
         public string Tip { get; set; } = null!;
-
+        public string? slikaBase64 { get; set; }
     }
 }

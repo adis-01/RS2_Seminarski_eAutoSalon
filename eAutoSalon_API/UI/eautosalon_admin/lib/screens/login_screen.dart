@@ -127,8 +127,8 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Future<void> login(String username, String password) async{
-    // Authorization.username = username;
-    // Authorization.password = password;
+    Authorization.username = username;
+    Authorization.password = password;
     // try {
     //   var data = await _userProvider.getRoles(username);
     //   if(data.contains("Administrator")){

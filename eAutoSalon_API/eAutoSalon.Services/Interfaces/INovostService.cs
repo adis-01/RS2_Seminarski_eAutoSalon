@@ -12,5 +12,7 @@ namespace eAutoSalon.Services.Interfaces
 {
     public interface INovostService : IBaseCRUDService<VMNovosti,NovostiSearchObject,NovostInsert,NovostUpdate>
     {
+        Task<PagedList<VMNovosti>> getVlastite(string username, NovostiSearchObject? search = null);
+        Task<PagedList<VMNovosti>> getOstale(string username, NovostiSearchObject? search = null);
     }
 }

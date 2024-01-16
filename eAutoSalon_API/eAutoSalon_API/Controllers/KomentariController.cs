@@ -21,10 +21,16 @@ namespace eAutoSalon_API.Controllers
         }
 
 
-        [HttpGet("Comms/{id}")]
+        [HttpGet("Komentari_Novost/{id}")]
         public async Task<PagedList<VMKomentari>> GetComms(int id, [FromQuery]KomentariSearchObject? searchObject = null)
         {
             return await _service.GetAllKomentari_Novost(id,searchObject);
+        }
+
+        [HttpGet("TotalNumber/{id}")]
+        public async Task<int> Total(int id)
+        {
+           return await _service.TotalNumber(id);
         }
 
         [HttpGet("History/{id}")]

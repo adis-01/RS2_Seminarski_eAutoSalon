@@ -1,7 +1,12 @@
+import 'dart:convert';
+import 'dart:io';
+import 'package:eautosalon_admin/providers/news_provider.dart';
 import 'package:eautosalon_admin/utils/dialogs.dart';
 import 'package:eautosalon_admin/widgets/master_screen_editor.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:provider/provider.dart';
 
 class InsertNewScreenEditor extends StatefulWidget {
   const InsertNewScreenEditor({super.key});
@@ -12,7 +17,17 @@ class InsertNewScreenEditor extends StatefulWidget {
 
 class _InsertNewScreenEditorState extends State<InsertNewScreenEditor> {
 
+  late NewsProvider _newsProvider;
   final _formKey = GlobalKey<FormBuilderState>();
+  String hint = "Klik za upload";
+  File? image;
+  String? _base64image;
+
+  @override
+  void initState() {
+    super.initState();
+    _newsProvider = context.read<NewsProvider>();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -105,8 +120,34 @@ class _InsertNewScreenEditorState extends State<InsertNewScreenEditor> {
                     ),
                   ),
                   SizedBox(
+                      width: double.infinity,
+                      child: FormBuilderField(
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        name: 'slikaBase64',
+                        builder: (field){
+                          return InputDecorator(
+                          decoration: InputDecoration(
+                            contentPadding:  const EdgeInsets.symmetric(vertical: 10),
+                            border:  OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+                            labelText: 'Slika',
+                            suffixIcon:  const Icon(
+                              Icons.upload,
+                              color: Colors.blueGrey,
+                            ),
+                          ),
+                          child: ListTile(
+                            title: Text(hint,style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600, color: Colors.blueGrey),),
+                            onTap: uploadImage,
+                          )
+                          );
+                        },
+                      ),
+                    ),
+                  SizedBox(
                     width: double.infinity,
                     child: FormBuilderTextField(
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      validator: FormBuilderValidators.compose([FormBuilderValidators.minLength(context, 50, errorText: 'Minimalno 50 znakova')]),
                       name: 'sadrzaj',
                       decoration: InputDecoration(
                         border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
@@ -117,7 +158,7 @@ class _InsertNewScreenEditorState extends State<InsertNewScreenEditor> {
                       minLines: 4,
                       maxLines: null,
                     ),
-                  )
+                  ),
                 ],
               );
   }
@@ -138,14 +179,27 @@ class _InsertNewScreenEditorState extends State<InsertNewScreenEditor> {
   }
 
   Future<void> saveData() async{
-    try {
-      if(_formKey.currentState!=null){
+    if(_formKey.currentState!=null){
         if(_formKey.currentState!.saveAndValidate()){
-          print(_formKey.currentState!.value);
+          Map<String,dynamic> map = Map.from(_formKey.currentState!.value);
+          map['slikaBase64'] = _base64image;
+          try {
+            await _newsProvider.insert(map);
+          } catch (e) {
+            CustomDialogs.showError(context, e.toString());
+          }
         }
       }
-    } catch (e) {
-      CustomDialogs.showError(context, e.toString());
+  }
+
+  Future<void> uploadImage() async{
+    var result = await FilePicker.platform.pickFiles(type: FileType.image);
+    if(result != null && result.files.single.path != null){
+      image = File(result.files.single.path!);
+      _base64image = base64Encode(image!.readAsBytesSync());
+      setState(() {
+        hint = result.files.single.name.toString();
+      });
     }
   }
 

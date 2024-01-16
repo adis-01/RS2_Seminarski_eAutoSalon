@@ -14,5 +14,6 @@ namespace eAutoSalon.Services.Interfaces
     {
         Task<PagedList<VMKomentari>> GetAllKomentari_Novost(int id, KomentariSearchObject? searchObject = null);
         Task<List<VMKomentar_Historija>> GetHistorijuKomentara(int id);
+        Task<int> TotalNumber(int novostId);
     }
 }

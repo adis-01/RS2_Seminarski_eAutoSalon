@@ -168,6 +168,10 @@ public partial class EAutoSalonTestContext : DbContext
             entity.ToTable("Novosti");
 
             entity.Property(e => e.NovostiId).HasColumnName("NovostiID");
+            entity.Property(e => e.DatumObjave)
+                .HasDefaultValueSql("('01-01-2024')")
+                .HasColumnType("date");
+            entity.Property(e => e.KorisnikId).HasColumnName("KorisnikID");
             entity.Property(e => e.Naslov)
                 .HasMaxLength(255)
                 .IsUnicode(false)
@@ -176,6 +180,10 @@ public partial class EAutoSalonTestContext : DbContext
             entity.Property(e => e.Tip)
                 .HasMaxLength(255)
                 .IsUnicode(false);
+
+            entity.HasOne(d => d.Korisnik).WithMany(p => p.Novostis)
+                .HasForeignKey(d => d.KorisnikId)
+                .HasConstraintName("FK__Novosti__Korisni__607251E5");
         });
 
         modelBuilder.Entity<TestnaVoznja>(entity =>

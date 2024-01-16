@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
 using System.Text;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace eAutoSalon.Services.Services
 {
@@ -33,16 +34,28 @@ namespace eAutoSalon.Services.Services
         {
             var comms =  _context.Komentaris.Where(x=>x.NovostiId==id).Include("Korisnik").AsQueryable();
 
-            var list = new PagedList<VMKomentari>();
+            var list = new PagedList<VMKomentari>
+            {
+                PageCount = await comms.CountAsync()
+            };
 
-            list.PageCount = await comms.CountAsync();
+            if (searchObject?.PageSize != null)
+            {
+                double? pageCount = list.PageCount;
+                double? pageSize = searchObject.PageSize;
+                if (pageCount.HasValue && pageSize.HasValue)
+                {
+                    list.TotalPages = (int)Math.Ceiling(pageCount.Value / pageSize.Value);
+                }
+            }
 
             if (searchObject?.Page.HasValue == true && searchObject?.PageSize.HasValue == true)
             {
                 comms = comms.Skip(searchObject.PageSize.Value * (searchObject.Page.Value - 1)).Take(searchObject.PageSize.Value);
+                list.HasNext = searchObject.Page.Value < list.TotalPages;
             }
 
-        
+
 
             var result = await comms.ToListAsync();
 
@@ -64,6 +77,15 @@ namespace eAutoSalon.Services.Services
             await list.ToListAsync();
 
             return _mapper.Map<List<VMKomentar_Historija>>(list);
+        }
+
+        public async Task<int> TotalNumber(int novostId)
+        {
+            var list = _context.Komentaris.Where(x => x.NovostiId == novostId);
+
+            int count = await list.CountAsync();
+
+            return count;
         }
     }
 }

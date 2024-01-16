@@ -85,7 +85,6 @@ class _EditNewsDialogState extends State<EditNewsDialog> {
     try {
       if(_formKey.currentState!=null){
         if(_formKey.currentState!.saveAndValidate()){
-          print(_formKey.currentState!.value);
         }
       }
     } catch (e) {

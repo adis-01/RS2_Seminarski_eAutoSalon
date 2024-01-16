@@ -1,9 +1,10 @@
 
+import 'package:eautosalon_admin/screens/login_screen.dart';
 import 'package:eautosalon_admin/screens/news_insert_screen.dart';
 import 'package:eautosalon_admin/screens/news_screen.dart';
+import 'package:eautosalon_admin/utils/dialogs.dart';
+import 'package:eautosalon_admin/utils/util.dart';
 import 'package:flutter/material.dart';
-
-import '../utils/util.dart';
 
 class EditorMasterScreen extends StatefulWidget {
   String title;
@@ -45,6 +46,18 @@ class _EditorMasterScreenState extends State<EditorMasterScreen> {
               },
               child: const Icon(Icons.home, color: Colors.white),
             ),
+          ),
+          Tooltip(
+            message: 'Odjava',
+            child: MaterialButton(
+              padding: const EdgeInsets.all(15),
+              shape: const CircleBorder(),
+              onPressed: (){
+                CustomDialogs.showQuestion(context, 'Da li ste sigurni da se želite odjaviti?', () { 
+                  _logOut();
+                });
+            },
+            child: const Icon(Icons.logout, color: Colors.white)),
           )
         ],
         backgroundColor: const Color(0xFF0F6BAE),
@@ -84,11 +97,11 @@ class _EditorMasterScreenState extends State<EditorMasterScreen> {
     );
   }
 
-  void _logOut() {
+  void _logOut(){
     Authorization.username = "";
     Authorization.password = "";
+    Navigator.of(context).push(MaterialPageRoute(builder: (builder) => const LoginScreen()));
   }
-
 
 
 }

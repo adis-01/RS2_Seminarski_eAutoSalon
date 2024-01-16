@@ -15,5 +15,11 @@ public partial class Novosti
 
     public byte[]? Slika { get; set; }
 
+    public int? KorisnikId { get; set; }
+
+    public DateTime? DatumObjave { get; set; }
+
     public virtual ICollection<Komentari> Komentaris { get; set; } = new List<Komentari>();
+
+    public virtual Korisnici? Korisnik { get; set; }
 }
