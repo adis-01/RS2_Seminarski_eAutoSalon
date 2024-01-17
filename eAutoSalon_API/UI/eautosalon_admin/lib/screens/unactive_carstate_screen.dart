@@ -71,7 +71,7 @@ class _PastCarsScreenState extends State<PastCarsScreen> {
     return MaterialButton(
         shape: const CircleBorder(),
         padding: const EdgeInsets.all(15),
-        color: const Color(0xFF248BD6),
+        color: Colors.blueGrey,
         onPressed: () {
           Navigator.of(context).pop();
         },
@@ -120,7 +120,7 @@ class _PastCarsScreenState extends State<PastCarsScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                "\$${auto.cijena ?? "null"}",
+                "\$${auto.formattedPrice}",
                 style: const TextStyle(
                     fontSize: 18,
                     color: Colors.black,

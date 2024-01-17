@@ -167,7 +167,7 @@ class _EditEmployeeState extends State<EditEmployee> {
       children: [
         MaterialButton(
           shape: const CircleBorder(),
-          color: const Color(0xFF248BD6),
+          color: Colors.blueGrey,
           padding: const EdgeInsets.all(15),
           onPressed: () {
             Navigator.of(context).push(
@@ -208,7 +208,7 @@ class _EditEmployeeState extends State<EditEmployee> {
           },
           style: ElevatedButton.styleFrom(
               fixedSize: const Size(80, 40),
-              backgroundColor: const Color(0xFF248BD6)),
+              backgroundColor: Colors.blueGrey),
           child: const Text('Spasi')),
     );
   }
@@ -220,14 +220,14 @@ class _EditEmployeeState extends State<EditEmployee> {
         child: 
         widget.employee.slika != "" ?
         fromBase64String(widget.employee.slika!)
-        : Image.asset("assets/images/no_profile_pic.png", fit: BoxFit.fill, color: const Color(0xFF248BD6),),
+        : Image.asset("assets/images/no_profile_pic.png", fit: BoxFit.fill, color: Colors.blueGrey,),
       ),
       Positioned(
         bottom: 0,
         right: 0,
         child: Container(
           decoration: BoxDecoration(
-              color: const Color(0xFF248BD6),
+              color: Colors.blueGrey,
               shape: BoxShape.circle,
               border: Border.all(width: 1.5, color: Colors.white)),
           child: Tooltip(

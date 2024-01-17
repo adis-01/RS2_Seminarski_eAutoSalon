@@ -45,67 +45,17 @@ class _TestDrivesScreenState extends State<TestDrivesScreen> {
                 padding: const EdgeInsets.all(25),
                 child: SingleChildScrollView(
                   child: Column(children: [
-                    _buildBack(context),
-                    const SizedBox(height: 20),
-                    Wrap(
-                      spacing: 25,
-                      runSpacing: 5,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              _activeTests = true;
-                              page = 1;
-                              tableLoading = true;
-                              fetchData();
-                            });
-                          },
-                          child: Text(
-                            "Aktivne",
-                            style: TextStyle(
-                                fontSize: 20,
-                                color: _activeTests
-                                    ? const Color(0xFF248BD6)
-                                    : Colors.blueGrey,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                        const Text(
-                          "|",
-                          style: TextStyle(
-                              color: Colors.blueGrey,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20),
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              _activeTests = false;
-                              page = 1;
-                              tableLoading = true;
-                              fetchData();
-                            });
-                          },
-                          child: Text(
-                            "Završene",
-                            style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                                color: _activeTests
-                                    ? Colors.blueGrey
-                                    : const Color(0xFF248BD6)),
-                          ),
-                        )
+                        _buildBack(context),
+                        buildGestures(),
+                        const Text("")
                       ],
                     ),
-                    const Divider(
-                        thickness: 0.2,
-                        color: Colors.blueGrey,
-                        indent: 500,
-                        endIndent: 500,
-                        height: 40),
+                    const SizedBox(height: 45),
                     Container(
-                      padding: const EdgeInsets.all(15),
+                      padding: const EdgeInsets.all(10),
                       decoration: BoxDecoration(
                           border:
                               Border.all(width: 0.8, color: Colors.blueGrey),
@@ -160,6 +110,64 @@ class _TestDrivesScreenState extends State<TestDrivesScreen> {
                 )));
   }
 
+  Container buildGestures() {
+    return Container(
+                        width: 250,
+                        padding: const EdgeInsets.all(15),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            _activeTests = true;
+                            page = 1;
+                            tableLoading = true;
+                            fetchData();
+                          });
+                        },
+                        child: Text(
+                          "Aktivne",
+                          style: TextStyle(
+                              fontSize: 20,
+                              color: _activeTests
+                                  ? Colors.black87
+                                  : Colors.blueGrey,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                      const Text(
+                        "|",
+                        style: TextStyle(
+                            color: Colors.blueGrey,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            _activeTests = false;
+                            page = 1;
+                            tableLoading = true;
+                            fetchData();
+                          });
+                        },
+                        child: Text(
+                          "Završene",
+                          style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: _activeTests
+                                  ? Colors.blueGrey
+                                  : Colors.black87),
+                        ),
+                      )
+                          ],
+                        ),
+                      );
+  }
+
   ElevatedButton buildNext(){
     bool hasNext;
     if(_activeTests){
@@ -180,7 +188,7 @@ class _TestDrivesScreenState extends State<TestDrivesScreen> {
       } : null, 
     style: ElevatedButton.styleFrom(
       fixedSize: const Size(100,35),
-      backgroundColor: const Color(0xFF248BD6)
+      backgroundColor: Colors.blueGrey
     ),
     child: const Text('Sljedeća'));
   }
@@ -198,7 +206,7 @@ class _TestDrivesScreenState extends State<TestDrivesScreen> {
             : null,
         style: ElevatedButton.styleFrom(
             fixedSize: const Size(100, 35),
-            backgroundColor: const Color(0xFF248BD6)),
+            backgroundColor: Colors.blueGrey),
         child: const Text('Prethodna'));
   }
   DataTable _buildActive() {
@@ -307,7 +315,7 @@ class _TestDrivesScreenState extends State<TestDrivesScreen> {
       children: [
         MaterialButton(
           shape: const CircleBorder(),
-          color: const Color(0xFF248BD6),
+          color: Colors.blueGrey,
           padding: const EdgeInsets.all(15),
           onPressed: () {
             Navigator.of(context).push(MaterialPageRoute(

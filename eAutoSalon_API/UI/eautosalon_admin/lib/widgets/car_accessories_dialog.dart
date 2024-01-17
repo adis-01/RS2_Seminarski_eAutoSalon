@@ -55,7 +55,7 @@ class _CarAccState extends State<CarAcc> {
                               endIndent: 10,
                               height: 20),
                           buildAccessories(),
-                          const SizedBox(height: 15),
+                          const SizedBox(height: 20),
                           buildBack(context),
                         ],
                       )
@@ -68,7 +68,7 @@ class _CarAccState extends State<CarAcc> {
   Wrap buildAccessories() {
     return Wrap(
       spacing: 10, 
-      runSpacing: 5, 
+      runSpacing: 10, 
       children: [
         buildTextField("Klima", oprema!.klima!),
         buildTextField("ABS", oprema!.abskocinice!),
@@ -108,9 +108,9 @@ class _CarAccState extends State<CarAcc> {
             suffixIcon: Padding(
               padding: const EdgeInsets.all(10),
               child: value ? 
-              const Icon(Icons.check_rounded, size: 20, color: Colors.green)
-              :
-              const Icon(Icons.close_rounded, size: 20, color: Colors.red),
+              Icon(Icons.check_circle_rounded, color: Colors.green[400],)
+              : 
+              Icon(Icons.cancel, color: Colors.red[400],)
             )
           ),
         ));
@@ -126,16 +126,16 @@ class _CarAccState extends State<CarAcc> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Icon(Icons.info, size: 25, color: Color(0xFF248BAE)),
+              const Icon(Icons.question_mark, size: 25, color: Colors.blueGrey),
               IconButton(
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
                   icon: const Icon(Icons.close,
-                      size: 25, color: Color(0xFF248BAE)))
+                      size: 25, color: Colors.blueGrey))
             ],
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: 5),
           Text(
             _errorText,
             style: const TextStyle(
@@ -156,9 +156,9 @@ class _CarAccState extends State<CarAcc> {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               MaterialButton(
-                color: const Color(0xFF248BAE),
+                color: Colors.blueGrey,
                 shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15)),
+                    borderRadius: BorderRadius.circular(5)),
                 onPressed: () {
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (builder) =>
@@ -170,9 +170,9 @@ class _CarAccState extends State<CarAcc> {
                 ),
               ),
               MaterialButton(
-                color: const Color(0xFF248BAE),
+                color: Colors.blueGrey,
                 shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15)),
+                    borderRadius: BorderRadius.circular(5)),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
@@ -205,7 +205,7 @@ class _CarAccState extends State<CarAcc> {
             icon: const Icon(
               Icons.close,
               size: 25,
-              color: Color(0xFF248BD6),
+              color: Colors.blueGrey,
             ))
       ],
     );
@@ -214,7 +214,7 @@ class _CarAccState extends State<CarAcc> {
   ElevatedButton buildBack(BuildContext context) {
     return ElevatedButton(
         style: ElevatedButton.styleFrom(
-            backgroundColor: const Color(0xFF248BD6),
+            backgroundColor: Colors.blueGrey,
             fixedSize: const Size(80, 40)),
         onPressed: () {
           Navigator.of(context).pop();

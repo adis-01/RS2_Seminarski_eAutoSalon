@@ -49,7 +49,7 @@ namespace eAutoSalon.Services.Services
 
         public async Task<PagedList<VMNovosti>> getVlastite(string username, NovostiSearchObject? search = null)
         {
-            var q = _context.Novostis.Where(x => x.Korisnik.Username == username).AsQueryable();
+            var q = _context.Novostis.Where(x => x.Korisnik.Username == username).Include("Korisnik").AsQueryable();
 
             var list = new PagedList<VMNovosti>()
             {
@@ -82,7 +82,7 @@ namespace eAutoSalon.Services.Services
 
         public async Task<PagedList<VMNovosti>> getOstale(string username, NovostiSearchObject? search = null)
         {
-            var q = _context.Novostis.Where(x => x.Korisnik.Username != username).AsQueryable();
+            var q = _context.Novostis.Where(x => x.Korisnik.Username != username).Include("Korisnik").AsQueryable();
 
             var list = new PagedList<VMNovosti>()
             {
@@ -110,6 +110,14 @@ namespace eAutoSalon.Services.Services
             list.List = _mapper.Map<List<VMNovosti>>(lista);
 
             return list;
+        }
+
+        public async Task<int> getUserId(string username)
+        {
+            var entity = await _context.Korisnicis.Where(x => x.Username == username).FirstOrDefaultAsync() ?? throw new Exception("No users with that username");
+
+            int id = entity.KorisnikId;
+            return id;
         }
     }
 }

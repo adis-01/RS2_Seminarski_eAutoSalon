@@ -25,7 +25,7 @@ class _EditorMasterScreenState extends State<EditorMasterScreen> {
       Tooltip(
         message: 'Dodaj',
         child: FloatingActionButton(
-          backgroundColor: const Color(0xFF0F6BAE),
+          backgroundColor: Colors.blueGrey,
           onPressed: (){
             Navigator.of(context).push(MaterialPageRoute(builder: (builder) => const InsertNewScreenEditor()));
           },
@@ -60,13 +60,13 @@ class _EditorMasterScreenState extends State<EditorMasterScreen> {
             child: const Icon(Icons.logout, color: Colors.white)),
           )
         ],
-        backgroundColor: const Color(0xFF0F6BAE),
+        backgroundColor: Colors.black87,
         toolbarOpacity: 0.7,
         centerTitle: true,
         elevation: 3,
         title: Text(widget.title,
             style: const TextStyle(
-                fontSize: 25, letterSpacing: 0.9, fontWeight: FontWeight.w700)),
+                fontSize: 22, letterSpacing: 3.5, fontWeight: FontWeight.w700, color: Colors.white70)),
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
             bottomLeft: Radius.circular(8),
@@ -75,25 +75,6 @@ class _EditorMasterScreenState extends State<EditorMasterScreen> {
         ),
       ),
       body: widget.body,
-    );
-  }
-
-
-  ListTile buildListTile(String text, IconData icon, VoidCallback onTap) {
-    return ListTile(
-      contentPadding: const EdgeInsets.only(left: 22),
-      leading: Icon(icon,
-          size: 35, color: const Color(0xFF2488D6) //Color(0xFF7D5BA6),
-          ),
-      title: Text(
-        text,
-        style: const TextStyle(
-            fontWeight: FontWeight.w700,
-            fontSize: 19,
-            color: Color(0xFF36454F),
-            letterSpacing: 0.5),
-      ),
-      onTap: onTap,
     );
   }
 

@@ -1,6 +1,7 @@
 import 'package:eautosalon_admin/providers/comment_provider.dart';
 import 'package:eautosalon_admin/screens/news_comments_screen.dart';
 import 'package:eautosalon_admin/utils/dialogs.dart';
+import 'package:eautosalon_admin/utils/util.dart';
 import 'package:eautosalon_admin/widgets/master_screen_editor.dart';
 import 'package:eautosalon_admin/widgets/news_edit_dialog.dart';
 import 'package:flutter/material.dart';
@@ -64,7 +65,7 @@ class _NewsDetailsScreenState extends State<NewsDetailsScreen> {
                                 showDialog(
                                     context: context,
                                     builder: (context) =>
-                                        const EditNewsDialog());
+                                        EditNewsDialog(news: widget.object));
                               },
                               icon: const Icon(Icons.edit,
                                   color: Colors.black, size: 25),
@@ -84,7 +85,7 @@ class _NewsDetailsScreenState extends State<NewsDetailsScreen> {
                       const SizedBox(height: 10),
                       buildAuthorDate(),
                       const SizedBox(height: 15),
-                      Text(text,
+                      Text(widget.object.sadrzaj ?? "No data",
                           style: const TextStyle(
                               color: Colors.blueGrey, fontSize: 17)),
                       const SizedBox(height: 15),
@@ -108,7 +109,12 @@ class _NewsDetailsScreenState extends State<NewsDetailsScreen> {
         ),
         width: double.infinity,
         height: 235,
-        child: const Center(
+        child: widget.object.slika != "" ? 
+        SizedBox(
+          width: double.infinity,
+          child: fromBase64String(widget.object.slika!),
+        )
+        : const Center(
           child: Icon(
             Icons.no_photography,
             size: 50,
@@ -133,8 +139,8 @@ class _NewsDetailsScreenState extends State<NewsDetailsScreen> {
               size: 28,
             ))),
         const SizedBox(width: 10),
-        const Text("A U T H O R",
-            style: TextStyle(
+        Text(widget.object.autor?.toUpperCase() ?? "AUTOR",
+            style: const TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 13,
                 color: Colors.blueGrey)),

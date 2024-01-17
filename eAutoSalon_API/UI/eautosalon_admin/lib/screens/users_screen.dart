@@ -37,7 +37,7 @@ class _UsersScreenState extends State<UsersScreen> {
   @override
   Widget build(BuildContext context) {
     return MasterScreen(
-      floatingEnabled: false,
+        floatingEnabled: false,
         title: 'Korisnici',
         body: isLoading
             ? const Center(child: CircularProgressIndicator())
@@ -49,56 +49,87 @@ class _UsersScreenState extends State<UsersScreen> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          MaterialButton(
-                            onPressed: () {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (builder) =>
-                                      const HomePageScreen()));
-                            },
-                            shape: const CircleBorder(),
-                            padding: const EdgeInsets.all(15),
-                            color: const Color(0xFF248BD6),
-                            child: const Icon(Icons.arrow_back,
-                                color: Colors.white, size: 25),
-                          ),
+                          buildBack(context),
                           _buildSearchBar(),
+                          clearFilters
+                              ? buildClearFilter(context)
+                              : const Text(""),
                         ],
                       ),
                       const SizedBox(height: 25),
                       Center(
-                        child: tableLoading ? const CircularProgressIndicator()
-                        : Container(
-                          padding: const EdgeInsets.all(15),
-                          margin: const EdgeInsets.only(
-                              left: 30, right: 30, top: 30, bottom: 30),
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              border: Border.all(
-                                  width: 0.8, color: Colors.blueGrey)),
-                          child: Column(
-                            children: [
-                              _buildColumnHeader(),
-                              const Divider(
-                                  thickness: 0.4,
-                                  color: Colors.blueGrey,
-                                  indent: 20,
-                                  endIndent: 20),
-                              const SizedBox(height: 10),
-                              _buildDataTable(),
-                              const SizedBox(
-                                height: 20,
+                        child: tableLoading
+                            ? const CircularProgressIndicator()
+                            : Container(
+                                padding: const EdgeInsets.all(15),
+                                margin: const EdgeInsets.only(
+                                    left: 30, right: 30, top: 30, bottom: 30),
+                                width: double.infinity,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    color: Colors.white70
+                                ),
+                                child: Column(
+                                  children: [
+                                    _buildColumnHeader(),
+                                    const Divider(
+                                        thickness: 0.4,
+                                        color: Colors.blueGrey,
+                                        indent: 20,
+                                        endIndent: 20),
+                                    const SizedBox(height: 10),
+                                    _buildDataTable(),
+                                    const SizedBox(
+                                      height: 20,
+                                    ),
+                                    _buildPaging(),
+                                    const SizedBox(height: 10)
+                                  ],
+                                ),
                               ),
-                              _buildPaging(),
-                              const SizedBox(height: 10)
-                            ],
-                          ),
-                        ),
                       )
                     ],
                   ),
                 ),
               ));
+  }
+
+  Tooltip buildClearFilter(BuildContext context) {
+    return Tooltip(
+        message: 'Očisti filtere',
+        child: MaterialButton(
+          color: Colors.blueGrey,
+          shape: const CircleBorder(),
+          padding: const EdgeInsets.all(15),
+          onPressed: () async {
+            try {
+              setState(() {
+                page = 1;
+                _searchController.text = "";
+                clearFilters = false;
+                _disabledButton = true;
+                tableLoading = true;
+              });
+              _loadData();
+            } catch (e) {
+              CustomDialogs.showError(context, e.toString());
+            }
+          },
+          child: const Icon(Icons.cleaning_services, size: 25, color: Colors.white,),
+        ));
+  }
+
+  MaterialButton buildBack(BuildContext context) {
+    return MaterialButton(
+      onPressed: () {
+        Navigator.of(context).push(
+            MaterialPageRoute(builder: (builder) => const HomePageScreen()));
+      },
+      shape: const CircleBorder(),
+      padding: const EdgeInsets.all(15),
+      color: Colors.blueGrey,
+      child: const Icon(Icons.arrow_back, color: Colors.white, size: 25),
+    );
   }
 
   Wrap _buildPaging() {
@@ -107,37 +138,41 @@ class _UsersScreenState extends State<UsersScreen> {
       runSpacing: 20,
       children: [
         ElevatedButton(
-                onPressed: page > 1 ? () {
-                  setState(() {
-                    page--;
-                    tableLoading = true;
-                  });
-                 try {
-                    _loadData();
-                  } catch (e) {
-                    CustomDialogs.showError(context, e.toString());
+            onPressed: page > 1
+                ? () {
+                    setState(() {
+                      page--;
+                      tableLoading = true;
+                    });
+                    try {
+                      _loadData();
+                    } catch (e) {
+                      CustomDialogs.showError(context, e.toString());
+                    }
                   }
-                } : null,
-                style: ElevatedButton.styleFrom(
-                    fixedSize: const Size(100, 35),
-                    backgroundColor: const Color(0xFF248BD6)),
-                child: const Text('Prethodna')),
-            ElevatedButton(
-                onPressed: result != null && result!.hasNext! ? () {
-                  setState(() {
-                    page++;
-                    tableLoading = true;
-                  });
-                  try {
-                    _loadData();
-                  } catch (e) {
-                    CustomDialogs.showError(context, e.toString());
+                : null,
+            style: ElevatedButton.styleFrom(
+                fixedSize: const Size(100, 35),
+                backgroundColor: Colors.blueGrey),
+            child: const Text('Prethodna')),
+        ElevatedButton(
+            onPressed: result != null && result!.hasNext!
+                ? () {
+                    setState(() {
+                      page++;
+                      tableLoading = true;
+                    });
+                    try {
+                      _loadData();
+                    } catch (e) {
+                      CustomDialogs.showError(context, e.toString());
+                    }
                   }
-                } : null,
-                style: ElevatedButton.styleFrom(
-                    fixedSize: const Size(100, 35),
-                    backgroundColor: const Color(0xFF248BD6)),
-                child: const Text('Sljedeća'))
+                : null,
+            style: ElevatedButton.styleFrom(
+                fixedSize: const Size(100, 35),
+                backgroundColor: Colors.blueGrey),
+            child: const Text('Sljedeća'))
       ],
     );
   }
@@ -214,9 +249,9 @@ class _UsersScreenState extends State<UsersScreen> {
                           Navigator.of(context).push(MaterialPageRoute(
                               builder: (builder) => EditUser(user: user)));
                         },
-                        icon: Icon(
+                        icon: const Icon(
                           Icons.edit,
-                          color: Colors.indigo[400],
+                          color: Colors.black54,
                         ),
                       )),
                       DataCell(IconButton(
@@ -245,30 +280,7 @@ class _UsersScreenState extends State<UsersScreen> {
 
   Widget _buildSearchBar() {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.end,
       children: [
-        clearFilters
-            ? Tooltip(
-                message: 'Očisti filtere',
-                child: IconButton(
-                    splashRadius: 5,
-                    onPressed: () async {
-                      try {
-                        setState(() {
-                          page = 1;
-                          _searchController.text = "";
-                          clearFilters = false;
-                          _disabledButton = true;
-                          tableLoading=true;
-                        });
-                        _loadData();
-                      } catch (e) {
-                        CustomDialogs.showError(context, e.toString());
-                      }
-                    },
-                    icon: const Icon(Icons.cleaning_services,
-                        size: 25, color: Color(0xFF248BD6))))
-            : const Text(""),
         const SizedBox(width: 5),
         SizedBox(
           width: 320,
@@ -278,9 +290,11 @@ class _UsersScreenState extends State<UsersScreen> {
             decoration: const InputDecoration(
               prefixIcon: Icon(
                 Icons.search,
-                color: Color(0xFF248BD6),
+                color: Colors.black87,
               ),
               hintText: 'Pretraži korisnike...',
+              focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(10))),
               border: OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(10))),
             ),
@@ -300,17 +314,17 @@ class _UsersScreenState extends State<UsersScreen> {
                       setState(() {
                         page = 1;
                         clearFilters = true;
-                        tableLoading=true;
+                        tableLoading = true;
                       });
-                      
-                     _loadData();
+
+                      _loadData();
                     } catch (e) {
                       CustomDialogs.showError(context, e.toString());
                     }
                   },
             style: ElevatedButton.styleFrom(
               minimumSize: const Size(50, 50),
-              backgroundColor: const Color(0xFF248BD6),
+              backgroundColor: Colors.black87,
             ),
             child: const Text(
               'Pretraga',
@@ -323,11 +337,14 @@ class _UsersScreenState extends State<UsersScreen> {
   void _loadData() async {
     try {
       dynamic params;
-      if(_disabledButton){
-        params = {'page' : page, 'pageSize' : pageSize};
-      }
-      else{
-        params = {'FTS' : _searchController.text, 'page' : page, 'pageSize' : pageSize};
+      if (_disabledButton) {
+        params = {'page': page, 'pageSize': pageSize};
+      } else {
+        params = {
+          'FTS': _searchController.text,
+          'page': page,
+          'pageSize': pageSize
+        };
       }
       var data = await _userProvider.getPaged(params);
       setState(() {

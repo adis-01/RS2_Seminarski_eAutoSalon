@@ -43,7 +43,7 @@ class _NewCarAccessoriesState extends State<NewCarAccessories> {
               children: [
                 MaterialButton(
                   shape: const CircleBorder(),
-                  color: const Color(0xFF248BD6),
+                  color: Colors.blueGrey,
                   padding: const EdgeInsets.all(15),
                   onPressed: (){
                     Navigator.of(context).push(MaterialPageRoute(builder: (builder) => CarDetails(automobil: widget.automobil,)));
@@ -105,7 +105,7 @@ class _NewCarAccessoriesState extends State<NewCarAccessories> {
                     children: [
                       MaterialButton(
                         padding: const EdgeInsets.all(20),
-                        color: const Color(0xFF248BD6),
+                        color: Colors.blueGrey,
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
                         onPressed: (){
                           Navigator.of(context).push(MaterialPageRoute(builder: (builder) => const HomePageScreen()));
@@ -113,7 +113,7 @@ class _NewCarAccessoriesState extends State<NewCarAccessories> {
                         child: const Text("Poništi", style: TextStyle(fontSize: 15, color: Colors.white),)),
                       MaterialButton(
                         padding: const EdgeInsets.all(20),
-                        color: const Color(0xFF248BD6),
+                        color: Colors.blueGrey,
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
                         onPressed: (){
                           setState(() {

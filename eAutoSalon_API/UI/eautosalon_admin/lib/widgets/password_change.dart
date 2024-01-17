@@ -46,13 +46,13 @@ class _PasswordChangeState extends State<PasswordChange> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Icon(Icons.password, size: 25, color: Color(0xFF248BD6),),
+                    const Icon(Icons.password, size: 25, color: Colors.blueGrey,),
                     IconButton(
                       splashRadius: 25,
                       onPressed: (){
                       Navigator.of(context).pop();
                     }, 
-                    icon: const Icon(Icons.close, size: 25, color: Color(0xFF248BD6),)
+                    icon: const Icon(Icons.close, size: 25, color: Colors.blueGrey,)
                     ),
                   ],
                 ),
@@ -136,9 +136,13 @@ class _PasswordChangeState extends State<PasswordChange> {
                   children: [
                     ElevatedButton(onPressed: (){
                       Navigator.of(context).pop();
-                    }, child: 
+                    }, 
+                    style: ElevatedButton.styleFrom(backgroundColor: Colors.blueGrey),
+                    child: 
                     const Text('Poništi', style: TextStyle(color: Colors.white, fontSize: 15))),
-                    ElevatedButton(onPressed: () async{
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(backgroundColor: Colors.blueGrey),
+                      onPressed: () async{
                       if(_formKey.currentState!=null){
                         if(_formKey.currentState!.saveAndValidate()){
                           try {

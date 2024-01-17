@@ -44,14 +44,14 @@ class _FilterCarDialogState extends State<FilterCarDialog> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Icon(Icons.filter_alt_rounded, size: 27, color: Colors.black54,),
+                    const Icon(Icons.filter_alt_rounded, size: 27, color: Colors.blueGrey,),
                     IconButton(
                         splashRadius: 27,
-                        color: const Color(0xFF248BD6),
+                        color: Colors.blueGrey,
                         onPressed: () {
                           Navigator.of(context).pop();
                         },
-                        icon: const Icon(Icons.close, size: 27, color: Colors.black54,))
+                        icon: const Icon(Icons.close, size: 27, color: Colors.blueGrey,))
                   ],
                 ),
                 const SizedBox(height: 5),
@@ -181,7 +181,7 @@ class _FilterCarDialogState extends State<FilterCarDialog> {
       children: [
         MaterialButton(
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
-          color: const Color(0xFF248BD6),
+          color: Colors.blueGrey,
           padding: const EdgeInsets.all(15),
           onPressed: () {
             Navigator.of(context).pop();
@@ -193,7 +193,7 @@ class _FilterCarDialogState extends State<FilterCarDialog> {
         ),
         MaterialButton(
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
-          color: const Color(0xFF248BD6),
+         color: Colors.blueGrey,
           padding: const EdgeInsets.all(15),
           onPressed: () {
             if(_formKey.currentState != null){

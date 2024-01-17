@@ -1,4 +1,5 @@
 
+import 'package:eautosalon_admin/models/author_news.dart';
 import 'package:intl/intl.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -10,9 +11,15 @@ class News{
   String? tip;
   String? naslov;
   String? sadrzaj;
+  String? slika;
   DateTime? datumObjave;
+  KorisnikClanak? korisnik;
 
-  News(this.novostiId, this.tip, this.naslov, this.sadrzaj, this.datumObjave);
+  String? get autor{
+    return "${korisnik?.firstName} ${korisnik?.lastName}";
+  }
+
+  News(this.novostiId, this.tip, this.naslov, this.sadrzaj, this.datumObjave, this.korisnik, this.slika);
 
   String get date{
     return DateFormat('dd-MM-yyyy').format(datumObjave!);

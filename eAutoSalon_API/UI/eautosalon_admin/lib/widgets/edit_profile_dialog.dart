@@ -52,7 +52,7 @@ class _EditProfileState extends State<EditProfile> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Icon(Icons.edit, size: 25, color: Color(0xFF248BD6)),
+                    const Icon(Icons.edit, size: 25, color: Colors.blueGrey),
                     IconButton(
                         splashRadius: 25,
                         onPressed: () {
@@ -61,7 +61,7 @@ class _EditProfileState extends State<EditProfile> {
                         icon: const Icon(
                           Icons.close,
                           size: 25,
-                          color: Color(0xFF248BD6),
+                          color: Colors.blueGrey,
                         )),
                   ],
                 ),
@@ -138,6 +138,7 @@ class _EditProfileState extends State<EditProfile> {
                   runSpacing: 10,
                   children: [
                     ElevatedButton(
+                      style: ElevatedButton.styleFrom(backgroundColor: Colors.blueGrey),
                         onPressed: () {
                           Navigator.of(context).pop();
                         },
@@ -145,6 +146,7 @@ class _EditProfileState extends State<EditProfile> {
                             style:
                                 TextStyle(color: Colors.white, fontSize: 15))),
                     ElevatedButton(
+                      style: ElevatedButton.styleFrom(backgroundColor: Colors.blueGrey),
                         onPressed: () async {
                           if (_formKey.currentState != null) {
                             if (_formKey.currentState!.saveAndValidate()) {

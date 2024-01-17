@@ -61,7 +61,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
                             child: MaterialButton(
                               shape: const CircleBorder(),
                               padding: const EdgeInsets.all(15),
-                              color: const Color(0xFF248BD6),
+                              color: Colors.blueGrey,
                               onPressed: () async{
                                 var result = await showDialog(context: context, builder: (context) => const FilterCarDialog());
                                 if(result!=null){
@@ -83,7 +83,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
                                 child: MaterialButton(
                                   shape: const CircleBorder(),
                                   padding: const EdgeInsets.all(15),
-                                  color: const Color(0xFF248BD6),
+                                  color: Colors.blueGrey,
                                   onPressed: (){
                                     setState(() {
                                       clearFilters=false;
@@ -101,7 +101,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
                             child: MaterialButton(
                               shape: const CircleBorder(),
                               padding: const EdgeInsets.all(15),
-                              color: const Color(0xFF248BD6),
+                              color: Colors.blueGrey,
                               onPressed: (){
                                 Navigator.of(context).push(MaterialPageRoute(builder: (builder) => const PastCarsScreen()));
                               },

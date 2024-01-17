@@ -1,8 +1,12 @@
 
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:eautosalon_admin/models/comment.dart';
 import 'package:eautosalon_admin/providers/comment_provider.dart';
+import 'package:eautosalon_admin/screens/news_screen.dart';
 import 'package:eautosalon_admin/utils/dialogs.dart';
 import 'package:eautosalon_admin/widgets/master_screen_editor.dart';
+import 'package:eautosalon_admin/widgets/new_comment_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -45,7 +49,7 @@ class _CommentsScreenState extends State<CommentsScreen> {
             child: Column(
               children: [
                 Container(
-                  padding: const EdgeInsets.all(25),
+                  padding: const EdgeInsets.all(20),
                   width: 700,
                   decoration: BoxDecoration(
                     border: Border.all(
@@ -64,7 +68,7 @@ class _CommentsScreenState extends State<CommentsScreen> {
                           result?.list.map((Comment item) => buildComment(context, item)).toList() ?? []
                         ) : const Center(child: Text("Nema komentara", style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600, color: Colors.blueGrey),),),
                         const SizedBox(height: 15),
-                        buildCommentBox()
+                        buildCommentButton()
                       ],
                     ),
                   ),
@@ -79,41 +83,23 @@ class _CommentsScreenState extends State<CommentsScreen> {
       isHomePage: false);
   }
 
-  Column buildCommentBox() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.end,
-      children: [
-        SizedBox(
-          width: double.infinity,
-          child: TextField(
-            controller: _commentController,
-            onChanged: (value){
-              setState(() {
-                disableCommentButton = value.isEmpty;
-              });
-            },
-            decoration: InputDecoration(
-              border: OutlineInputBorder(borderRadius: BorderRadius.circular(5)),
-              focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(5)),
-              hintText: 'Napišite komentar...',
-              hintStyle: const TextStyle(color: Colors.blueGrey)
-            ),
-          ),
-        ),
-        const SizedBox(height: 10),
-        SizedBox(
-          width: 130,
-          height: 35,
-          child: ElevatedButton(
-            style: ElevatedButton.styleFrom(backgroundColor: Colors.black87),
-            onPressed: !disableCommentButton ? (){
-            } : null,
-            child: const Text("Komentariši", style: TextStyle(fontSize: 13, color: Colors.white),),
-          ),
-        )
-      ],
-    );
+  Row buildCommentButton() {
+    return Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          MaterialButton(
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                            color: Colors.black54,
+                            padding: const EdgeInsets.all(20),
+                            onPressed: (){
+                              showDialog(context: context, builder: (context) => NewCommentDialog(novostId: widget.novostId));
+                            },
+                            child: const Text("Napišite komentar", style: TextStyle(fontWeight: FontWeight.w500 , color: Colors.white))
+                          ),
+                        ],
+                      );
   }
+
 
   Container buildComment(BuildContext context, Comment item) {
     return Container(
@@ -161,8 +147,9 @@ class _CommentsScreenState extends State<CommentsScreen> {
                                 child: IconButton( 
                                   splashRadius: 20,
                                   onPressed: (){
-                                    CustomDialogs.showQuestion(context, 'Izbrisati komentar korisnika ${item.komKorisnik}?', () {
-
+                                    CustomDialogs.showQuestion(context, 'Izbrisati komentar korisnika ${item.komKorisnik}?', () async{
+                                        await _komentarProvider.delete(item.komentarId!);
+                                        Navigator.of(context).push(MaterialPageRoute(builder: (builder) => const NewsScreen()));
                                      });
                                   },
                                   icon: Icon(Icons.delete, color: Colors.red[300], size: 22)

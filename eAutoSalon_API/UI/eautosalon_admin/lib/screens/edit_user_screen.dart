@@ -213,7 +213,7 @@ class _EditUserState extends State<EditUser> {
           },
           style: ElevatedButton.styleFrom(
               fixedSize: const Size(80, 40),
-              backgroundColor: const Color(0xFF248BD6)),
+              backgroundColor: Colors.black87),
           child: const Text('Spasi')),
     );
   }
@@ -224,7 +224,7 @@ class _EditUserState extends State<EditUser> {
       children: [
         MaterialButton(
           shape: const CircleBorder(),
-          color: const Color(0xFF248BD6),
+          color: Colors.blueGrey,
           padding: const EdgeInsets.all(15),
           onPressed: () {
             Navigator.of(context).pop();

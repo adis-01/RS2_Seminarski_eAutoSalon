@@ -363,7 +363,7 @@ class _NewCarScreenState extends State<NewCarScreen> {
       children: [
         MaterialButton(
           padding: const EdgeInsets.all(15),
-          color: const Color(0xFF248BD6),
+          color: Colors.blueGrey,
           shape: const CircleBorder(),
           onPressed: () {
             Navigator.of(context).pop();
@@ -377,7 +377,7 @@ class _NewCarScreenState extends State<NewCarScreen> {
   Widget buildButtons(BuildContext context) {
     return ElevatedButton(
         style: ElevatedButton.styleFrom(
-            backgroundColor: const Color(0xFF248BD6),
+            backgroundColor: Colors.blueGrey,
             minimumSize: const Size(100, 50)),
         onPressed: () async {
           if (_formKey.currentState != null) {

@@ -57,12 +57,12 @@ class _EditCarState extends State<EditCar> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Icon(Icons.settings, color: Color(0xFF248BD6), size: 25),
+                    const Icon(Icons.settings, color: Colors.blueGrey, size: 25),
                     IconButton(
                       splashRadius: 20,
                       onPressed: (){
                         Navigator.of(context).pop();
-                      }, icon: const Icon(Icons.close, size: 25, color: Color(0xFF248BD6),))
+                      }, icon: const Icon(Icons.close, size: 25, color: Colors.blueGrey,))
                   ],
                 ),
                 const Divider(thickness: 0.3, color: Colors.blueGrey, height: 25),
@@ -83,13 +83,13 @@ class _EditCarState extends State<EditCar> {
                 runSpacing: 15,
                 children: [
                   ElevatedButton(
-                    style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFF248BD6), minimumSize: const Size(75,40)),
+                    style: ElevatedButton.styleFrom(backgroundColor: Colors.blueGrey, minimumSize: const Size(75,40)),
                     onPressed: (){
                     Navigator.of(context).pop();
                   }, child: const Text('Poništi')),
 
                   ElevatedButton(
-                    style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFF248BD6), minimumSize: const Size(75,40)),
+                    style: ElevatedButton.styleFrom(backgroundColor: Colors.blueGrey, minimumSize: const Size(75,40)),
                     onPressed: () async{
                       if(_formKey.currentState != null){
                         if(_formKey.currentState!.saveAndValidate()){

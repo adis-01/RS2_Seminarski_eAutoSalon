@@ -97,7 +97,7 @@ class _EmployeePictureChangeState extends State<EmployeePictureChange> {
                         },
                         style: ElevatedButton.styleFrom(
                           fixedSize: const Size(80, 40),
-                          backgroundColor: const Color(0xFF248BD6),
+                         backgroundColor: Colors.blueGrey,
                         ),
                         child: const Text(
                           'Poništi',
@@ -123,7 +123,7 @@ class _EmployeePictureChangeState extends State<EmployeePictureChange> {
                         },
                         style: ElevatedButton.styleFrom(
                             fixedSize: const Size(80, 40),
-                            backgroundColor: const Color(0xFF248BD6)),
+                           backgroundColor: Colors.blueGrey),
                         child: const Text('Dodaj'))
                   ],
                 )
@@ -142,7 +142,7 @@ class _EmployeePictureChangeState extends State<EmployeePictureChange> {
             onPressed: () {
               Navigator.of(context).pop();
             },
-            icon: const Icon(Icons.close, size: 25, color: Color(0xFF248BD6)))
+            icon: const Icon(Icons.close, size: 25, color: Colors.blueGrey))
       ],
     );
   }

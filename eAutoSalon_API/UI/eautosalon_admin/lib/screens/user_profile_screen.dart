@@ -92,87 +92,111 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                           child: user.slika != "" ? fromBase64String(user.slika!) : Image.asset("assets/images/no_profile_pic.png"),
                         ),
                         const SizedBox(height: 20),
-                        Text('${user.firstName ?? "null"} ${user.lastName ?? "null"}',  textAlign: TextAlign.center,
-                        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20, color: Colors.black87),
-                        ),
-                        const SizedBox(height: 25),
-                        SizedBox(
-                          width: 350,
-                          child: TextField(
-                            readOnly: true,
-                            decoration: InputDecoration(
-                              filled: true,
-                              fillColor: const Color(0xFFC6CDFF),
-                              border: const OutlineInputBorder(),
-                              hintText: user.email ?? "null",
-                              hintStyle: const TextStyle(color: Colors.black, fontWeight: FontWeight.w600),
-                              prefixIcon: const Icon(Icons.mail,size:25, color: Colors.black87,),
-
+                        Text(user.email ?? "no_mail@unknown.com",
+                         textAlign: TextAlign.center,
+                         style: const TextStyle(fontSize: 18, letterSpacing: 1.5, color: Colors.blueGrey, fontWeight: FontWeight.w500),
+                         ),
+                        const SizedBox(height: 20),
+                        Container(
+                          width: 400,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8),
+                            border: Border.all(
+                              color: Colors.black54,
+                              width: 0.3
                             ),
                           ),
+                          padding: const EdgeInsets.all(10),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text("Ime i prezime", style: TextStyle(fontSize: 15, color: Colors.blueGrey, letterSpacing: 1),),
+                              const SizedBox(height: 5),
+                              Text("${user.firstName ?? "null"} ${user.lastName ?? "null"}",
+                              style: const TextStyle(color: Colors.black87, fontSize: 16, letterSpacing: 1.5, fontWeight: FontWeight.bold))
+                            ],
+                          ),
                         ),
-                        const SizedBox(height: 20),
-                        SizedBox(
-                          width: 350,
-                          child: TextField(
-                            readOnly: true,
-                            decoration: InputDecoration(
-                              filled: true,
-                              fillColor: const Color(0xFFC6CDFF),
-                              border: const OutlineInputBorder(),
-                              hintText: Authorization.username ?? "null",
-                              hintStyle: const TextStyle(color: Colors.black, fontWeight: FontWeight.w600),
-                              prefixIcon: const Icon(Icons.person_outline_outlined,size:25, color: Colors.black87,)
+                        const SizedBox(height: 25),
+                        Container(
+                          width: 400,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8),
+                            border: Border.all(
+                              color: Colors.black54,
+                              width: 0.3
                             ),
+                          ),
+                          padding: const EdgeInsets.all(10),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text("Username", style: TextStyle(fontSize: 15, color: Colors.blueGrey, letterSpacing: 1),),
+                              const SizedBox(height: 5),
+                              Text(user.username ?? "null",
+                              style: const TextStyle(color: Colors.black87, fontSize: 16, letterSpacing: 1.5, fontWeight: FontWeight.bold))
+                            ],
                           ),
                         ),
                         const SizedBox(height: 30),
-                        Wrap(
-                          runSpacing: 10,
-                          spacing: 35,
-                          children: [
-                            Tooltip(
-                              message: 'Promijeni password',
-                              child: IconButton(
-                                splashRadius: 30,
-                                iconSize: 30,
-                                splashColor: const Color(0xFF83B8FF),
-                                onPressed: (){
-                                  showDialog(context: context, builder: (context){
-                                    return PasswordChange(korisnikId: user.korisnikId!,);
-                                  });
-                                },
-                                icon: const Icon(Icons.password, color: Color(0xFF248BD6)),
-                              ),
-                            ),
-                            Tooltip(
-                              message: 'Uredi profil',
-                              child: IconButton(
-                                splashRadius: 30,
-                                iconSize: 30,
-                                splashColor: const Color(0xFF83B8FF),
-                                onPressed: (){
-                                  showDialog(context: context, builder: (context){
-                                    return EditProfile(user: user);
-                                  });
-                                },
-                                icon: const Icon(Icons.edit, color: Color(0xFF248BD6)),
-                              ),
-                            ),
-                            Tooltip(
-                              message: 'Promijeni sliku',
-                              child: IconButton(
-                                splashRadius: 30,
-                                iconSize: 30,
-                                splashColor: const Color(0xFF83B8FF),
-                                onPressed: (){
-                                  showDialog(context: context, builder: (context){
-                                    return UserPicture(korisnikId: user.korisnikId!);
-                                  });
-                                }, 
-                              icon: const Icon(Icons.camera_alt, color: Color(0xFF248BD6))),
+                        Container(
+                          width: 400,
+                          padding: const EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(
+                              color: Colors.black54,
+                              width: 0.3
                             )
-                          ],
+                          ),
+                          child: Wrap(
+                            alignment: WrapAlignment.center,
+                            runSpacing: 10,
+                            spacing: 35,
+                            children: [
+                              Tooltip(
+                                message: 'Promijeni password',
+                                child: IconButton(
+                                  splashRadius: 30,
+                                  iconSize: 30,
+                                  splashColor: const Color(0xFF83B8FF),
+                                  onPressed: (){
+                                    showDialog(context: context, builder: (context){
+                                      return PasswordChange(korisnikId: user.korisnikId!,);
+                                    });
+                                  },
+                                  icon: const Icon(Icons.password, color: Colors.blueGrey),
+                                ),
+                              ),
+                              Tooltip(
+                                message: 'Uredi profil',
+                                child: IconButton(
+                                  splashRadius: 30,
+                                  iconSize: 30,
+                                  splashColor: const Color(0xFF83B8FF),
+                                  onPressed: (){
+                                    showDialog(context: context, builder: (context){
+                                      return EditProfile(user: user);
+                                    });
+                                  },
+                                  icon: const Icon(Icons.edit, color: Colors.blueGrey),
+                                ),
+                              ),
+                              Tooltip(
+                                message: 'Promijeni sliku',
+                                child: IconButton(
+                                  splashRadius: 30,
+                                  iconSize: 30,
+                                  splashColor: const Color(0xFF83B8FF),
+                                  onPressed: (){
+                                    showDialog(context: context, builder: (context){
+                                      return UserPicture(korisnikId: user.korisnikId!);
+                                    });
+                                  }, 
+                                icon: const Icon(Icons.camera_alt, color: Colors.blueGrey)),
+                              )
+                            ],
+                          ),
                         ),
                         const SizedBox(height: 25),
                       ],
@@ -184,11 +208,11 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
   
   Row _buildBack(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
         MaterialButton(
           shape: const CircleBorder(),
-          color: const Color(0xFF248BD6),
+          color: Colors.blueGrey,
           padding: const EdgeInsets.all(15),
           onPressed: () {
             Navigator.of(context).push(
@@ -201,33 +225,6 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
             color: Colors.white,
           ),
         ),
-        Tooltip(
-          message: 'Izbriši profil',
-          child: MaterialButton(
-            shape: const CircleBorder(),
-            color: const Color(0xFF248BD6),
-            padding: const EdgeInsets.all(15),
-            onPressed: () {
-              CustomDialogs.showQuestion(context, 'Da li ste sigurni da želite izbrisati svoj profil?', () async{ 
-                try {
-                  await _userProvider.delete(user.korisnikId!);
-                Authorization.username = "";
-                Authorization.password="";
-                Navigator.of(context).push(
-                  MaterialPageRoute(builder: (builder) => const LoginScreen())
-                );
-                } catch (e) {
-                  CustomDialogs.showError(context, e.toString());
-                }
-              });
-            },
-            child: const Icon(
-              Icons.delete_forever_sharp,
-              size: 25,
-              color: Colors.white,
-            ),
-          ),
-        )
       ],
     );
   }

@@ -3,6 +3,7 @@ import 'package:eautosalon_admin/models/news.dart';
 import 'package:eautosalon_admin/models/search_result.dart';
 import 'package:eautosalon_admin/providers/news_provider.dart';
 import 'package:eautosalon_admin/screens/news_details_screen.dart';
+import 'package:eautosalon_admin/screens/user_profile_screen.dart';
 import 'package:eautosalon_admin/screens/your_news_screen.dart';
 import 'package:eautosalon_admin/utils/dialogs.dart';
 import 'package:eautosalon_admin/utils/util.dart';
@@ -36,7 +37,7 @@ class _NewsScreenState extends State<NewsScreen> {
   Widget build(BuildContext context) {
     return EditorMasterScreen(
       isHomePage: true,
-      title: 'Novosti',
+      title: 'Novosti drugih urednika',
        body: isLoading ? const Center(child: CircularProgressIndicator()) :
         SingleChildScrollView(
          child: Center(
@@ -45,7 +46,7 @@ class _NewsScreenState extends State<NewsScreen> {
             child: Column(
               children: [
               buildEditorsNews(),
-              const SizedBox(height: 10),
+              const SizedBox(height: 20),
               Wrap(
                 spacing: 15,
                 runSpacing: 10,
@@ -63,20 +64,17 @@ class _NewsScreenState extends State<NewsScreen> {
 
   Row buildEditorsNews() {
     return Row(
-              mainAxisAlignment: MainAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Tooltip(
-                  message: 'Vaše novosti',
-                  child: MaterialButton(
-                    color: const Color(0xFF248BD6),
-                    padding: const EdgeInsets.all(25),
-                    shape: const CircleBorder(),
+                  MaterialButton(
+                    color: Colors.blueGrey,
+                    padding: const EdgeInsets.all(20),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                     onPressed: (){
                       Navigator.of(context).push(MaterialPageRoute(builder: (builder) => const EditorsNewsScreen()));
                     },
-                    child: const Icon(Icons.newspaper_outlined, color: Colors.white, size: 25,),
+                    child: const Text("VAŠE NOVOSTI", style: TextStyle(fontSize: 14, letterSpacing: 1.3, color: Colors.white),),
                   ),
-                )
               ],
           );
   }
@@ -97,12 +95,16 @@ class _NewsScreenState extends State<NewsScreen> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const SizedBox(
+                      item.slika == "" ?  const SizedBox(
                       width: double.infinity,
                       height: 150,
                       child: Center(
                         child: Icon(Icons.no_photography, size: 50, color: Colors.black),
                       ),
+                    ) : SizedBox(
+                      width: double.infinity,
+                      height: 150,
+                      child: fromBase64String(item.slika!),
                     ),
                     const SizedBox(height: 15),
                     Text(item.naslov ?? "null", style: const TextStyle(color: Colors.blueGrey, fontWeight: FontWeight.bold, fontSize: 17)),
@@ -116,7 +118,7 @@ class _NewsScreenState extends State<NewsScreen> {
                       children: [
                         Text(item.tip ?? "null", style: const TextStyle(fontSize: 14, color: Colors.blueGrey, fontStyle: FontStyle.italic)),
                         Tooltip(
-                          message: 'Detalji',
+                          message: 'Više',
                           child: Container(
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),

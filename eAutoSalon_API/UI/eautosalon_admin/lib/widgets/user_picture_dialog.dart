@@ -53,11 +53,11 @@ class _UserPictureState extends State<UserPicture> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Icon(Icons.camera_alt, color: Color(0xFF248BD6), size: 25),
+                    const Icon(Icons.camera_alt, color: Colors.blueGrey, size: 25),
                     IconButton(
                       onPressed: (){
                       Navigator.of(context).pop();
-                    }, icon: const Icon(Icons.close, color: Color(0xFF248BD6),size: 25)),
+                    }, icon: const Icon(Icons.close, color: Colors.blueGrey,size: 25)),
                   ],
                 ),
                 const SizedBox(height: 15),
@@ -113,11 +113,15 @@ class _UserPictureState extends State<UserPicture> {
                 spacing: 50,
                 runSpacing: 10,
                 children: [
-                  ElevatedButton(onPressed: (){
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(backgroundColor: Colors.blueGrey),
+                    onPressed: (){
                     Navigator.of(context).pop();
                   }, child: 
                   const Text('Poništi', style: TextStyle(color: Colors.white, fontSize: 15))),
-                  ElevatedButton(onPressed: () async{
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(backgroundColor: Colors.blueGrey),
+                    onPressed: () async{
                     if(_formKey.currentState!=null){
                       if(_formKey.currentState!.saveAndValidate()){
                         Map<String,dynamic> map = Map.from(_formKey.currentState!.value);

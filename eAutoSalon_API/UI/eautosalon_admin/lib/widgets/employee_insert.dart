@@ -229,7 +229,7 @@ class _InsertEmployeeState extends State<InsertEmployee> {
             icon: const Icon(
               Icons.close,
               size: 25,
-              color: Color(0xFF248BD6),
+              color: Colors.blueGrey,
             ))
       ],
     );
@@ -237,7 +237,7 @@ class _InsertEmployeeState extends State<InsertEmployee> {
 
   Row _buildButtons(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         ElevatedButton(
             onPressed: () {
@@ -245,26 +245,21 @@ class _InsertEmployeeState extends State<InsertEmployee> {
             },
             style: ElevatedButton.styleFrom(
               fixedSize: const Size(80, 40),
-              backgroundColor: const Color(0xFF248BD6),
+              backgroundColor: Colors.blueGrey,
             ),
             child: const Text(
               'Poništi',
               style: TextStyle(fontSize: 15),
             )),
+        const SizedBox(width:50),
         ElevatedButton(
             onPressed: () async {
-              setState(() {
-                insertLoading = true;
-              });
               try {
                 if(_formKey.currentState != null){
                   if(_formKey.currentState!.saveAndValidate()){
                     Map<String,dynamic> map = Map.from(_formKey.currentState!.value);
                     map['slikaBase64'] = base64image;
                     await _employeeProvider.insert(map);
-                    setState(() {
-                      insertLoading=false;
-                    });
                     CustomDialogs.showSuccess(context, 'Uspješno dodan novi uposlenik', () {
                       Navigator.of(context).push(
                         MaterialPageRoute(builder: (builder) => const EmployeesScreen())
@@ -281,7 +276,7 @@ class _InsertEmployeeState extends State<InsertEmployee> {
             },
             style: ElevatedButton.styleFrom(
                 fixedSize: const Size(80, 40),
-                backgroundColor: const Color(0xFF248BD6)),
+                backgroundColor: Colors.blueGrey),
             child: const Text('Dodaj'))
       ],
     );

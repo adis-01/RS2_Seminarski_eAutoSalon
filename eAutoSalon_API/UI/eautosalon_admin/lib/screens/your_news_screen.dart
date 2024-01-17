@@ -78,11 +78,15 @@ class _EditorsNewsScreenState extends State<EditorsNewsScreen> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const SizedBox(
+                        SizedBox(
                       width: double.infinity,
                       height: 150,
-                      child: Center(
+                      child: news.slika == "" ? const Center(
                         child: Icon(Icons.no_photography, size: 50, color: Colors.black),
+                      ) : SizedBox(
+                        height: 150,
+                        width: double.infinity,
+                        child: fromBase64String(news.slika!),
                       ),
                     ),
                     const SizedBox(height: 15),
@@ -101,7 +105,7 @@ class _EditorsNewsScreenState extends State<EditorsNewsScreen> {
                       color: Colors.blueGrey,
                       fontStyle: FontStyle.italic)),
               Tooltip(
-                message: 'Detalji',
+                message: 'Više',
                 child: Container(
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),

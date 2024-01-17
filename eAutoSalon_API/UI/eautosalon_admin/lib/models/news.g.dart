@@ -14,6 +14,10 @@ News _$NewsFromJson(Map<String, dynamic> json) => News(
       json['datumObjave'] == null
           ? null
           : DateTime.parse(json['datumObjave'] as String),
+      json['korisnik'] == null
+          ? null
+          : KorisnikClanak.fromJson(json['korisnik'] as Map<String, dynamic>),
+      json['slika'] as String?,
     );
 
 Map<String, dynamic> _$NewsToJson(News instance) => <String, dynamic>{
@@ -21,5 +25,7 @@ Map<String, dynamic> _$NewsToJson(News instance) => <String, dynamic>{
       'tip': instance.tip,
       'naslov': instance.naslov,
       'sadrzaj': instance.sadrzaj,
+      'slika': instance.slika,
       'datumObjave': instance.datumObjave?.toIso8601String(),
+      'korisnik': instance.korisnik,
     };

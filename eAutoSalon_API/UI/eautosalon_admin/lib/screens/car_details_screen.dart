@@ -102,7 +102,7 @@ class _CarDetailsState extends State<CarDetails> {
                   },
                   style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                      backgroundColor: const Color(0xFF248BD6),
+                      backgroundColor: Colors.blueGrey,
                       minimumSize: const Size(60, 45)),
                   child: const Text("Dodatna oprema",
                       style: TextStyle(color: Colors.white))),
@@ -124,7 +124,7 @@ class _CarDetailsState extends State<CarDetails> {
                     },
                     style: ElevatedButton.styleFrom(
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                        backgroundColor: const Color(0xFF248BD6),
+                        backgroundColor: Colors.blueGrey,
                         minimumSize: const Size(60, 45)),
                     child: const Text("Promijeni status",
                         style: TextStyle(color: Colors.white))),
@@ -204,7 +204,7 @@ class _CarDetailsState extends State<CarDetails> {
 
   Row buildIconButtons() {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      mainAxisAlignment: MainAxisAlignment.end,
       children: [
         Tooltip(
           message: 'Uredi',
@@ -219,34 +219,11 @@ class _CarDetailsState extends State<CarDetails> {
             },
             icon: const Icon(
               Icons.edit,
-              color:  Color(0xFF248BAE),
+              color:  Colors.blueGrey,
               size: 25,
             ),
           ),
         ),
-        Tooltip(
-          message: 'Obriši',
-          child: IconButton(
-            splashRadius: 5,
-            onPressed: () {
-              CustomDialogs.showQuestion(
-                  context, 'Da li želite izbrisati automobil?', () async {
-                try {
-                  await _carProvider.delete(widget.automobil.automobilId!);
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (builder) => const HomePageScreen()));
-                } catch (e) {
-                  CustomDialogs.showError(context, e.toString());
-                }
-              });
-            },
-            icon: Icon(
-              Icons.delete,
-              color: Colors.red[300],
-              size: 25,
-            ),
-          ),
-        )
       ],
     );
   }
@@ -254,7 +231,7 @@ class _CarDetailsState extends State<CarDetails> {
   Widget buildBack(BuildContext context) {
     return MaterialButton(
       shape: const CircleBorder(),
-      color: const Color(0xFF248BD6),
+      color: Colors.blueGrey,
       padding: const EdgeInsets.all(15),
       onPressed: () {
         Navigator.of(context).push(

@@ -29,28 +29,46 @@ class _MasterScreenState extends State<MasterScreen> {
       floatingActionButton: widget.floatingEnabled ? 
       FloatingActionButton(
         tooltip: 'Dodaj',
-        backgroundColor: const Color(0xFF0F6BAE),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+        backgroundColor: Colors.blueGrey,
         onPressed: widget.onFloatingPressed,
         child: const Icon(Icons.add, size: 25, color: Colors.white,),
       ) : null, 
       appBar: AppBar(
-        actions: const [
-          Padding(
-            padding: EdgeInsets.all(15),
-            child: Icon(
-              Icons.directions_car_rounded,
-              size: 30,
+        actions: [
+          Tooltip(
+            message: 'Početna stranica',
+            child: IconButton(
+              hoverColor: Colors.black26,
+              padding: const EdgeInsets.all(15),
+              onPressed: (){
+                Navigator.of(context).push(MaterialPageRoute(builder: (builder) => const HomePageScreen()));
+              }, 
+              icon: const Icon(Icons.home, color: Colors.white, size: 25)),
+          ),
+          const SizedBox(width: 25),
+          Container(
+            margin: const EdgeInsets.only(right: 20),
+            child: Tooltip(
+              message: 'Odjavi se',
+              child: IconButton(
+                hoverColor: Colors.black26,
+                onPressed: (){
+                  CustomDialogs.showQuestion(context, 'Da li ste sigurni da se želite odjaviti?', () { 
+                    _logOut();
+                    Navigator.of(context).push(MaterialPageRoute(builder: (builder) => const LoginScreen()));
+                  });
+                },
+                icon: const Icon(Icons.logout, color: Colors.white, size: 25),
+              ),
             ),
           )
         ],
-        backgroundColor: const Color(0xFF0F6BAE),
-        toolbarOpacity: 0.7,
+        backgroundColor: Colors.black87,
         centerTitle: true,
         elevation: 3,
-        title: Text(widget.title,
+        title: Text(widget.title.toUpperCase(),
             style: const TextStyle(
-                fontSize: 25, letterSpacing: 0.9, fontWeight: FontWeight.w700)),
+                fontSize: 22, letterSpacing: 3.5, fontWeight: FontWeight.w700, color: Colors.white70)),
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
             bottomLeft: Radius.circular(8),
@@ -60,45 +78,39 @@ class _MasterScreenState extends State<MasterScreen> {
       ),
       drawer: Drawer(
         width: 400,
-        backgroundColor: const Color(0xFFC6CDFF),
+        backgroundColor: Colors.grey[900],
         shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.only(
           topRight: Radius.circular(8),
           bottomRight: Radius.circular(8),
         )),
         child: ListView(
-          padding: const EdgeInsets.all(15),
+          padding: const EdgeInsets.all(20),
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Icon(Icons.navigation, size: 30, color: Colors.blueGrey),
+                const Text("eAutoSalon", style: TextStyle(fontSize: 15, color: Colors.white, letterSpacing: 2.5)),
                 IconButton(
-                    splashRadius: 30,
+                    splashRadius: 20,
+                    hoverColor: Colors.black45,
                     onPressed: () {
                       Navigator.of(context).pop();
                     },
                     icon: const Icon(
                       Icons.close_outlined,
-                      color: Colors.blueGrey,
-                      size: 30,
+                      color: Colors.white,
+                      size: 25,
                     ))
               ],
             ),
             const SizedBox(height: 15),
-            const Text('eAutoSalon',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                    fontWeight: FontWeight.w800,
-                    fontSize: 30,
-                    color: Colors.blueGrey)),
-            const SizedBox(height: 15),
-            const Divider(
-                color: Colors.black54,
-                thickness: 0.5,
-                indent: 10,
-                endIndent: 10),
-            const SizedBox(height: 15),
+            const Center(
+              child: Icon(
+                Icons.directions_car_outlined, size: 45, color: Colors.white,
+              ),
+            ),
+            const SizedBox(height: 45),
             buildListTile('Automobili', Icons.directions_car, () {
               Navigator.of(context).push(MaterialPageRoute(
                   builder: (builder) => const HomePageScreen()));
@@ -121,16 +133,16 @@ class _MasterScreenState extends State<MasterScreen> {
              }),
             const SizedBox(height: 15),
             ListTile(
-              contentPadding: const EdgeInsets.only(left: 22),
+              hoverColor: Colors.black45,
+              contentPadding: const EdgeInsets.only(left: 20),
               leading: Image.asset("assets/images/steering_wheel.png",
-                  width: 35, color: const Color(0xFF2488D6)),
+                  width: 25, color: Colors.white),
               title: const Text(
-                'Testne vožnje',
+                'TESTNE VOŽNJE',
                 style: TextStyle(
-                    fontWeight: FontWeight.w700,
-                    fontSize: 19,
-                    color: Color(0xFF36454F),
-                    letterSpacing: 0.5),
+                    fontSize: 17,
+                    color: Colors.white,
+                    letterSpacing: 2.5),
               ),
               onTap: () {
                 Navigator.of(context).push(
@@ -140,13 +152,13 @@ class _MasterScreenState extends State<MasterScreen> {
             ),
             const SizedBox(height: 15),
             buildListTile('Izvještaj', Icons.report, () {}),
-            const SizedBox(height: 15),
+            const SizedBox(height: 20),
             const Divider(
-                color: Colors.black54,
-                thickness: 0.5,
-                indent: 10,
-                endIndent: 10),
-            const SizedBox(height: 15),
+                color: Colors.white,
+                thickness: 0.6,
+                indent: 15,
+                endIndent: 15),
+            const SizedBox(height: 20),
             buildListTile('Odjava', Icons.logout, () {
               CustomDialogs.showQuestion(
                   context, 'Da li ste sigurni da se želite odjaviti?', () {
@@ -164,17 +176,17 @@ class _MasterScreenState extends State<MasterScreen> {
 
   ListTile buildListTile(String text, IconData icon, VoidCallback onTap) {
     return ListTile(
-      contentPadding: const EdgeInsets.only(left: 22),
+      hoverColor: Colors.black45,
+      contentPadding: const EdgeInsets.only(left: 20),
       leading: Icon(icon,
-          size: 35, color: const Color(0xFF2488D6) //Color(0xFF7D5BA6),
+          size: 25, color: Colors.white,
           ),
       title: Text(
-        text,
+        text.toUpperCase(),
         style: const TextStyle(
-            fontWeight: FontWeight.w700,
-            fontSize: 19,
-            color: Color(0xFF36454F),
-            letterSpacing: 0.5),
+            fontSize: 17,
+            color: Colors.white,
+            letterSpacing: 2.5),
       ),
       onTap: onTap,
     );

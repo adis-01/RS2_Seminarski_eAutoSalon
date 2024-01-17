@@ -6,6 +6,8 @@ import 'package:eautosalon_admin/models/search_result.dart';
 import 'package:eautosalon_admin/providers/base_provider.dart';
 import 'package:http/http.dart' as http;
 
+import '../utils/util.dart';
+
 class KomentarProvider extends BaseProvider<Comment>{
   KomentarProvider() : super("Komentari");
 
@@ -43,6 +45,23 @@ class KomentarProvider extends BaseProvider<Comment>{
       var data = jsonDecode(req.body);
       count = data;
       return count;
+    }
+    else{
+      throw Exception('Greška...');
+    }
+  }
+
+    Future<int> getUserId() async{
+    String username = Authorization.username ?? "";
+    var url = "${baseUrl}Novosti/userID?username=$username";
+    var uri = Uri.parse(url);
+    var headers = createHeaders();
+
+    var req = await http.get(uri, headers: headers);
+    if(isValidResponse(req)){
+      var data = jsonDecode(req.body);
+      int id = data;
+      return id;
     }
     else{
       throw Exception('Greška...');

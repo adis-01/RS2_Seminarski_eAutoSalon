@@ -40,10 +40,18 @@ namespace eAutoSalon_API.Controllers
             return await _service.getOstale(username, search);
         }
 
-        [Authorize(Roles ="Urednik")]
+        [Authorize(Roles ="Korisnik")]
         public override async Task<VMNovosti> Update(int id, [FromBody] NovostUpdate req)
         {
             return await base.Update(id, req);
         }
+
+        [Authorize(Roles = "Korisnik")]
+        [HttpGet("userID")]
+        public async Task<int> getUserId([FromQuery] string username)
+        {
+            return await _service.getUserId(username);
+        }
+            
     }
 }

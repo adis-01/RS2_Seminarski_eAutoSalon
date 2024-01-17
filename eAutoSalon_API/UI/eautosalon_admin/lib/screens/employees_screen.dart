@@ -51,7 +51,7 @@ class _EmployeesScreenState extends State<EmployeesScreen> {
                       children: [
                         MaterialButton(
                           shape: const CircleBorder(),
-                          color: const Color(0xFF248BD6),
+                          color: Colors.blueGrey,
                           padding: const EdgeInsets.all(15),
                           onPressed: () {
                             Navigator.of(context).push(MaterialPageRoute(
@@ -93,7 +93,7 @@ class _EmployeesScreenState extends State<EmployeesScreen> {
       padding: const EdgeInsets.all(15),
       width: 280,
       decoration: const BoxDecoration(
-          color: Color(0xFFC6CDFF),
+          color: Color(0xFFC4C4C4),
           borderRadius: BorderRadius.only(
               topLeft: Radius.circular(10), bottomRight: Radius.circular(10))),
       child: SingleChildScrollView(
