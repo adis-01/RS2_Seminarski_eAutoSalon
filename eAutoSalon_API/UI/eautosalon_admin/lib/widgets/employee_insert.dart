@@ -213,16 +213,9 @@ class _InsertEmployeeState extends State<InsertEmployee> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        const Text(
-          'Uposlenik',
-          style: TextStyle(
-              fontSize: 23,
-              fontWeight: FontWeight.w700,
-              fontStyle: FontStyle.italic,
-              letterSpacing: 0.3,
-              color: Colors.blueGrey),
-        ),
+        const Icon(Icons.business, color: Colors.blueGrey, size: 25,),
         IconButton(
+          splashRadius: 25,
             onPressed: () {
               Navigator.of(context).pop();
             },
@@ -239,45 +232,36 @@ class _InsertEmployeeState extends State<InsertEmployee> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        ElevatedButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            style: ElevatedButton.styleFrom(
-              fixedSize: const Size(80, 40),
-              backgroundColor: Colors.blueGrey,
-            ),
-            child: const Text(
-              'Poništi',
-              style: TextStyle(fontSize: 15),
-            )),
-        const SizedBox(width:50),
-        ElevatedButton(
-            onPressed: () async {
-              try {
-                if(_formKey.currentState != null){
-                  if(_formKey.currentState!.saveAndValidate()){
-                    Map<String,dynamic> map = Map.from(_formKey.currentState!.value);
-                    map['slikaBase64'] = base64image;
-                    await _employeeProvider.insert(map);
-                    CustomDialogs.showSuccess(context, 'Uspješno dodan novi uposlenik', () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(builder: (builder) => const EmployeesScreen())
-                      );
-                     });
+        SizedBox(
+          width: 200,
+          height: 43,
+          child: MaterialButton(
+              onPressed: () async {
+                try {
+                  if(_formKey.currentState != null){
+                    if(_formKey.currentState!.saveAndValidate()){
+                      Map<String,dynamic> map = Map.from(_formKey.currentState!.value);
+                      map['slikaBase64'] = base64image;
+                      await _employeeProvider.insert(map);
+                      CustomDialogs.showSuccess(context, 'Uspješno dodan novi uposlenik', () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(builder: (builder) => const EmployeesScreen())
+                        );
+                       });
+                    }
                   }
+                } catch (e) {
+                  setState(() {
+                    insertLoading=false;
+                  });
+                  CustomDialogs.showError(context, e.toString());
                 }
-              } catch (e) {
-                setState(() {
-                  insertLoading=false;
-                });
-                CustomDialogs.showError(context, e.toString());
-              }
-            },
-            style: ElevatedButton.styleFrom(
-                fixedSize: const Size(80, 40),
-                backgroundColor: Colors.blueGrey),
-            child: const Text('Dodaj'))
+              },
+              color: Colors.blueGrey,
+              padding: const EdgeInsets.all(10),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+              child: const Text('Dodaj', style: TextStyle(color: Colors.white, fontSize: 17),)),
+        )
       ],
     );
   }

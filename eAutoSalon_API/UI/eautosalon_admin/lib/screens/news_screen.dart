@@ -3,7 +3,6 @@ import 'package:eautosalon_admin/models/news.dart';
 import 'package:eautosalon_admin/models/search_result.dart';
 import 'package:eautosalon_admin/providers/news_provider.dart';
 import 'package:eautosalon_admin/screens/news_details_screen.dart';
-import 'package:eautosalon_admin/screens/user_profile_screen.dart';
 import 'package:eautosalon_admin/screens/your_news_screen.dart';
 import 'package:eautosalon_admin/utils/dialogs.dart';
 import 'package:eautosalon_admin/utils/util.dart';

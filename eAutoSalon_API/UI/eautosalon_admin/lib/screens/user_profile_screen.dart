@@ -4,7 +4,6 @@
 
 import 'package:eautosalon_admin/providers/user_provider.dart';
 import 'package:eautosalon_admin/screens/home_page_screen.dart';
-import 'package:eautosalon_admin/screens/login_screen.dart';
 import 'package:eautosalon_admin/utils/dialogs.dart';
 import 'package:eautosalon_admin/utils/util.dart';
 import 'package:eautosalon_admin/widgets/master_screen.dart';
@@ -48,14 +47,8 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
             child: Column(
               children: [
                 _buildBack(context),
-                const SizedBox(height: 20),
-                 Wrap(
-                  spacing: 20,
-                  runSpacing: 25,
-                   children: [ 
-                    buildUserProfileColumn(),
-                   ]
-                 ),
+                const SizedBox(height: 10),
+                buildUserProfileColumn()
               ],
             ),
           )
@@ -65,8 +58,8 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
 
   Container buildUserProfileColumn() {
     return Container(
-                    padding: const EdgeInsets.all(15),
-                    width: 500,
+                    padding: const EdgeInsets.all(10),
+                    width: 550,
                     decoration:const BoxDecoration(
                       color: Colors.white38,
                       borderRadius:  BorderRadius.only(
@@ -76,56 +69,53 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                     ),
                     child: Column(
                       children: [
-                        Container(
+                        SizedBox(
                           width: double.infinity,
-                          height: 250,
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              width: 0.1,
-                              color: Colors.blueGrey
-                            ),
-                            borderRadius: const BorderRadius.only(
-                              topLeft: Radius.circular(15),
-                              topRight: Radius.circular(15)
-                            )
-                          ),
+                          height: 270,
                           child: user.slika != "" ? fromBase64String(user.slika!) : Image.asset("assets/images/no_profile_pic.png"),
                         ),
-                        const SizedBox(height: 20),
-                        Text(user.email ?? "no_mail@unknown.com",
-                         textAlign: TextAlign.center,
-                         style: const TextStyle(fontSize: 18, letterSpacing: 1.5, color: Colors.blueGrey, fontWeight: FontWeight.w500),
-                         ),
-                        const SizedBox(height: 20),
+                        const SizedBox(height: 10),
+                        Container(
+                          width: 400,
+                          padding: const EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8),
+                            color: Colors.white70,
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text("Email", style: TextStyle(fontSize: 15, color: Colors.blueGrey, letterSpacing: 1),),
+                              Text(user.email ?? "no_mail@unknown.com",
+                           textAlign: TextAlign.center,
+                           style: const TextStyle(fontSize: 16, letterSpacing: 1.5, color: Colors.black87, fontWeight: FontWeight.w500),
+                           ),
+                            ],
+                          )
+                        ),
+                        const SizedBox(height: 15),
                         Container(
                           width: 400,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(8),
-                            border: Border.all(
-                              color: Colors.black54,
-                              width: 0.3
-                            ),
+                            color: Colors.white70
                           ),
                           padding: const EdgeInsets.all(10),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               const Text("Ime i prezime", style: TextStyle(fontSize: 15, color: Colors.blueGrey, letterSpacing: 1),),
-                              const SizedBox(height: 5),
                               Text("${user.firstName ?? "null"} ${user.lastName ?? "null"}",
                               style: const TextStyle(color: Colors.black87, fontSize: 16, letterSpacing: 1.5, fontWeight: FontWeight.bold))
                             ],
                           ),
                         ),
-                        const SizedBox(height: 25),
+                        const SizedBox(height: 15),
                         Container(
                           width: 400,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(8),
-                            border: Border.all(
-                              color: Colors.black54,
-                              width: 0.3
-                            ),
+                            color: Colors.white70
                           ),
                           padding: const EdgeInsets.all(10),
                           child: Column(
@@ -138,7 +128,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                             ],
                           ),
                         ),
-                        const SizedBox(height: 30),
+                        const SizedBox(height: 15),
                         Container(
                           width: 400,
                           padding: const EdgeInsets.all(10),

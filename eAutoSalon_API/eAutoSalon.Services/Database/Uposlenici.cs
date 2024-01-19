@@ -17,6 +17,8 @@ public partial class Uposlenici
 
     public byte[]? Slika { get; set; }
 
+    public string State { get; set; } = null!;
+
     public virtual ICollection<TestnaVoznja> TestnaVoznjas { get; set; } = new List<TestnaVoznja>();
 
     public virtual ICollection<ZavrseniPoslovi> ZavrseniPoslovis { get; set; } = new List<ZavrseniPoslovi>();

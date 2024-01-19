@@ -1,4 +1,3 @@
-
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:eautosalon_admin/providers/user_provider.dart';
@@ -18,7 +17,6 @@ class PasswordChange extends StatefulWidget {
 }
 
 class _PasswordChangeState extends State<PasswordChange> {
-
   final _formKey = GlobalKey<FormBuilderState>();
   bool _obscure = true;
   late UserProvider _userProvider;
@@ -26,7 +24,7 @@ class _PasswordChangeState extends State<PasswordChange> {
   @override
   void initState() {
     super.initState();
-    _userProvider=context.read<UserProvider>();
+    _userProvider = context.read<UserProvider>();
   }
 
   @override
@@ -46,122 +44,151 @@ class _PasswordChangeState extends State<PasswordChange> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Icon(Icons.password, size: 25, color: Colors.blueGrey,),
-                    IconButton(
-                      splashRadius: 25,
-                      onPressed: (){
-                      Navigator.of(context).pop();
-                    }, 
-                    icon: const Icon(Icons.close, size: 25, color: Colors.blueGrey,)
+                    const Icon(
+                      Icons.password,
+                      size: 25,
+                      color: Colors.blueGrey,
                     ),
+                    IconButton(
+                        splashRadius: 25,
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        icon: const Icon(
+                          Icons.close,
+                          size: 25,
+                          color: Colors.blueGrey,
+                        )),
                   ],
                 ),
-                const SizedBox(height: 10),
+                const SizedBox(height: 15),
                 SizedBox(
                   width: double.infinity,
                   child: FormBuilderTextField(
                     name: 'Stari_Pass',
                     obscureText: _obscure,
-                    validator: FormBuilderValidators.required(context, errorText: 'Polje obavezno'),
+                    validator: FormBuilderValidators.required(context,
+                        errorText: 'Polje obavezno'),
                     decoration: InputDecoration(
-                      border: const OutlineInputBorder(), 
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12)),
+                      focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12)),
+                      labelStyle: const TextStyle(color: Colors.blueGrey),
                       labelText: 'Trenutna lozinka',
                       suffix: IconButton(
-                        color: Colors.blueGrey,
-                        onPressed: (){
-                        setState(() {
-                          _obscure = !_obscure;
-                        });
-                      }, 
-                      icon: _obscure ? const Icon(Icons.visibility_off) : const Icon(Icons.visibility)),
-                      ),
+                          color: Colors.blueGrey,
+                          onPressed: () {
+                            setState(() {
+                              _obscure = !_obscure;
+                            });
+                          },
+                          icon: _obscure
+                              ? const Icon(Icons.visibility_off)
+                              : const Icon(Icons.visibility)),
+                    ),
                   ),
                 ),
-                const SizedBox(height: 10),
+                const SizedBox(height: 15),
                 SizedBox(
                   width: double.infinity,
                   child: FormBuilderTextField(
                     name: 'Novi_Pass',
                     obscureText: _obscure,
-                    validator: FormBuilderValidators.required(context, errorText: 'Polje obavezno'),
+                    validator: FormBuilderValidators.required(context,
+                        errorText: 'Polje obavezno'),
                     decoration: InputDecoration(
-                      border: const OutlineInputBorder(), 
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12)),
+                      focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12)),
+                      labelStyle: const TextStyle(color: Colors.blueGrey),
                       labelText: 'Nova lozinka',
                       suffix: IconButton(
-                        color: Colors.blueGrey,
-                        onPressed: (){
-                        setState(() {
-                          _obscure = !_obscure;
-                        });
-                      }, 
-                      icon: _obscure ? const Icon(Icons.visibility_off) : const Icon(Icons.visibility)),
-                      ),
+                          color: Colors.blueGrey,
+                          onPressed: () {
+                            setState(() {
+                              _obscure = !_obscure;
+                            });
+                          },
+                          icon: _obscure
+                              ? const Icon(Icons.visibility_off)
+                              : const Icon(Icons.visibility)),
+                    ),
                   ),
                 ),
-                const SizedBox(height: 10),
+                const SizedBox(height: 15),
                 SizedBox(
                   width: double.infinity,
                   child: FormBuilderTextField(
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     name: 'Novi_Pass_Repeat',
                     obscureText: _obscure,
-                    validator: (value){
-                      final newPass = _formKey.currentState?.fields['Novi_Pass']?.value;
-                      if(newPass != value){
+                    validator: (value) {
+                      final newPass =
+                          _formKey.currentState?.fields['Novi_Pass']?.value;
+                      if (newPass != value) {
                         return 'Passwordi se ne poklapaju';
-                      }
-                      else{
+                      } else {
                         return null;
                       }
                     },
                     decoration: InputDecoration(
-                      border: const OutlineInputBorder(), 
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12)),
+                      focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12)),
+                      labelStyle: const TextStyle(color: Colors.blueGrey),
                       labelText: 'Ponovite novu lozinku',
                       suffix: IconButton(
-                        color: Colors.blueGrey,
-                        onPressed: (){
-                        setState(() {
-                          _obscure = !_obscure;
-                        });
-                      }, 
-                      icon: _obscure ? const Icon(Icons.visibility_off) : const Icon(Icons.visibility)),
-                      ),
+                          color: Colors.blueGrey,
+                          onPressed: () {
+                            setState(() {
+                              _obscure = !_obscure;
+                            });
+                          },
+                          icon: _obscure
+                              ? const Icon(Icons.visibility_off)
+                              : const Icon(Icons.visibility)),
+                    ),
                   ),
                 ),
-                const SizedBox(height: 20),
-                Wrap(
-                  alignment: WrapAlignment.center,
-                  spacing: 50,
-                  runSpacing: 10,
-                  children: [
-                    ElevatedButton(onPressed: (){
-                      Navigator.of(context).pop();
-                    }, 
-                    style: ElevatedButton.styleFrom(backgroundColor: Colors.blueGrey),
-                    child: 
-                    const Text('Poništi', style: TextStyle(color: Colors.white, fontSize: 15))),
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(backgroundColor: Colors.blueGrey),
-                      onPressed: () async{
-                      if(_formKey.currentState!=null){
-                        if(_formKey.currentState!.saveAndValidate()){
-                          try {
-                            await _userProvider.changePass(widget.korisnikId, _formKey.currentState!.value);
-                            CustomDialogs.showSuccess(context, 'Uspješna promjena lozinke, logirajte se ponovno', () { 
-                                Authorization.username = "";
-                                Authorization.password = "";
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(builder: (builder) => const LoginScreen())
-                                );
-                            });
-                          } catch (e) {
-                            CustomDialogs.showError(context, e.toString());
+                const SizedBox(height: 25),
+                Center(
+                  child: SizedBox(
+                    height: 42,
+                    width: 200,
+                    child: MaterialButton(
+                        color: Colors.blueGrey,
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                        padding: const EdgeInsets.all(10),
+                        onPressed: () async {
+                          if (_formKey.currentState != null) {
+                            if (_formKey.currentState!.saveAndValidate()) {
+                              try {
+                                await _userProvider.changePass(
+                                    widget.korisnikId,
+                                    _formKey.currentState!.value);
+                                CustomDialogs.showSuccess(context,
+                                    'Uspješna promjena lozinke, logirajte se ponovno',
+                                    () {
+                                  Authorization.username = "";
+                                  Authorization.password = "";
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (builder) =>
+                                          const LoginScreen()));
+                                });
+                              } catch (e) {
+                                CustomDialogs.showError(context, e.toString());
+                              }
+                            }
                           }
-                        }
-                      }
-                    }, 
-                    child: const Text('Spasi', style: TextStyle(color: Colors.white, fontSize: 15),))
-                  ],
+                        },
+                        child: const Text(
+                          'Spasi',
+                          style: TextStyle(color: Colors.white, fontSize: 15),
+                        )),
+                  ),
                 )
               ],
             ),

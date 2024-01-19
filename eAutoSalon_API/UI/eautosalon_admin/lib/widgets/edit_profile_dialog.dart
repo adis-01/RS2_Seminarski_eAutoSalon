@@ -37,10 +37,10 @@ class _EditProfileState extends State<EditProfile> {
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      backgroundColor: Colors.grey[200],
+      backgroundColor: Colors.grey[300],
       child: SingleChildScrollView(
         child: Container(
-          width: 450,
+          width: 500,
           padding: const EdgeInsets.all(15),
           child: FormBuilder(
             key: _formKey,
@@ -65,7 +65,7 @@ class _EditProfileState extends State<EditProfile> {
                         )),
                   ],
                 ),
-                const SizedBox(height: 10),
+                const SizedBox(height: 15),
                 SizedBox(
                   width: double.infinity,
                   child: FormBuilderTextField(
@@ -75,9 +75,11 @@ class _EditProfileState extends State<EditProfile> {
                       FormBuilderValidators.required(context,
                           errorText: 'Polje je obavezno')
                     ]),
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       labelText: 'Ime',
-                      border: OutlineInputBorder(),
+                       labelStyle: const TextStyle(color: Colors.blueGrey),
+                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                      focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12))
                     ),
                   ),
                 ),
@@ -91,9 +93,11 @@ class _EditProfileState extends State<EditProfile> {
                       FormBuilderValidators.required(context,
                           errorText: 'Polje je obavezno')
                     ]),
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       labelText: 'Prezime',
-                      border: OutlineInputBorder(),
+                       labelStyle: const TextStyle(color: Colors.blueGrey),
+                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                      focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12))
                     ),
                   ),
                 ),
@@ -107,9 +111,11 @@ class _EditProfileState extends State<EditProfile> {
                       FormBuilderValidators.required(context,
                           errorText: 'Polje je obavezno')
                     ]),
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       labelText: 'Username',
-                      border: OutlineInputBorder(),
+                      labelStyle: const TextStyle(color: Colors.blueGrey),
+                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                      focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12))
                     ),
                   ),
                 ),
@@ -125,50 +131,45 @@ class _EditProfileState extends State<EditProfile> {
                       FormBuilderValidators.email(context, 
                                               errorText: 'Neispravan format')
                     ]),
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       labelText: 'Email',
-                      border: OutlineInputBorder(),
+                       labelStyle: const TextStyle(color: Colors.blueGrey),
+                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                      focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12))
                     ),
                   ),
                 ),
-                const SizedBox(height: 20),
-                Wrap(
-                  alignment: WrapAlignment.center,
-                  spacing: 50,
-                  runSpacing: 10,
-                  children: [
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(backgroundColor: Colors.blueGrey),
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                        child: const Text('Poništi',
-                            style:
-                                TextStyle(color: Colors.white, fontSize: 15))),
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(backgroundColor: Colors.blueGrey),
-                        onPressed: () async {
-                          if (_formKey.currentState != null) {
-                            if (_formKey.currentState!.saveAndValidate()) {
-                              try {
-                                await _userProvider.update(widget.user.korisnikId!, _formKey.currentState!.value);
-                              CustomDialogs.showSuccess(context, 'Uspješno uređivanje podataka', () {
-                                  Navigator.of(context).push(
-                                    MaterialPageRoute(builder: (builder) => const UserProfileScreen())
-                                  );
-                               });
-                              } catch (e) {
-                                CustomDialogs.showError(context, e.toString());
+                const SizedBox(height: 30),
+                    Center(
+                      child: SizedBox(
+                        width: 250,
+                        height: 40,
+                        child: MaterialButton(
+                          color: Colors.blueGrey,
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+                          padding: const EdgeInsets.all(10),
+                            onPressed: () async {
+                              if (_formKey.currentState != null) {
+                                if (_formKey.currentState!.saveAndValidate()) {
+                                  try {
+                                    await _userProvider.update(widget.user.korisnikId!, _formKey.currentState!.value);
+                                  CustomDialogs.showSuccess(context, 'Uspješno uređivanje podataka', () {
+                                      Navigator.of(context).push(
+                                        MaterialPageRoute(builder: (builder) => const UserProfileScreen())
+                                      );
+                                   });
+                                  } catch (e) {
+                                    CustomDialogs.showError(context, e.toString());
+                                  }
+                                }
                               }
-                            }
-                          }
-                        },
-                        child: const Text(
-                          'Spasi',
-                          style: TextStyle(color: Colors.white, fontSize: 15),
-                        ))
-                  ],
-                )
+                            },
+                            child: const Text(
+                              'Spasi',
+                              style: TextStyle(color: Colors.white, fontSize: 17),
+                            )),
+                      ),
+                    )
               ],
             ),
           ),

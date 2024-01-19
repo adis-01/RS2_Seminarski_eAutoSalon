@@ -50,7 +50,7 @@ class _TestDrivesScreenState extends State<TestDrivesScreen> {
                       children: [
                         _buildBack(context),
                         buildGestures(),
-                        const Text("")
+                        const Icon(Icons.directions_car, size: 35, color: Colors.blueGrey)
                       ],
                     ),
                     const SizedBox(height: 45),
@@ -240,7 +240,7 @@ class _TestDrivesScreenState extends State<TestDrivesScreen> {
                           try {
                             await _testProvider.cancel(test.testnaVoznjaId!);
                             CustomDialogs.showSuccess(
-                                context, 'Otkazana vožnja', () {
+                                context, 'Uspješno otkazana vožnja', () {
                               Navigator.of(context).push(MaterialPageRoute(
                                   builder: (builder) =>
                                       const TestDrivesScreen()));

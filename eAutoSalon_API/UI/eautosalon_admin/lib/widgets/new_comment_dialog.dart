@@ -1,7 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:eautosalon_admin/providers/comment_provider.dart';
-import 'package:eautosalon_admin/screens/home_page_screen.dart';
 import 'package:eautosalon_admin/screens/news_screen.dart';
 import 'package:eautosalon_admin/utils/dialogs.dart';
 import 'package:flutter/material.dart';

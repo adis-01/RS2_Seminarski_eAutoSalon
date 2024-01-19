@@ -1,6 +1,7 @@
 
 import 'package:eautosalon_admin/screens/employees_screen.dart';
 import 'package:eautosalon_admin/screens/home_page_screen.dart';
+import 'package:eautosalon_admin/screens/reviews_screen.dart';
 import 'package:eautosalon_admin/screens/test_drives_screen.dart';
 import 'package:eautosalon_admin/screens/user_profile_screen.dart';
 import 'package:eautosalon_admin/screens/users_screen.dart';
@@ -104,13 +105,13 @@ class _MasterScreenState extends State<MasterScreen> {
                     ))
               ],
             ),
-            const SizedBox(height: 15),
+            const SizedBox(height: 10),
             const Center(
               child: Icon(
                 Icons.directions_car_outlined, size: 45, color: Colors.white,
               ),
             ),
-            const SizedBox(height: 45),
+            const SizedBox(height: 25),
             buildListTile('Automobili', Icons.directions_car, () {
               Navigator.of(context).push(MaterialPageRoute(
                   builder: (builder) => const HomePageScreen()));
@@ -150,6 +151,10 @@ class _MasterScreenState extends State<MasterScreen> {
                 );
               },
             ),
+            const SizedBox(height: 15),
+            buildListTile('Recenzije', Icons.star, () {
+              Navigator.of(context).push(MaterialPageRoute(builder: (builder) => const ReviewsScreen()));
+            }),
             const SizedBox(height: 15),
             buildListTile('Izvještaj', Icons.report, () {}),
             const SizedBox(height: 20),

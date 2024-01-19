@@ -2,7 +2,6 @@
 
 import 'package:eautosalon_admin/providers/news_provider.dart';
 import 'package:eautosalon_admin/screens/news_screen.dart';
-import 'package:eautosalon_admin/screens/your_news_screen.dart';
 import 'package:eautosalon_admin/utils/dialogs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:eautosalon_admin/providers/base_provider.dart';
+import '../models/search_result.dart';
 import '../models/user.dart';
 import '../utils/util.dart';
 
@@ -41,6 +42,40 @@ class UserProvider extends BaseProvider<User> {
     var req = await http.post(uri, headers: headers, body: obj);
     if (!isValidResponse(req)) {
       throw Exception("Greška");
+    }
+  }
+
+    Future<SearchResult<User>> getAktivne(dynamic params) async{
+    var filters = getQueryString(params);
+    var url = "$baseUrl$endp/GetAktivne?$filters";
+    var uri = Uri.parse(url);
+    var headers = createHeaders();
+    
+    var req = await http.get(uri,headers: headers);
+    if(isValidResponse(req)){
+      SearchResult<User> result = SearchResult<User>();
+      var data = jsonDecode(req.body);
+      result.hasNext = data['hasNext'];
+      result.total = data['totalPages'];
+      for (var item in data['list']) {
+        result.list.add(fromJson(item));
+      }
+      return result;
+    }
+    else{
+      throw Exception('Greška');
+    }
+  }
+
+  Future<void> changeState(int userId) async{
+    var url = "$baseUrl$endp/ChangeState/$userId";
+    var uri = Uri.parse(url);
+    var headers = createHeaders();
+    
+    var req = await http.put(uri,headers: headers);
+
+    if(!isValidResponse(req)){
+      throw Exception('Greška...');
     }
   }
 

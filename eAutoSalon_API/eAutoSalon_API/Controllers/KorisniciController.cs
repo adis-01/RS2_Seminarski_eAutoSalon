@@ -54,6 +54,20 @@ namespace eAutoSalon_API.Controllers
             return await _service.GetRoles(username);
         }
 
+        [Authorize(Roles ="Korisnik,Administrator")]
+        [HttpGet("GetAktivne")]
+        public async Task<PagedList<VMKorisnik>> GetAktivne([FromQuery]SearchObject? search = null)
+        {
+            return await _service.getAktivne(search);
+        }
+
+        [Authorize(Roles = "Korisnik")]
+        [HttpPut("ChangeState/{id}")]
+        public async Task ChangeState(int id)
+        {
+            await _service.ChangeState(id);
+        }
+
         [HttpGet("UserProfile")]
         [Authorize(Roles ="Korisnik,Administrator")]
         public async Task<VMKorisnik> GetUserProfile([FromQuery] string username)

@@ -22,6 +22,7 @@ class _EmployeesScreenState extends State<EmployeesScreen> {
   SearchResult<Employee>? result;
   bool isLoading = true;
   late EmployeeProvider _employeeProvider;
+  int currentRating = 1;
 
   @override
   void initState() {
@@ -82,11 +83,12 @@ class _EmployeesScreenState extends State<EmployeesScreen> {
                           ))
                         : const Center(
                             child: Text("No employees"),
-                          )
+                          ),
                   ],
                 ),
               ));
   }
+
 
   Container _buildCard(BuildContext context, Employee employee) {
     return Container(
@@ -112,7 +114,7 @@ class _EmployeesScreenState extends State<EmployeesScreen> {
                             () async {
                           try {
                             await _employeeProvider
-                                .delete(employee.uposlenikId!);
+                                .changeState(employee.uposlenikId!);
                             CustomDialogs.showSuccess(
                                 context, 'Uspješno obrisan uposlenik', () {
                               Navigator.of(context).push(MaterialPageRoute(
@@ -174,7 +176,7 @@ class _EmployeesScreenState extends State<EmployeesScreen> {
 
   void _loadData() async {
     try {
-      var data = await _employeeProvider.getAll();
+      var data = await _employeeProvider.getAktivne();
       setState(() {
         result = data;
         isLoading = false;

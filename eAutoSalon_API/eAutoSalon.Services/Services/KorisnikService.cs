@@ -96,6 +96,7 @@ namespace eAutoSalon.Services.Services
             korisnik.PasswordHash = Generator.GenerateHash(korisnik.PasswordSalt, req.Password!);
             if (req?.SlikaBase64!=null) { korisnik.Slika = Convert.FromBase64String(req.SlikaBase64!); }
             korisnik.RegisteredOn = DateTime.Now;
+            korisnik.State = "Aktivan";
             
 
             await _context.Korisnicis.AddAsync(korisnik);
@@ -180,6 +181,51 @@ namespace eAutoSalon.Services.Services
             entity.Slika = Convert.FromBase64String(req.slika);
 
             await _context.SaveChangesAsync();
+        }
+
+        public async Task ChangeState(int userId)
+        {
+            var entity = await _context.Korisnicis.FindAsync(userId) ?? throw new Exception("Nema korisnika sa tim ID poljem");
+            entity.State = "Izbrisan";
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<PagedList<VMKorisnik>> getAktivne(SearchObject? search = null)
+        {
+            var query = _context.Korisnicis.Where(x => x.State == "Aktivan").OrderByDescending(x => x.KorisnikId).AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(search?.FTS))
+            {
+                string fts = search.FTS.ToLower();
+                query = query.Where(x => fts.Contains(x.Username.ToLower()) || fts.Contains(x.FirstName.ToLower()) || fts.Contains(x.LastName.ToLower()));
+            }
+
+            var list = new PagedList<VMKorisnik>()
+            {
+                PageCount = await query.CountAsync(),
+            };
+
+            if (search?.PageSize != null)
+            {
+                double? pageCount = list.PageCount;
+                double? pageSize = search.PageSize;
+                if (pageCount.HasValue && pageSize.HasValue)
+                {
+                    list.TotalPages = (int)Math.Ceiling(pageCount.Value / pageSize.Value);
+                }
+            }
+
+            if (search?.Page.HasValue == true && search?.PageSize.HasValue == true)
+            {
+                query = query.Skip(search.PageSize.Value * (search.Page.Value - 1)).Take(search.PageSize.Value);
+                list.HasNext = search.Page.Value < list.TotalPages;
+            }
+
+            var lista = await query.ToListAsync();
+
+            list.List = _mapper.Map<List<VMKorisnik>>(lista);
+
+            return list;
         }
     }
 }

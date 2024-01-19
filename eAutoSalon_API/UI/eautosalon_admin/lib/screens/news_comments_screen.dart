@@ -27,7 +27,6 @@ class _CommentsScreenState extends State<CommentsScreen> {
   int currentPage = 1;
   bool isLoading = true;
   bool disableCommentButton = true;
-  final _commentController = TextEditingController();
   late KomentarProvider _komentarProvider;
 
   @override

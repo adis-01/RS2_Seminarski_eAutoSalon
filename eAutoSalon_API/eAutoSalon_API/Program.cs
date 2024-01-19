@@ -50,6 +50,7 @@ builder.Services.AddTransient<IMailService, MailService>();
 builder.Services.AddTransient<IUposlenikService, UposlenikService>();
 builder.Services.AddTransient<IOpremaService, OpremaService>();
 builder.Services.AddTransient<ITestnaVoznjaService, TestnaVoznjaService>();
+builder.Services.AddTransient<IRecenzijaService, RecenzijaService>();
 
 builder.Services.AddAutoMapper(typeof(Profiles));
 builder.Services.AddAuthentication("BasicAuthentication").AddScheme<AuthenticationSchemeOptions, BasicAuth>("BasicAuthentication", null);

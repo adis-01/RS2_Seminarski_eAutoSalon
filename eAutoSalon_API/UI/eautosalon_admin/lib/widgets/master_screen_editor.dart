@@ -64,7 +64,7 @@ class _EditorMasterScreenState extends State<EditorMasterScreen> {
         toolbarOpacity: 0.7,
         centerTitle: true,
         elevation: 3,
-        title: Text(widget.title,
+        title: Text(widget.title.toUpperCase(),
             style: const TextStyle(
                 fontSize: 22, letterSpacing: 3.5, fontWeight: FontWeight.w700, color: Colors.white70)),
         shape: const RoundedRectangleBorder(

@@ -19,6 +19,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   bool _obscureText = true;
   bool _passwordActive = false;
+  bool isLoading = false;
 
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
@@ -40,7 +41,10 @@ class _LoginScreenState extends State<LoginScreen> {
               width: 500,
               padding: const EdgeInsets.all(25),
               margin: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
-              child: Column(
+              child: isLoading ? 
+              const Center(child: CircularProgressIndicator())
+              :
+               Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   const Icon(Icons.lock, size: 60, color: Colors.black87),
@@ -87,6 +91,9 @@ class _LoginScreenState extends State<LoginScreen> {
                         onPressed: (){
                           String username = _usernameController.text;
                           String password = _passwordController.text;
+                          setState(() {
+                            isLoading=true;
+                          });
                           login(username, password);
                         },
                         child: const Text("PRIJAVI SE", style: TextStyle(fontWeight: FontWeight.w500, color: Colors.white, letterSpacing: 2))
@@ -166,10 +173,16 @@ class _LoginScreenState extends State<LoginScreen> {
     Authorization.password = password;
     try {
       var data = await _userProvider.getRoles(username);
+      setState(() {
+        isLoading=false;
+      });
       if(data.contains("Administrator")){
     Navigator.of(context).push(MaterialPageRoute(builder: (builder) => const HomePageScreen()));
       }
     } catch (e) {
+      setState(() {
+        isLoading=false;
+      });
       CustomDialogs.showError(context, e.toString());
     }
   }

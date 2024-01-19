@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:eautosalon_admin/models/news.dart';
 import 'package:eautosalon_admin/providers/base_provider.dart';
-import 'package:eautosalon_admin/utils/util.dart';
 import 'package:http/http.dart' as http;
 import '../models/search_result.dart';
 

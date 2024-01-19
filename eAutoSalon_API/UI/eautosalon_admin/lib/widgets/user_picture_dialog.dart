@@ -55,6 +55,7 @@ class _UserPictureState extends State<UserPicture> {
                   children: [
                     const Icon(Icons.camera_alt, color: Colors.blueGrey, size: 25),
                     IconButton(
+                      splashRadius: 25,
                       onPressed: (){
                       Navigator.of(context).pop();
                     }, icon: const Icon(Icons.close, color: Colors.blueGrey,size: 25)),
@@ -98,7 +99,7 @@ class _UserPictureState extends State<UserPicture> {
                 },
                 ),
                 const SizedBox(height: 20),
-                _buildButtons(context)
+                Center(child: SizedBox(width: 200, height:42, child: _buildButtons(context)))
               ],
             ),
           ),
@@ -107,20 +108,12 @@ class _UserPictureState extends State<UserPicture> {
     );
   }
 
-  Wrap _buildButtons(BuildContext context) {
-    return Wrap(
-                alignment: WrapAlignment.center,
-                spacing: 50,
-                runSpacing: 10,
-                children: [
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(backgroundColor: Colors.blueGrey),
-                    onPressed: (){
-                    Navigator.of(context).pop();
-                  }, child: 
-                  const Text('Poništi', style: TextStyle(color: Colors.white, fontSize: 15))),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(backgroundColor: Colors.blueGrey),
+  MaterialButton _buildButtons(BuildContext context) {
+    return 
+                  MaterialButton(
+                    color: Colors.blueGrey,
+                    padding: const EdgeInsets.all(10),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                     onPressed: () async{
                     if(_formKey.currentState!=null){
                       if(_formKey.currentState!.saveAndValidate()){
@@ -139,9 +132,7 @@ class _UserPictureState extends State<UserPicture> {
                       }
                     }
                   }, 
-                  child: const Text('Spasi', style: TextStyle(color: Colors.white, fontSize: 15),))
-                ],
-              );
+                  child: const Text('Spasi', style: TextStyle(color: Colors.white, fontSize: 15),));
   }
 
   Future<void> uploadImage() async{

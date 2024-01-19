@@ -6,6 +6,7 @@ using eAutoSalon.Models.UpdateRequests;
 using eAutoSalon.Models.ViewModels;
 using eAutoSalon.Services.Database;
 using eAutoSalon.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,6 +25,7 @@ namespace eAutoSalon.Services.Services
         {
             if (req?.SlikaBase64 != null)
                 entity.Slika = Convert.FromBase64String(req.SlikaBase64);
+            entity.State = "Aktivan";
         }
 
 
@@ -37,6 +39,45 @@ namespace eAutoSalon.Services.Services
             entity.Slika = Convert.FromBase64String(req.slika);
 
             await _context.SaveChangesAsync();
+        }
+
+        public async Task ChangeState(int userId)
+        {
+            var uposlenik = await _context.Uposlenicis.FindAsync(userId) ?? throw new Exception("Nema uposlenika sa tim ID poljem");
+            uposlenik.State = "Izbrisan";
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<PagedList<VMUposlenik>> getUposlene(UposlenikSearchObject? search = null)
+        {
+            var query = _context.Uposlenicis.Where(x => x.State == "Aktivan").OrderByDescending(x => x.UposlenikId).AsQueryable();
+
+            var list = new PagedList<VMUposlenik>()
+            {
+                PageCount = await query.CountAsync(),
+            };
+
+            if (search?.PageSize != null)
+            {
+                double? pageCount = list.PageCount;
+                double? pageSize = search.PageSize;
+                if (pageCount.HasValue && pageSize.HasValue)
+                {
+                    list.TotalPages = (int)Math.Ceiling(pageCount.Value / pageSize.Value);
+                }
+            }
+
+            if (search?.Page.HasValue == true && search?.PageSize.HasValue == true)
+            {
+                query = query.Skip(search.PageSize.Value * (search.Page.Value - 1)).Take(search.PageSize.Value);
+                list.HasNext = search.Page.Value < list.TotalPages;
+            }
+
+            var lista = await query.ToListAsync();
+
+            list.List = _mapper.Map<List<VMUposlenik>>(lista);
+
+            return list;
         }
     }
 }

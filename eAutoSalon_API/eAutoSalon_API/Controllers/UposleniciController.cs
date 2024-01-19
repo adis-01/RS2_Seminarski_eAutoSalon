@@ -2,6 +2,7 @@
 using eAutoSalon.Models.SearchObjects;
 using eAutoSalon.Models.UpdateRequests;
 using eAutoSalon.Models.ViewModels;
+using eAutoSalon.Services;
 using eAutoSalon.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -42,6 +43,20 @@ namespace eAutoSalon_API.Controllers
         public async Task ChangePicture (int id, [FromBody] SlikaRequest req)
         {
             await _service.ChangePicture(id, req);
+        }
+
+        [Authorize(Roles = "Korisnik,Administrator")]
+        [HttpGet("GetAktivne")]
+        public async Task<PagedList<VMUposlenik>> GetAktivne([FromQuery]UposlenikSearchObject? search = null)
+        {
+            return await _service.getUposlene(search);
+        }
+
+        [Authorize(Roles = "Korisnik")]
+        [HttpPut("ChangeState/{id}")]
+        public async Task ChangeState(int id)
+        {
+            await _service.ChangeState(id);
         }
 
     }

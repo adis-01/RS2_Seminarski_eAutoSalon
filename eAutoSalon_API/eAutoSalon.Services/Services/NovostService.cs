@@ -49,7 +49,7 @@ namespace eAutoSalon.Services.Services
 
         public async Task<PagedList<VMNovosti>> getVlastite(string username, NovostiSearchObject? search = null)
         {
-            var q = _context.Novostis.Where(x => x.Korisnik.Username == username).Include("Korisnik").AsQueryable();
+            var q = _context.Novostis.Where(x => x.Korisnik.Username == username).OrderByDescending(x=>x.NovostiId).Include("Korisnik").AsQueryable();
 
             var list = new PagedList<VMNovosti>()
             {
@@ -82,7 +82,7 @@ namespace eAutoSalon.Services.Services
 
         public async Task<PagedList<VMNovosti>> getOstale(string username, NovostiSearchObject? search = null)
         {
-            var q = _context.Novostis.Where(x => x.Korisnik.Username != username).Include("Korisnik").AsQueryable();
+            var q = _context.Novostis.Where(x => x.Korisnik.Username != username).OrderByDescending(x=>x.NovostiId).Include("Korisnik").AsQueryable();
 
             var list = new PagedList<VMNovosti>()
             {

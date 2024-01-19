@@ -17,5 +17,7 @@ namespace eAutoSalon.Services.Interfaces
         Task PictureChange(int id,SlikaRequest req);
         Task<List<string>> GetRoles(string username);
         Task<VMKorisnik> FetchUserProfile(string username);
+        Task ChangeState(int userId);
+        Task<PagedList<VMKorisnik>> getAktivne(SearchObject? search = null);
     }
 }

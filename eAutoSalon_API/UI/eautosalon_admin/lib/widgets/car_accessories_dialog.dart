@@ -56,7 +56,7 @@ class _CarAccState extends State<CarAcc> {
                               height: 20),
                           buildAccessories(),
                           const SizedBox(height: 20),
-                          buildBack(context),
+                          SizedBox(height: 42, width: 200,child: buildBack(context)),
                         ],
                       )
                     : noDataDialog(context),
@@ -211,11 +211,11 @@ class _CarAccState extends State<CarAcc> {
     );
   }
 
-  ElevatedButton buildBack(BuildContext context) {
-    return ElevatedButton(
-        style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.blueGrey,
-            fixedSize: const Size(80, 40)),
+  MaterialButton buildBack(BuildContext context) {
+    return MaterialButton(
+        color: Colors.blueGrey,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        padding: const EdgeInsets.all(10),
         onPressed: () {
           Navigator.of(context).pop();
         },

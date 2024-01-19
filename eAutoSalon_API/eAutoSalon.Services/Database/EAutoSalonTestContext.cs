@@ -27,6 +27,8 @@ public partial class EAutoSalonTestContext : DbContext
 
     public virtual DbSet<Novosti> Novostis { get; set; }
 
+    public virtual DbSet<Recenzije> Recenzijes { get; set; }
+
     public virtual DbSet<TestnaVoznja> TestnaVoznjas { get; set; }
 
     public virtual DbSet<Uloge> Uloges { get; set; }
@@ -132,6 +134,10 @@ public partial class EAutoSalonTestContext : DbContext
                 .HasMaxLength(255)
                 .IsUnicode(false);
             entity.Property(e => e.RegisteredOn).HasColumnType("datetime");
+            entity.Property(e => e.State)
+                .HasMaxLength(255)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('Aktivan')");
             entity.Property(e => e.Token)
                 .HasMaxLength(255)
                 .IsUnicode(false);
@@ -184,6 +190,23 @@ public partial class EAutoSalonTestContext : DbContext
             entity.HasOne(d => d.Korisnik).WithMany(p => p.Novostis)
                 .HasForeignKey(d => d.KorisnikId)
                 .HasConstraintName("FK__Novosti__Korisni__607251E5");
+        });
+
+        modelBuilder.Entity<Recenzije>(entity =>
+        {
+            entity.HasKey(e => e.RecenzijaId).HasName("PK__Recenzij__D36C609035D7347D");
+
+            entity.ToTable("Recenzije");
+
+            entity.Property(e => e.RecenzijaId).HasColumnName("RecenzijaID");
+            entity.Property(e => e.Komentar)
+                .HasMaxLength(255)
+                .IsUnicode(false);
+            entity.Property(e => e.KorisnikId).HasColumnName("KorisnikID");
+
+            entity.HasOne(d => d.Korisnik).WithMany(p => p.Recenzijes)
+                .HasForeignKey(d => d.KorisnikId)
+                .HasConstraintName("FK__Recenzije__Koris__7755B73D");
         });
 
         modelBuilder.Entity<TestnaVoznja>(entity =>
@@ -243,6 +266,10 @@ public partial class EAutoSalonTestContext : DbContext
             entity.Property(e => e.LastName)
                 .HasMaxLength(255)
                 .IsUnicode(false);
+            entity.Property(e => e.State)
+                .HasMaxLength(255)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('Aktivan')");
             entity.Property(e => e.Title)
                 .HasMaxLength(255)
                 .IsUnicode(false);

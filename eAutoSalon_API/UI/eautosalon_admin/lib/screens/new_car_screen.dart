@@ -375,34 +375,38 @@ class _NewCarScreenState extends State<NewCarScreen> {
   }
 
   Widget buildButtons(BuildContext context) {
-    return ElevatedButton(
-        style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.blueGrey,
-            minimumSize: const Size(100, 50)),
-        onPressed: () async {
-          if (_formKey.currentState != null) {
-            if (_formKey.currentState!.saveAndValidate()) {
-              Map<String,dynamic> map = Map.from(_formKey.currentState!.value);
-              map['slikaBase64'] = _base64image;
-              try {
-                await _carProvider.insert(map);
-                setState(() {
-                  insertLoading=false;
-                });
-                CustomDialogs.showSuccess(
-                    context, 'Uspješno dodan novi automobil', () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (builder) => const HomePageScreen()));
-                });
-              } catch (e) {
-                setState(() {
-                  insertLoading=false;
-                });
-                CustomDialogs.showError(context, e.toString());
+    return SizedBox(
+      width: 200,
+      height: 42,
+      child: MaterialButton(
+          color: Colors.blueGrey,
+          padding: const EdgeInsets.all(10),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+          onPressed: () async {
+            if (_formKey.currentState != null) {
+              if (_formKey.currentState!.saveAndValidate()) {
+                Map<String,dynamic> map = Map.from(_formKey.currentState!.value);
+                map['slikaBase64'] = _base64image;
+                try {
+                  await _carProvider.insert(map);
+                  setState(() {
+                    insertLoading=false;
+                  });
+                  CustomDialogs.showSuccess(
+                      context, 'Uspješno dodan novi automobil', () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (builder) => const HomePageScreen()));
+                  });
+                } catch (e) {
+                  setState(() {
+                    insertLoading=false;
+                  });
+                  CustomDialogs.showError(context, e.toString());
+                }
               }
             }
-          }
-        },
-        child: const Text('Spasi'));
+          },
+          child: const Text('Spasi', style: TextStyle(fontSize: 15, color: Colors.white),)),
+    );
   }
 }

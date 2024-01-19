@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:eautosalon_admin/models/search_result.dart';
 import 'package:eautosalon_admin/providers/user_provider.dart';
 import 'package:eautosalon_admin/screens/edit_user_screen.dart';
@@ -51,9 +53,7 @@ class _UsersScreenState extends State<UsersScreen> {
                         children: [
                           buildBack(context),
                           _buildSearchBar(),
-                          clearFilters
-                              ? buildClearFilter(context)
-                              : const Text(""),
+                          buildClearFilter(context)
                         ],
                       ),
                       const SizedBox(height: 25),
@@ -67,8 +67,7 @@ class _UsersScreenState extends State<UsersScreen> {
                                 width: double.infinity,
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(10),
-                                    color: Colors.white70
-                                ),
+                                    color: Colors.white70),
                                 child: Column(
                                   children: [
                                     _buildColumnHeader(),
@@ -101,21 +100,27 @@ class _UsersScreenState extends State<UsersScreen> {
           color: Colors.blueGrey,
           shape: const CircleBorder(),
           padding: const EdgeInsets.all(15),
-          onPressed: () async {
-            try {
-              setState(() {
-                page = 1;
-                _searchController.text = "";
-                clearFilters = false;
-                _disabledButton = true;
-                tableLoading = true;
-              });
-              _loadData();
-            } catch (e) {
-              CustomDialogs.showError(context, e.toString());
-            }
-          },
-          child: const Icon(Icons.cleaning_services, size: 25, color: Colors.white,),
+          onPressed: clearFilters
+              ? () async {
+                  try {
+                    setState(() {
+                      page = 1;
+                      _searchController.text = "";
+                      clearFilters = false;
+                      _disabledButton = true;
+                      tableLoading = true;
+                    });
+                    _loadData();
+                  } catch (e) {
+                    CustomDialogs.showError(context, e.toString());
+                  }
+                }
+              : null,
+          child: const Icon(
+            Icons.cleaning_services,
+            size: 25,
+            color: Colors.white,
+          ),
         ));
   }
 
@@ -261,8 +266,12 @@ class _UsersScreenState extends State<UsersScreen> {
                               'Izbrisati korisnika ${user.firstName} ${user.lastName}?',
                               () async {
                             try {
-                              await _userProvider.delete(user.korisnikId!);
-                              _loadData();
+                              await _userProvider.changeState(user.korisnikId!);
+                              CustomDialogs.showSuccess(
+                                  context, 'Uspješno izbrisan korisnik', () {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (builder) => const UsersScreen()));
+                              });
                             } catch (e) {
                               CustomDialogs.showError(context, e.toString());
                             }
@@ -309,18 +318,14 @@ class _UsersScreenState extends State<UsersScreen> {
         ElevatedButton(
             onPressed: _disabledButton
                 ? null
-                : () async {
-                    try {
-                      setState(() {
-                        page = 1;
-                        clearFilters = true;
-                        tableLoading = true;
-                      });
+                : () {
+                    setState(() {
+                      page = 1;
+                      clearFilters = true;
+                      tableLoading = true;
+                    });
 
-                      _loadData();
-                    } catch (e) {
-                      CustomDialogs.showError(context, e.toString());
-                    }
+                    _loadData();
                   },
             style: ElevatedButton.styleFrom(
               minimumSize: const Size(50, 50),
@@ -346,7 +351,7 @@ class _UsersScreenState extends State<UsersScreen> {
           'pageSize': pageSize
         };
       }
-      var data = await _userProvider.getPaged(params);
+      var data = await _userProvider.getAktivne(params);
       setState(() {
         result = data;
         isLoading = false;

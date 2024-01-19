@@ -3,6 +3,7 @@ import 'package:eautosalon_admin/providers/car_provider.dart';
 import 'package:eautosalon_admin/providers/comment_provider.dart';
 import 'package:eautosalon_admin/providers/employee_provider.dart';
 import 'package:eautosalon_admin/providers/news_provider.dart';
+import 'package:eautosalon_admin/providers/review_provider.dart';
 import 'package:eautosalon_admin/providers/test_drive_provider.dart';
 import 'package:eautosalon_admin/providers/user_provider.dart';
 import 'package:eautosalon_admin/screens/login_screen.dart';
@@ -19,7 +20,8 @@ void main() {
         ChangeNotifierProvider(create: (_) => CarProvider()),
         ChangeNotifierProvider(create: (_) => DodatnaOpremaProvider()),
         ChangeNotifierProvider(create: (_) => NewsProvider()),
-        ChangeNotifierProvider(create: (_) => KomentarProvider())
+        ChangeNotifierProvider(create: (_) => KomentarProvider()),
+        ChangeNotifierProvider(create: (_) => ReviewProvider())
       ],
       child: const MyApp(),
     )

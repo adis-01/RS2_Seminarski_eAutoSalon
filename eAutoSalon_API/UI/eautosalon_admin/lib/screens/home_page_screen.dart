@@ -1,3 +1,4 @@
+
 import 'package:eautosalon_admin/models/car.dart';
 import 'package:eautosalon_admin/providers/car_provider.dart';
 import 'package:eautosalon_admin/screens/car_details_screen.dart';
@@ -26,6 +27,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
   SearchResult<Automobil>? result;
   bool isLoading = true;
   bool clearFilters = false;
+  Map<String,dynamic>? filters;   
 
   @override
   void initState() {
@@ -54,9 +56,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Row(
-                            children: [
-                              Tooltip(
+                         !clearFilters ? Tooltip(
                             message: 'Filter podataka',
                             child: MaterialButton(
                               shape: const CircleBorder(),
@@ -65,20 +65,20 @@ class _HomePageScreenState extends State<HomePageScreen> {
                               onPressed: () async{
                                 var result = await showDialog(context: context, builder: (context) => const FilterCarDialog());
                                 if(result!=null){
-                                  Map<String,dynamic> map = Map.from(result);
-                                  map['Page'] = 1;
-                                  map['PageSize'] = _pageSize;
                                   setState(() {
-                                    isLoading=true;
+                                    isLoading = true;
+                                    filters = Map.from(result);
+                                    filters!['PageSize'] = _pageSize;
+                                    _currentPage=1;
                                   });
-                                  fetchPaged(map);
+                                  fetchPaged(filters);
                                 }
                               },
                               child: const Icon(Icons.filter_alt_rounded, color: Colors.white),
                             ),
-                          ),
-                          const SizedBox(width: 10),
-                          clearFilters ? Tooltip(
+                          )
+                          :
+                        Tooltip(
                                 message: 'Očisti filtere',
                                 child: MaterialButton(
                                   shape: const CircleBorder(),
@@ -88,14 +88,13 @@ class _HomePageScreenState extends State<HomePageScreen> {
                                     setState(() {
                                       clearFilters=false;
                                       isLoading=true;
-                                      fetchData();
+                                      filters = null;
                                     });
+                                    fetchData();
                                   },
                                   child: const Icon(Icons.cleaning_services, color: Colors.white),
                                 ),
-                              ) : const Text(""),
-                            ],
-                          ),
+                              ) ,
                           Tooltip(
                             message: 'Završeni oglasi',
                             child: MaterialButton(
@@ -111,7 +110,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
                         ],
                       ),
                       const SizedBox(height: 10),
-                      result?.count != 0
+                      result?.total != 0
                           ? Wrap(
                               spacing: 10,
                               runSpacing: 10,
@@ -121,7 +120,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
                                       .toList() ??
                                   [],
                             )
-                          : const Text("No data"),
+                          : const Center(child: Text("NO DATA", style: TextStyle(fontSize: 22, letterSpacing: 2, fontWeight: FontWeight.bold,color: Colors.blueGrey),),),
                       const SizedBox(height: 25),
                       (result?.total ?? 0) > 0 ? buildPagingArrows() : const Text("")
                     ],
@@ -147,8 +146,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
                       isLoading = true;
                       _currentPage--;
                     });
-                    
-                      fetchData();
+                  filters!=null ? fetchPaged(filters) : fetchData();
                   }
                 : null,
             child: const Icon(Icons.arrow_back, size: 20, color: Colors.white)),
@@ -170,7 +168,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
                       isLoading = true;
                       _currentPage++;
                     });
-                    fetchData();
+                    filters!=null ? fetchPaged(filters) : fetchData();
                   }
                 : null,
             child: const Icon(
@@ -196,7 +194,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
         children: [
           auto.slika != ""
               ? SizedBox(
-                  width: double.infinity, child: fromBase64String(auto.slika!))
+                 width: double.infinity,child: fromBase64String(auto.slika!))
               : const SizedBox(
                   width: double.infinity,
                   child: Icon(Icons.photo, size: 40, color: Colors.black)),
@@ -264,6 +262,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
 
   Future<void> fetchPaged(dynamic request) async{
     try {
+      filters!['Page'] = _currentPage;
       var data = await _carProvider.getFiltered(request);
       setState(() {
         result = data;

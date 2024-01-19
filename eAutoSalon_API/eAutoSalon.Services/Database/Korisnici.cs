@@ -27,11 +27,15 @@ public partial class Korisnici
 
     public bool? Isverified { get; set; }
 
+    public string? State { get; set; }
+
     public virtual ICollection<Komentari> Komentaris { get; set; } = new List<Komentari>();
 
     public virtual ICollection<KorisnikUloge> KorisnikUloges { get; set; } = new List<KorisnikUloge>();
 
     public virtual ICollection<Novosti> Novostis { get; set; } = new List<Novosti>();
+
+    public virtual ICollection<Recenzije> Recenzijes { get; set; } = new List<Recenzije>();
 
     public virtual ICollection<TestnaVoznja> TestnaVoznjas { get; set; } = new List<TestnaVoznja>();
 
