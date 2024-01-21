@@ -99,11 +99,11 @@ class _EditorsNewsScreenState extends State<EditorsNewsScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(news.tip ?? "null",
+              Text(news.tip?.toUpperCase() ?? "NULL",
                   style: const TextStyle(
-                      fontSize: 14,
+                      fontSize: 15,
                       color: Colors.blueGrey,
-                      fontStyle: FontStyle.italic)),
+                      fontWeight: FontWeight.w500)),
               Tooltip(
                 message: 'Više',
                 child: Container(

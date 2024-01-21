@@ -43,8 +43,9 @@ class _NewCommentDialogState extends State<NewCommentDialog> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
+                      const Icon(Icons.comment, size: 25, color: Colors.blueGrey),
                       IconButton(
                           splashRadius: 20,
                           onPressed: () {

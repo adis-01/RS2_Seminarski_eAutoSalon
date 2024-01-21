@@ -16,6 +16,7 @@ namespace eAutoSalon.Models.ViewModels
         public string Username { get; set; } = null!;
         public string Email { get; set; } = null!;
         public byte[] Slika { get; set; } = null!;
+        public DateTime? RegisteredOn { get; set; }
 
         public virtual ICollection<VMKorisnikUloga> KorisnikUloges { get; set; } = new List<VMKorisnikUloga>();
     }

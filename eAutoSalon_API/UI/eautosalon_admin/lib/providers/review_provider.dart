@@ -16,8 +16,11 @@ class ReviewProvider extends BaseProvider<Review>{
 
     var req = await http.get(uri, headers: headers);
     if(isValidResponse(req)){
-      double average;
+      dynamic average;
       var data = jsonDecode(req.body);
+      if(data is int){
+        data = data.toDouble();
+      }
       average = data;
       return average;
     }
@@ -25,6 +28,9 @@ class ReviewProvider extends BaseProvider<Review>{
       throw Exception('Greška...');
     }
   }
+
+
+
 
   @override
   Review fromJson(data) {

@@ -12,6 +12,9 @@ User _$UserFromJson(Map<String, dynamic> json) => User(
       json['lastName'] as String?,
       json['email'] as String?,
       json['slika'] as String?,
+      json['registeredOn'] == null
+          ? null
+          : DateTime.parse(json['registeredOn'] as String),
     )..username = json['username'] as String?;
 
 Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
@@ -21,4 +24,5 @@ Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
       'username': instance.username,
       'email': instance.email,
       'slika': instance.slika,
+      'registeredOn': instance.registeredOn?.toIso8601String(),
     };

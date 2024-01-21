@@ -68,7 +68,7 @@ class _EditCarState extends State<EditCar> {
                 const Divider(thickness: 0.3, color: Colors.blueGrey, height: 25),
                 buildInputs(context),
                 const SizedBox(height: 20),
-                buildButtons(context)
+                SizedBox(width: 200, height: 42,child: buildButtons(context))
               ],
             ),
           ),
@@ -77,19 +77,12 @@ class _EditCarState extends State<EditCar> {
     );
   }
 
-  Wrap buildButtons(BuildContext context) {
-    return Wrap(
-                spacing: 30,
-                runSpacing: 15,
-                children: [
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(backgroundColor: Colors.blueGrey, minimumSize: const Size(75,40)),
-                    onPressed: (){
-                    Navigator.of(context).pop();
-                  }, child: const Text('Poništi')),
-
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(backgroundColor: Colors.blueGrey, minimumSize: const Size(75,40)),
+  MaterialButton buildButtons(BuildContext context) {
+    return 
+                  MaterialButton(
+                    padding: const EdgeInsets.all(15),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                    color: Colors.blueGrey,
                     onPressed: () async{
                       if(_formKey.currentState != null){
                         if(_formKey.currentState!.saveAndValidate()){
@@ -103,9 +96,7 @@ class _EditCarState extends State<EditCar> {
                           }
                         }
                       }
-                    }, child: const Text('Spasi'))
-                ],
-              );
+                    }, child: const Text('Spasi', style: TextStyle(color: Colors.white),));
   }
 
   Wrap buildInputs(BuildContext context) {

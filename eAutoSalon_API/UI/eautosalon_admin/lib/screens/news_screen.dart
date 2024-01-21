@@ -115,7 +115,7 @@ class _NewsScreenState extends State<NewsScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(item.tip ?? "null", style: const TextStyle(fontSize: 14, color: Colors.blueGrey, fontStyle: FontStyle.italic)),
+                        Text(item.tip?.toUpperCase() ?? "NULL", style: const TextStyle(fontSize: 15, color: Colors.blueGrey, fontWeight: FontWeight.w500)),
                         Tooltip(
                           message: 'Više',
                           child: Container(

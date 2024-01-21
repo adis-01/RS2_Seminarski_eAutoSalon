@@ -75,6 +75,13 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                           child: user.slika != "" ? fromBase64String(user.slika!) : Image.asset("assets/images/no_profile_pic.png"),
                         ),
                         const SizedBox(height: 10),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Text("User since ${user.registered ?? "[date null]"}", style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w400, color: Colors.blueGrey), textAlign: TextAlign.start,),
+                          ],
+                        ),
+                        const SizedBox(height: 10),
                         Container(
                           width: 400,
                           padding: const EdgeInsets.all(10),

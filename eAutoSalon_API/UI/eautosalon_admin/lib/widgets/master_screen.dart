@@ -1,6 +1,7 @@
 
 import 'package:eautosalon_admin/screens/employees_screen.dart';
 import 'package:eautosalon_admin/screens/home_page_screen.dart';
+import 'package:eautosalon_admin/screens/report_screen.dart';
 import 'package:eautosalon_admin/screens/reviews_screen.dart';
 import 'package:eautosalon_admin/screens/test_drives_screen.dart';
 import 'package:eautosalon_admin/screens/user_profile_screen.dart';
@@ -111,28 +112,28 @@ class _MasterScreenState extends State<MasterScreen> {
                 Icons.directions_car_outlined, size: 45, color: Colors.white,
               ),
             ),
-            const SizedBox(height: 25),
+            const SizedBox(height: 30),
             buildListTile('Automobili', Icons.directions_car, () {
               Navigator.of(context).push(MaterialPageRoute(
                   builder: (builder) => const HomePageScreen()));
             }),
-            const SizedBox(height: 15),
+            const SizedBox(height: 10),
             buildListTile('Korisnici', Icons.people, () {
               Navigator.of(context).push(
                   MaterialPageRoute(builder: (builder) => const UsersScreen()));
             }),
-            const SizedBox(height: 15),
+            const SizedBox(height: 10),
             buildListTile('Uposlenici', Icons.business, () {
               Navigator.of(context).push(MaterialPageRoute(
                   builder: (builder) => const EmployeesScreen()));
             }),
-            const SizedBox(height: 15),
+            const SizedBox(height: 10),
               buildListTile('Korisnički profil', Icons.settings, () {
               Navigator.of(context).push(
                 MaterialPageRoute(builder: (builder) => const UserProfileScreen())
               );
              }),
-            const SizedBox(height: 15),
+            const SizedBox(height: 10),
             ListTile(
               hoverColor: Colors.black45,
               contentPadding: const EdgeInsets.only(left: 20),
@@ -151,19 +152,21 @@ class _MasterScreenState extends State<MasterScreen> {
                 );
               },
             ),
-            const SizedBox(height: 15),
-            buildListTile('Recenzije', Icons.star, () {
+            const SizedBox(height: 10),
+            buildListTile('Recenzije', Icons.star_border, () {
               Navigator.of(context).push(MaterialPageRoute(builder: (builder) => const ReviewsScreen()));
             }),
+            const SizedBox(height: 10),
+            buildListTile('Izvještaj', Icons.report, () {
+              Navigator.of(context).push(MaterialPageRoute(builder: (builder) => const ReportScreen()));
+            }),
             const SizedBox(height: 15),
-            buildListTile('Izvještaj', Icons.report, () {}),
-            const SizedBox(height: 20),
             const Divider(
                 color: Colors.white,
                 thickness: 0.6,
                 indent: 15,
                 endIndent: 15),
-            const SizedBox(height: 20),
+            const SizedBox(height: 15),
             buildListTile('Odjava', Icons.logout, () {
               CustomDialogs.showQuestion(
                   context, 'Da li ste sigurni da se želite odjaviti?', () {

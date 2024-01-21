@@ -39,100 +39,95 @@ class _EditNewsDialogState extends State<EditNewsDialog> {
       child: Container(
         width: 700,
         padding: const EdgeInsets.all(15),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Icon(Icons.edit, color: Color(0xFF248BD6), size: 25),
-                IconButton(
-                    splashRadius: 20,
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    icon: const Icon(Icons.close,
-                        color: Color(0xFF248BD6), size: 25))
-              ],
-            ),
-            const SizedBox(height: 20),
-            FormBuilder(
-              key: _formKey,
-              initialValue: initialValue,
-              child: Column(
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  SizedBox(
-                    width: double.infinity,
-                    child: FormBuilderTextField(
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
-                      name: 'naslov',
-                      decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10)),
-                          labelText: 'Naslov'),
-                      validator: FormBuilderValidators.compose([
-                        FormBuilderValidators.required(context,
-                            errorText: 'Polje je obavezno')
-                      ]),
-                    ),
-                  ),
-                  const SizedBox(height: 15),
-                  SizedBox(
-                    width: double.infinity,
-                    child: FormBuilderTextField(
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
-                      name: 'sadrzaj',
-                      decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10)),
-                          labelText: 'Sadržaj'),
-                      maxLines: null,
-                      validator: FormBuilderValidators.compose([
-                        FormBuilderValidators.required(context,
-                            errorText: 'Polje je obavezno')
-                      ]),
-                    ),
-                  )
+                  const Icon(Icons.edit, color: Colors.blueGrey, size: 25),
+                  IconButton(
+                      splashRadius: 25,
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      icon: const Icon(Icons.close,
+                          color: Colors.blueGrey, size: 25))
                 ],
               ),
-            ),
-            const SizedBox(height: 20),
-            Wrap(
-              spacing: 35,
-              runSpacing: 10,
-              children: [
-                MaterialButton(
-                  color: const Color(0xFF248BD6),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: const Text("Nazad",
-                      style: TextStyle(color: Colors.white)),
+              const SizedBox(height: 20),
+              FormBuilder(
+                key: _formKey,
+                initialValue: initialValue,
+                child: Column(
+                  children: [
+                    SizedBox(
+                      width: double.infinity,
+                      child: FormBuilderTextField(
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        name: 'naslov',
+                        decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10)),
+                            labelText: 'Naslov'),
+                        validator: FormBuilderValidators.compose([
+                          FormBuilderValidators.required(context,
+                              errorText: 'Polje je obavezno')
+                        ]),
+                      ),
+                    ),
+                    const SizedBox(height: 15),
+                    SizedBox(
+                      width: double.infinity,
+                      child: FormBuilderTextField(
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        name: 'sadrzaj',
+                        decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10)),
+                            labelText: 'Sadržaj'),
+                        maxLines: null,
+                        validator: FormBuilderValidators.compose([
+                          FormBuilderValidators.required(context,
+                              errorText: 'Polje je obavezno')
+                        ]),
+                      ),
+                    )
+                  ],
                 ),
-                MaterialButton(
-                  color: const Color(0xFF248BD6),
+              ),
+              const SizedBox(height: 20),
+              SizedBox(
+                width: 200,
+                height: 42,
+                child: MaterialButton(
+                  color: Colors.blueGrey,
+                  padding: const EdgeInsets.all(15),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                   onPressed: () {
                     saveData();
                   },
-                  child: const Text("Spasi",
-                      style: TextStyle(color: Colors.white)),
-                )
-              ],
-            )
-          ],
+                  child: const Text("Spasi", style: TextStyle(color: Colors.white)),
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
   }
 
   Future<void> saveData() async {
-    if(_formKey.currentState != null){
-      if(_formKey.currentState!.saveAndValidate()){
+    if (_formKey.currentState != null) {
+      if (_formKey.currentState!.saveAndValidate()) {
         try {
-          await _newsProvider.update(widget.news.novostiId!, _formKey.currentState!.value);
+          await _newsProvider.update(
+              widget.news.novostiId!, _formKey.currentState!.value);
           CustomDialogs.showSuccess(context, 'Uspješno sačuvane promjene', () {
-              Navigator.of(context).push(MaterialPageRoute(builder: (builder) => const NewsScreen()));
-           });
+            Navigator.of(context).push(
+                MaterialPageRoute(builder: (builder) => const NewsScreen()));
+          });
         } catch (e) {
           CustomDialogs.showError(context, e.toString());
         }

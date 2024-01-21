@@ -12,6 +12,7 @@ namespace eAutoSalon.Models.SearchObjects
         public int? GodinaProizvodnje { get; set; }
         public string? VrstaGoriva { get; set; } = null!;
         public int? BrojVrata { get; set; }
+        public string? TipGoriva { get; set; } = null!;
         public int? PredjenaKilometraza { get; set; }
         public string? FTS { get; set; }
     }

@@ -19,7 +19,7 @@ class ReviewsScreen extends StatefulWidget {
 
 class _ReviewsScreenState extends State<ReviewsScreen> {
 
-   double average = 0;
+  double? average;
   int currentPage = 1;
   final _pageSize = 5;
   SearchResult<Review>? result;
@@ -66,7 +66,7 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
                         const SizedBox(width: 10),
                         Container(
                           margin: const EdgeInsets.only(right: 25),
-                          child: Text(average.toStringAsFixed(2), style: const TextStyle(fontSize: 19, color: Colors.black87, fontWeight: FontWeight.bold),))
+                          child: Text("${average?.toStringAsFixed(2) ?? 0}", style: const TextStyle(fontSize: 19, color: Colors.black87, fontWeight: FontWeight.bold),))
                       ],
                     )
                   ],
@@ -122,13 +122,13 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
                         children: [
                           Icon(Icons.star, size: 22, color: Colors.yellow[800]),
                           const SizedBox(width: 5),
-                          Text(object.ocjena.toString(), style: const TextStyle(fontSize: 17, color: Colors.black87,fontWeight: FontWeight.bold),)
+                          Text(object.ocjena?.toString() ?? "0", style: const TextStyle(fontSize: 17, color: Colors.black87,fontWeight: FontWeight.bold),)
                         ],
                       )
                     ],
                   ),
                   const SizedBox(height: 10),
-                  Container(
+                  object.komentar != null ? Container(
                     padding: const EdgeInsets.all(15),
                     width: double.infinity,
                     decoration: BoxDecoration(
@@ -139,9 +139,9 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: Text(object.komentar ?? "", style: const TextStyle(fontSize: 15, color: Colors.blueGrey, fontWeight: FontWeight.w600),),
-                  ),
+                  ) : const Center(child: Text("KOMENTAR NIJE OSTAVLJEN",style: TextStyle(fontSize: 15, color: Colors.blueGrey),)),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Tooltip(
                         message: 'Obriši',
@@ -171,7 +171,7 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
                   MaterialButton(
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
                     color: Colors.black87,
-                    disabledColor: Colors.blueGrey,
+                    disabledColor: Colors.grey[400],
                     padding: const EdgeInsets.all(13),
                     onPressed: currentPage > 1 ? (){
                       setState(() {
@@ -185,7 +185,7 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
                   MaterialButton(
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
                     color: Colors.black87,
-                    disabledColor: Colors.blueGrey,
+                    disabledColor: Colors.grey[400],
                     padding: const EdgeInsets.all(13),
                     onPressed: (result?.hasNext ?? false) ?
                      (){

@@ -46,7 +46,7 @@ namespace eAutoSalon.Services.Services
             {
                 "Svi"
             };
-            var proizvodjaci = await _context.Automobilis.Select(p=>p.Proizvodjac).Distinct().ToListAsync();
+            var proizvodjaci = await _context.Automobilis.Where(x=>x.State=="Aktivan").Select(p=>p.Proizvodjac).Distinct().ToListAsync();
             foreach(var item in proizvodjaci)
             {
                 list.Add(item);
@@ -157,6 +157,14 @@ namespace eAutoSalon.Services.Services
                 if(search.Proizvodjac != "Svi")
                 {
                     query = query.Where(x => x.Proizvodjac == search.Proizvodjac);
+                }
+            }
+
+            if(!string.IsNullOrWhiteSpace(search?.TipGoriva))
+            {
+                if(search.TipGoriva != "Svi")
+                {
+                    query = query.Where(x => x.VrstaGoriva == search.TipGoriva);
                 }
             }
 
