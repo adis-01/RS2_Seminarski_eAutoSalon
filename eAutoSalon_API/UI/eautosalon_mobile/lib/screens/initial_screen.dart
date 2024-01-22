@@ -13,53 +13,35 @@ class _InitialScreenState extends State<InitialScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Colors.grey[800],
-        body: Padding(
-          padding: const EdgeInsets.all(25),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
-                  Text(
-                    "EAUTOSALON",
-                    style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.white,
-                        fontWeight: FontWeight.w400,
-                        letterSpacing: 2.5),
+        backgroundColor: Colors.grey[200],
+        body: Center(
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                const Text("EAUTOSALON", style: TextStyle(color: Colors.black54, letterSpacing: 2, fontSize: 15, fontWeight: FontWeight.w400),),
+                const SizedBox(height: 10),
+                Image.asset("assets/images/car_icon.png", width: 150, height: 95,),
+                const SizedBox(height: 20),
+                const Text("Vozila koja oslikavaju vašu ličnost", style: TextStyle(color: Colors.black87, letterSpacing: 1.5, fontSize: 15, fontWeight: FontWeight.w500),),
+                const SizedBox(height: 20),
+                GestureDetector(
+                  onTap: (){
+                    Navigator.of(context).push(MaterialPageRoute(builder: (builder) => const LoginScreen()));
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.all(15),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15),
+                      color: Colors.white70
+                    ),
+                    child: const Icon(Icons.arrow_forward, color: Colors.black54, size: 35,),
                   ),
-                 SizedBox(height: 65),
-                  Center(
-                      child: Icon(
-                    Icons.directions_car,
-                    size: 100,
-                    color: Colors.white,
-                  )),
-                  SizedBox(height: 25),
-                  Text("VOZILA KOJA OSLIKAVAJU VAŠU LIČNOST", style: TextStyle(fontSize: 16, color: Colors.white, fontWeight: FontWeight.bold), textAlign: TextAlign.center,)
-                ],
-              ),
-              GestureDetector(
-                onTap: (){
-                  Navigator.of(context).push(MaterialPageRoute(builder: (builder) => const LoginScreen()));
-                },
-                child: Container(
-                  width: 250,
-                  padding: const EdgeInsets.all(20),
-                  margin: const EdgeInsets.only(bottom: 35),
-                  decoration: BoxDecoration(
-                    color: Colors.black87,
-                    borderRadius: BorderRadius.circular(8)
-                  ),
-                  child: const Text("PRIJAVA", style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold), textAlign: TextAlign.center,),
-                ),
-              )
-            ],
+                )
+              ],
+            ),
           ),
         ),
-      ),
+      )
     );
   }
 }

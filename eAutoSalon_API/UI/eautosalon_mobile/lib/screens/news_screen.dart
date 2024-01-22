@@ -1,3 +1,4 @@
+import 'package:eautosalon_mobile/screens/news_detail_screen.dart';
 import 'package:eautosalon_mobile/widgets/master_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -14,32 +15,27 @@ class _NewsScreenState extends State<NewsScreen> {
   @override
   Widget build(BuildContext context) {
     return MyAppBar(
-        title: 'Novosti',
-        body: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(15),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  children: [
-                    buildFilterTypes(),
-                    const SizedBox(height: 25),
-                    buildNewsContainer(),
-                    buildNewsContainer(),
-                    buildNewsContainer(),
-                    buildNewsContainer(),
-                    buildNewsContainer(),
-                    buildNewsContainer(),
-                  ],
-                ),
-                Column(
-                  children: [buildPagingArrows()],
-                )
-              ],
-            ),
+      title: 'Novosti',
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(15),
+          child: Column(
+            children: [
+              buildFilterTypes(),
+              const SizedBox(height: 25),
+              buildNewsContainer(),
+              buildNewsContainer(),
+              buildNewsContainer(),
+              buildNewsContainer(),
+              buildNewsContainer(),
+              buildNewsContainer(),
+              const SizedBox(height: 25),
+              buildPagingArrows()
+            ],
           ),
-        ));
+        ),
+      ),
+    );
   }
 
   Container buildNewsContainer() {
@@ -88,12 +84,17 @@ class _NewsScreenState extends State<NewsScreen> {
                       ),
                       const SizedBox(height: 10),
                       MaterialButton(
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                        color: Colors.black87,
-                        onPressed: (){
-
-                        },
-                        child: const Icon(Icons.more_horiz, color: Colors.white,)),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10)),
+                          color: Colors.black87,
+                          onPressed: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (builder) => const NewsDetail()));
+                          },
+                          child: const Icon(
+                            Icons.more_horiz,
+                            color: Colors.white,
+                          )),
                     ],
                   )
                 ],

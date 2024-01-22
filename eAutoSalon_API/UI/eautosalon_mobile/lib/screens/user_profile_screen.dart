@@ -3,6 +3,7 @@ import 'package:eautosalon_mobile/screens/history_user_reviews.dart';
 import 'package:eautosalon_mobile/screens/history_user_testdrives.dart';
 import 'package:eautosalon_mobile/widgets/edit_profile_dialog.dart';
 import 'package:eautosalon_mobile/widgets/master_screen.dart';
+import 'package:eautosalon_mobile/widgets/password_change_dialog.dart';
 import 'package:flutter/material.dart';
 
 class UserProfile extends StatefulWidget {
@@ -22,18 +23,8 @@ class _UserProfileState extends State<UserProfile> {
             padding: const EdgeInsets.all(15),
             child: Column(
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: const [
-                    Icon(
-                      Icons.settings,
-                      color: Colors.black87,
-                      size: 20,
-                    )
-                  ],
-                ),
                 buildImage(),
-                const SizedBox(height: 10),
+                const SizedBox(height: 15),
                 const Text(
                   "User since Dec, 2023",
                   style: TextStyle(
@@ -41,7 +32,7 @@ class _UserProfileState extends State<UserProfile> {
                       fontWeight: FontWeight.bold,
                       fontSize: 15),
                 ),
-                const SizedBox(height: 15),
+                const SizedBox(height: 25),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -58,7 +49,9 @@ class _UserProfileState extends State<UserProfile> {
                 buildEmail(),
                 buildFullName(),
                 buildUsername(),
-                const SizedBox(height: 35),
+                const SizedBox(height: 30),
+                const Divider(thickness: 0.3, indent: 20, endIndent: 20, color: Colors.blueGrey,),
+                const SizedBox(height: 30),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: const [
@@ -72,13 +65,12 @@ class _UserProfileState extends State<UserProfile> {
                     ),
                   ],
                 ),
-                const SizedBox(height: 10),
+                const SizedBox(height: 15),
                 buildComment(),
                 buildTestDrives(),
-                buildReviews(),
-                const SizedBox(height: 20),
-                buildPasswordPhoto(),
+                buildReviews(), 
                 const SizedBox(height: 10),
+                buildPasswordPhoto()
               ],
             ),
           ),
@@ -121,7 +113,9 @@ class _UserProfileState extends State<UserProfile> {
               padding: const EdgeInsets.all(10),
               shape: const CircleBorder(),
               color: Colors.black54,
-              onPressed: () {},
+              onPressed: () {
+                showDialog(context: context, builder: (context) => const PassChange());
+              },
               child: const Icon(
                 Icons.password,
                 color: Colors.white,

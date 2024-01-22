@@ -1,4 +1,4 @@
-import 'package:eautosalon_mobile/utils/dialog_helper.dart';
+import 'package:eautosalon_mobile/screens/car_accessories_screen.dart';
 import 'package:eautosalon_mobile/widgets/master_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -52,18 +52,23 @@ class _CarDetailsState extends State<CarDetails> {
                     buildDetailContainer('Broj šasije','AS32B9DNM320MK'),
                     buildDetailContainer('Vrsta goriva','Dizel'),
                     const SizedBox(height: 10),
-                    SizedBox(
-                      width: double.infinity,
-                      child: MaterialButton(
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
-                        color: Colors.black87,
-                        padding: const EdgeInsets.all(15),
-                        onPressed: (){
-                          MyDialogs.showSuccess(context, 'TODO Dodatna', () { 
-                            Navigator.of(context).pop();
-                          });
-                        },
-                        child: const Text("DODATNA OPREMA", style: TextStyle(fontSize: 14, color: Colors.white,fontWeight: FontWeight.w500),),),
+                    Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: Colors.black87
+                      ),
+                      child: ListTile(
+                        leading: const Icon(Icons.cable_rounded, color: Colors.white, size: 20,),
+                        title: const Text("DODATNA OPREMA", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w400),),
+                        trailing: IconButton(
+                          color: Colors.white,
+                          iconSize: 25,
+                          onPressed: (){
+                            Navigator.of(context).push(MaterialPageRoute(builder: (builder) => const CarAccessories()));
+                          },
+                          icon: const Icon(Icons.arrow_forward_ios),
+                        ),
+                      ),
                     )
                   ],
                 ),

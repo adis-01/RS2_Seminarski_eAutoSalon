@@ -37,9 +37,8 @@ class _MailDialogState extends State<MailDialog> {
               decoration: InputDecoration(
                 border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
                 focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
-                labelText: 'Mail',
-                labelStyle: const TextStyle(color: Colors.black87),
-                prefixIcon: const Icon(Icons.mail, color: Colors.black87,),
+                labelStyle: const TextStyle(color: Colors.blueGrey),
+                hintText: 'Vaša e-mail adresa...'
               ),
             ),
           ),
@@ -51,8 +50,8 @@ class _MailDialogState extends State<MailDialog> {
               decoration: InputDecoration(
                 border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
                 focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
-                labelText: 'Sadržaj',
-                labelStyle: const TextStyle(color: Colors.black87),
+                labelStyle: const TextStyle(color: Colors.blueGrey),
+                hintText: 'Sadržaj maila...'
               ),
               minLines: 2,
               maxLines: 4,

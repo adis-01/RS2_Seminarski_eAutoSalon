@@ -1,4 +1,5 @@
 import 'package:eautosalon_mobile/screens/about_us_screen.dart';
+import 'package:eautosalon_mobile/screens/employees_screen.dart';
 import 'package:eautosalon_mobile/screens/login_screen.dart';
 import 'package:eautosalon_mobile/screens/news_screen.dart';
 import 'package:eautosalon_mobile/screens/reviews_screen.dart';
@@ -14,7 +15,7 @@ class MyDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Drawer(
-        backgroundColor: Colors.grey[800],
+        backgroundColor: Colors.grey[900],
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
             topRight: Radius.circular(10),
@@ -33,8 +34,8 @@ class MyDrawer extends StatelessWidget {
                   }, icon: const Icon(Icons.close, size: 25, color: Colors.white,))
                 ],
               ),
-              const Center(
-                child: Icon(Icons.directions_car, color: Colors.white, size: 55,),
+              Center(
+                child: Image.asset("assets/images/car_icon.png", width: 90, height: 70,),
               ),
               const SizedBox(height: 15),
               MyDrawerListTile(
@@ -49,7 +50,8 @@ class MyDrawer extends StatelessWidget {
                 title:'Uposlenici', 
                 icon: Icons.business, 
                 onTap: (){
-                  
+                  Navigator.of(context).pop();
+                  Navigator.of(context).push(MaterialPageRoute(builder: (builder) => const EmployeesScreen()));
                 }
               ),
               const SizedBox(height: 10),

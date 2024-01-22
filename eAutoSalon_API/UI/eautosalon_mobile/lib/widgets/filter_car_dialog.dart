@@ -29,6 +29,48 @@ class _FilterCarState extends State<FilterCar> {
               ],
             ),
             const SizedBox(height: 10),
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(10),
+              margin: const EdgeInsets.only(bottom: 10),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10)
+              ),
+              child: Column(
+                children: [
+                  const Text("Pređeni kilometri < od"),
+                  const SizedBox(height: 5),
+                  TextField(
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      hintText: '100000'
+                    ),
+                  )
+                ],
+              )
+            ),
+            const SizedBox(height: 10),
+            Container(
+               width: double.infinity,
+              padding: const EdgeInsets.all(10),
+              margin: const EdgeInsets.only(bottom: 10),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: Colors.black26
+              ),
+              child: Column(
+                children: [
+                  const Text("Godina proizvodnje < od"),
+                  const SizedBox(height: 5),
+                  TextField(
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      hintText: '2014'
+                    ),
+                  )
+                ],
+              )
+            )
           ],
         ),
       ),

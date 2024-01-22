@@ -43,7 +43,7 @@ class _HomePageState extends State<HomePage> {
                 CarTile(title: 'Renault Megane i8', price: '8,442.00', onTap: (){
                   Navigator.of(context).push(MaterialPageRoute(builder: (builder) => const CarDetails()));
                 }, godinaProizvodnje: '2016'),
-                const SizedBox(height: 10),
+                const SizedBox(height: 20),
                 buildPagingArrows()
               ],
             ),
