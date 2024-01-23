@@ -28,48 +28,53 @@ class _FilterCarState extends State<FilterCar> {
                 }, icon: const Icon(Icons.close, color: Colors.black87, size: 25,))
               ],
             ),
-            const SizedBox(height: 10),
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.all(10),
-              margin: const EdgeInsets.only(bottom: 10),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10)
-              ),
-              child: Column(
-                children: [
-                  const Text("Pređeni kilometri < od"),
-                  const SizedBox(height: 5),
-                  TextField(
-                    decoration: InputDecoration(
-                      border: InputBorder.none,
-                      hintText: '100000'
-                    ),
+            const Text("Pređeni kilometri < od",style: TextStyle(color: Colors.black54, fontSize: 14, fontWeight: FontWeight.w400),),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
+              child: TextField(
+                cursorColor: Colors.grey,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10)
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10)
                   )
-                ],
-              )
+                ),
+              ),
             ),
-            const SizedBox(height: 10),
-            Container(
-               width: double.infinity,
-              padding: const EdgeInsets.all(10),
-              margin: const EdgeInsets.only(bottom: 10),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                color: Colors.black26
-              ),
-              child: Column(
-                children: [
-                  const Text("Godina proizvodnje < od"),
-                  const SizedBox(height: 5),
-                  TextField(
-                    decoration: InputDecoration(
-                      border: InputBorder.none,
-                      hintText: '2014'
-                    ),
+            const Text("Godina proizvodnje < od",style: TextStyle(color: Colors.black54, fontSize: 14, fontWeight: FontWeight.w400),),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
+              child: TextField(
+                cursorColor: Colors.grey,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10)
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10)
                   )
-                ],
-              )
+                ),
+              ),
+            ),
+            const SizedBox(height: 20),
+            GestureDetector(
+              onTap: (){
+
+              },
+              child: Container(
+                width: double.infinity,
+                margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
+                padding: const EdgeInsets.all(15),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  color: Colors.black87
+                ),
+                child: const Text("PRETRAGA",
+                  textAlign: TextAlign.center,
+                 style: TextStyle(color: Colors.white, fontSize: 13, letterSpacing: 1, fontWeight: FontWeight.w400),),
+              ),
             )
           ],
         ),

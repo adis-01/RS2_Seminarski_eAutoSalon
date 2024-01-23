@@ -22,7 +22,7 @@ class HistoryCommentTile extends StatelessWidget {
             children: [
               Icon(Icons.newspaper, size: 22, color: Colors.grey[800],),
               const SizedBox(width: 10),
-              Text(title, style: const TextStyle(color: Colors.black54, fontWeight: FontWeight.w400, fontSize: 17),),
+              Text(title.toUpperCase(), style: const TextStyle(color: Colors.black54, fontWeight: FontWeight.w400, fontSize: 14),),
             ],
           ),
           const SizedBox(height: 15),

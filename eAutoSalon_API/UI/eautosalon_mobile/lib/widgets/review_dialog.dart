@@ -59,6 +59,7 @@ class _ReviewDialogState extends State<ReviewDialog> {
                 color: Colors.grey[300],
               ),
               child: TextField(
+                cursorColor: Colors.blueGrey,
                 controller: _controller,
                 decoration: const InputDecoration(
                   counter: Icon(Icons.comment),
@@ -71,15 +72,16 @@ class _ReviewDialogState extends State<ReviewDialog> {
                 maxLines: 3,
               ),
             ),
-            const SizedBox(height: 15),
+            const SizedBox(height: 20),
             SizedBox(
-              width: 200,
+              width: double.infinity,
               child: MaterialButton(
+                padding: const EdgeInsets.all(15),
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                 color: Colors.black87,
                 onPressed: (){
       
-              }, child: const Text("SAČUVAJ", style: TextStyle(fontSize: 15, color: Colors.white, fontWeight: FontWeight.w400),),),
+                }, child: const Text("SAČUVAJ", style: TextStyle(fontSize: 15, color: Colors.white, fontWeight: FontWeight.w400),),),
             )
           ],
         ),

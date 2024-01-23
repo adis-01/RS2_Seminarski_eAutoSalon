@@ -34,6 +34,7 @@ class _MailDialogState extends State<MailDialog> {
             padding: const EdgeInsets.all(15),
             width: double.infinity,
             child: TextField(
+              cursorColor: Colors.grey,
               decoration: InputDecoration(
                 border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
                 focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
@@ -47,6 +48,7 @@ class _MailDialogState extends State<MailDialog> {
             width: double.infinity,
             padding: const EdgeInsets.all(15),
             child: TextField(
+              cursorColor: Colors.grey,
               decoration: InputDecoration(
                 border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
                 focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
@@ -64,7 +66,7 @@ class _MailDialogState extends State<MailDialog> {
             child: MaterialButton(
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
               color: Colors.black87,
-              padding: const EdgeInsets.all(10),
+              padding: const EdgeInsets.all(15),
               onPressed: (){
           
               },

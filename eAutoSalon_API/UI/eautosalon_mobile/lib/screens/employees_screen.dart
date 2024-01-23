@@ -50,7 +50,7 @@ class _EmployeesScreenState extends State<EmployeesScreen> {
                     //slika
                     const SizedBox(
                       width: double.infinity,
-                      height: 150,
+                      height: 140,
                       child: Center(
                           child: Icon(
                         Icons.no_photography,

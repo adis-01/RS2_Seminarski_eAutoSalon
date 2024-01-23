@@ -1,6 +1,10 @@
 import 'package:eautosalon_mobile/screens/car_accessories_screen.dart';
+import 'package:eautosalon_mobile/screens/checkout_screen.dart';
 import 'package:eautosalon_mobile/widgets/master_screen.dart';
+import 'package:eautosalon_mobile/widgets/test_drive_picker.dart';
 import 'package:flutter/material.dart';
+
+import '../widgets/test_drive_picker.dart';
 
 class CarDetails extends StatefulWidget {
   const CarDetails({super.key});
@@ -82,7 +86,7 @@ class _CarDetailsState extends State<CarDetails> {
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
                     color: Colors.grey[600],
                     onPressed: (){
-
+                      showDialog(context: context, builder: (context) => const TestDriveDialog());
                   },
                   child:const Text("TESTNA VOŽNJA", style: TextStyle(color: Colors.white),),),
                   const SizedBox(width: 10),
@@ -91,7 +95,7 @@ class _CarDetailsState extends State<CarDetails> {
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
                     color: Colors.grey[600],
                     onPressed: (){
-
+                      Navigator.of(context).push(MaterialPageRoute(builder: (builder) => const CheckoutPage()));
                   },
                   child: const Text("ONLINE PLAĆANJE", style: TextStyle(color: Colors.white),),)
                 ],

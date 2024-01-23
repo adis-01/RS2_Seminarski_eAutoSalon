@@ -94,16 +94,14 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
         showDialog(
             context: context, builder: (context) => const ReviewDialog());
       },
-      child: Container(
-        padding: const EdgeInsets.all(15),
+      child:Container(
+        padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(8), color: Colors.black87),
-        child: const Text(
-          "OSTAVITE RECENZIJU",
-          style: TextStyle(
-              color: Colors.white, fontWeight: FontWeight.w400, fontSize: 12),
+          borderRadius: BorderRadius.circular(5),
+          color: Colors.black87
         ),
-      ),
+        child: const Text("RECENZIRAJTE", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w400),),
+      )
     );
   }
 

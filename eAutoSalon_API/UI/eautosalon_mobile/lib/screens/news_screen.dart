@@ -18,7 +18,7 @@ class _NewsScreenState extends State<NewsScreen> {
       title: 'Novosti',
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(15),
+          padding: const EdgeInsets.all(10),
           child: Column(
             children: [
               buildFilterTypes(),
@@ -40,15 +40,16 @@ class _NewsScreenState extends State<NewsScreen> {
 
   Container buildNewsContainer() {
     return Container(
-      height: 235,
-      padding: const EdgeInsets.all(10),
+      height: 140,
+      width: double.infinity,
+      padding: const EdgeInsets.all(8),
       margin: const EdgeInsets.only(bottom: 10),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10), color: Colors.white70),
       child: Row(
         children: [
           Expanded(
-              flex: 1,
+              flex: 2,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -59,30 +60,14 @@ class _NewsScreenState extends State<NewsScreen> {
                         "Google is redefining mobile with artificial intelligence",
                         style: TextStyle(
                             color: Colors.black54,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 17),
+                            fontWeight: FontWeight.w500,
+                            fontSize: 14),
                       ),
                     ],
                   ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
-                        "Owen Williams",
-                        style: TextStyle(
-                            color: Colors.blueGrey,
-                            fontSize: 13,
-                            fontWeight: FontWeight.w500),
-                      ),
-                      const SizedBox(height: 10),
-                      const Text(
-                        "12 SEP 2018",
-                        style: TextStyle(
-                            color: Colors.blueGrey,
-                            fontSize: 12,
-                            fontWeight: FontWeight.w400),
-                      ),
-                      const SizedBox(height: 10),
                       MaterialButton(
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10)),
@@ -99,8 +84,8 @@ class _NewsScreenState extends State<NewsScreen> {
                   )
                 ],
               )),
-          const SizedBox(width: 10),
-          const Expanded(flex: 1, child: Placeholder())
+          const SizedBox(width: 15),
+          Expanded(flex: 1, child: Image.network("https://cdn.motor1.com/images/mgl/o6ymp/s1/bmw-i8.jpg"))
         ],
       ),
     );

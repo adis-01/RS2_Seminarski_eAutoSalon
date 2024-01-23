@@ -21,8 +21,8 @@ class _CarAccessoriesState extends State<CarAccessories> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: const[
-                  Text("PROIZVODJAC MODEL", style: TextStyle(color: Colors.blueGrey, fontSize: 13, fontWeight: FontWeight.w400),),
-                  Icon(Icons.cable, size: 25, color: Colors.black87,)
+                  Text("PROIZVODJAC MODEL", style: TextStyle(color: Colors.blueGrey, fontSize: 15, fontWeight: FontWeight.w400),),
+                  Icon(Icons.cable, size: 28, color: Colors.black87,)
                 ],
               ),
               const SizedBox(height: 25),
@@ -62,14 +62,14 @@ class _CarAccessoriesState extends State<CarAccessories> {
                 padding: const EdgeInsets.all(10),
                 margin: const EdgeInsets.only(left: 10, right: 10),
                 decoration: BoxDecoration(
-                  color: Colors.black54,
+                  color: Colors.grey[800],
                   borderRadius: BorderRadius.circular(15)
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(title.toUpperCase(), style: const TextStyle(fontSize: 15,color: Colors.white, fontWeight: FontWeight.w500),),
-                    Icon(value ? Icons.check_circle : Icons.cancel, size: 25,color: Colors.white70,)
+                    Icon(value ? Icons.check_circle : Icons.cancel, size: 25,color: Colors.white,)
                   ],
                 ),
               );

@@ -29,10 +29,10 @@ class CarTile extends StatelessWidget {
                 title,
                 textAlign: TextAlign.center,
                 style: const TextStyle(
-                    fontSize: 13,
+                    fontSize: 15,
                     color: Colors.blueGrey,
-                    fontWeight: FontWeight.bold,
-                    letterSpacing: 1.5),
+                    fontWeight: FontWeight.w400,
+                    letterSpacing: 1),
               ),
               const SizedBox(height: 10),
               const SizedBox(

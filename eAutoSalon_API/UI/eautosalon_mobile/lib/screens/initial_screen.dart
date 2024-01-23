@@ -26,6 +26,7 @@ class _InitialScreenState extends State<InitialScreen> {
                 const SizedBox(height: 20),
                 GestureDetector(
                   onTap: (){
+                    Navigator.of(context).pop();
                     Navigator.of(context).push(MaterialPageRoute(builder: (builder) => const LoginScreen()));
                   },
                   child: Container(
