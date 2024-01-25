@@ -17,5 +17,6 @@ namespace eAutoSalon.Services.Interfaces
         Task Insert(TestnaVoznjaInsert req);
         Task Complete(int id);
         Task Cancel(int id);
+        Task<List<VMTestna_Historija>> GetHistory(int korisnikId);
     }
 }

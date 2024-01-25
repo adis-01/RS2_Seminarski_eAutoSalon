@@ -37,5 +37,12 @@ namespace eAutoSalon_API.Controllers
         {
             return await _service.GetAverage();
         }
+
+        [Authorize(Roles ="Korisnik,Administrator,Urednik")]
+        [HttpGet("ByKorisnik/{id}")]
+        public async Task<List<VMRecenzije>> getByKorisnik(int id)
+        {
+            return await _service.GetByKorisnik(id);
+        }
     }
 }

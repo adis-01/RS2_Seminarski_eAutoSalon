@@ -108,6 +108,16 @@ namespace eAutoSalon.Services.Services
             return dostupni_termini;
         }
 
+        public async Task<List<VMTestna_Historija>> GetHistory(int korisnikId)
+        {
+            var list = await _context.TestnaVoznjas.Where(x => x.KorisnikId == korisnikId)
+                       .Include("Automobil")
+                       .Include("Uposlenik")
+                       .ToListAsync();
+
+            return _mapper.Map<List<VMTestna_Historija>>(list);
+        }
+
         public async Task<PagedList<VMTestnaVoznja>> GetZavrseneTestne(TestnaVoznjaSearchObject? search = null)
         {
             var query = _context.TestnaVoznjas.Where(x => x.Status == "Zavrsena" || x.Status == "Otkazana")

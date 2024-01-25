@@ -35,5 +35,15 @@ namespace eAutoSalon.Services.Services
             }
             return average;
         }
+
+        public async Task<List<VMRecenzije>> GetByKorisnik(int korisnikId)
+        {
+            var list = await _context.Recenzijes.Where(x => x.KorisnikId == korisnikId).
+                Include("Korisnik").
+                OrderByDescending(x=>x.RecenzijaId).
+                ToListAsync();
+
+            return _mapper.Map<List<VMRecenzije>>(list);
+        }
     }
 }

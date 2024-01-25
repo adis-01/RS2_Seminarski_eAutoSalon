@@ -81,7 +81,7 @@ namespace eAutoSalon.Services.Services
             var entity = await _context.Set<TDb>().FindAsync(id);
 
             if (entity == null)
-                throw new UserException("Korisnik sa unesenim ID poljem nepostojeći.");
+                throw new UserException("ID polje nepostojeće");
 
             return _mapper.Map<T>(entity);
         }

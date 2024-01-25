@@ -1,12 +1,18 @@
+// ignore_for_file: use_build_context_synchronously
+
+import 'package:eautosalon_mobile/providers/user_provider.dart';
 import 'package:eautosalon_mobile/screens/edit_profile_screen.dart';
 import 'package:eautosalon_mobile/screens/history_user_comments.dart';
 import 'package:eautosalon_mobile/screens/history_user_reviews.dart';
 import 'package:eautosalon_mobile/screens/history_user_testdrives.dart';
 import 'package:eautosalon_mobile/screens/password_change_screen.dart';
+import 'package:eautosalon_mobile/utils/dialog_helper.dart';
+import 'package:eautosalon_mobile/utils/helpers.dart';
 import 'package:eautosalon_mobile/widgets/master_screen.dart';
-import 'package:eautosalon_mobile/widgets/user_history_comment.dart';
-import 'package:eautosalon_mobile/widgets/user_history_testdrives.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../models/user.dart';
 
 class UserProfile extends StatefulWidget {
   const UserProfile({super.key});
@@ -16,35 +22,50 @@ class UserProfile extends StatefulWidget {
 }
 
 class _UserProfileState extends State<UserProfile> {
+
+  bool isLoading = true;
+  late User user;
+  late UserProvider _userProvider;
+
+  @override
+  void initState() {
+    super.initState();
+    _userProvider = context.read<UserProvider>();
+    fetchData();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MyAppBar(
         title: 'KORISNIČKI PROFIL',
-        body: SingleChildScrollView(
+        body: 
+        isLoading ? const Center(child: CircularProgressIndicator(color: Colors.black87,),)
+        :
+        SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               buildImageBox(),
               const SizedBox(height: 15),
-              const Padding(
-                padding: EdgeInsets.only(left: 25, bottom: 10),
+              Padding(
+                padding: const EdgeInsets.only(left: 25, bottom: 10),
                 child: Text(
-                  "Adis",
-                  style: TextStyle(
+                  user.firstName ?? "null",
+                  style: const TextStyle(
                       color: Colors.black87,
-                      letterSpacing: 2.5,
-                      fontWeight: FontWeight.w600,
+                      letterSpacing: 2,
+                      fontWeight: FontWeight.bold,
                       fontSize: 22),
                 ),
               ),
-              const Padding(
-                padding: EdgeInsets.only(left: 25, bottom: 20),
+               Padding(
+                padding: const EdgeInsets.only(left: 25, bottom: 20),
                 child: Text(
-                  "Šipković",
-                  style: TextStyle(
+                  user.lastName ?? "null",
+                  style: const TextStyle(
                       color: Colors.black87,
                       letterSpacing: 2,
-                      fontWeight: FontWeight.w500,
+                      fontWeight: FontWeight.w400,
                       fontSize: 21),
                 ),
               ),
@@ -89,7 +110,7 @@ class _UserProfileState extends State<UserProfile> {
         ),
         trailing: IconButton(
             onPressed: () {
-              Navigator.of(context).push(MaterialPageRoute(builder: (builder) => const PassChange()));
+               Navigator.of(context).push(MaterialPageRoute(builder: (builder) => PassChange(korisnikId:user.korisnikId!,)));
             },
             icon: const Icon(
               Icons.arrow_forward_ios,
@@ -184,7 +205,7 @@ class _UserProfileState extends State<UserProfile> {
             ),
             trailing: IconButton(
                 onPressed: () {
-                  Navigator.of(context).push(MaterialPageRoute(builder: (builder) => const HistoryComments()));
+                  Navigator.of(context).push(MaterialPageRoute(builder: (builder) => HistoryComments(korisnikId: user.korisnikId!,)));
                 },
                 icon: const Icon(
                   Icons.arrow_forward_ios,
@@ -207,7 +228,7 @@ class _UserProfileState extends State<UserProfile> {
             ),
             trailing: IconButton(
                 onPressed: () {
-                   Navigator.of(context).push(MaterialPageRoute(builder: (builder) => const HistoryReviews()));
+                   Navigator.of(context).push(MaterialPageRoute(builder: (builder) => HistoryReviews(korisnikId: user.korisnikId!,)));
                 },
                 icon: const Icon(
                   Icons.arrow_forward_ios,
@@ -230,7 +251,7 @@ class _UserProfileState extends State<UserProfile> {
             ),
             trailing: IconButton(
                 onPressed: () {
-                   Navigator.of(context).push(MaterialPageRoute(builder: (builder) => const HistoryTestDrives()));
+                   Navigator.of(context).push(MaterialPageRoute(builder: (builder) =>  HistoryTestDrives(korisnikId: user.korisnikId!)));
                 },
                 icon: const Icon(
                   Icons.arrow_forward_ios,
@@ -256,19 +277,19 @@ class _UserProfileState extends State<UserProfile> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            user.slika != "" ?
             SizedBox(
                 width: 200,
                 height: 120,
-                child: Image.network(
-                  "https://cdn.icon-icons.com/icons2/2468/PNG/512/user_user_profile_user_icon_user_thump_icon_149321.png",
-                )),
+                child: fromBase64String(user.slika!)) : const Icon(Icons.no_photography, color: Colors.black54,size: 30,),
             const SizedBox(height: 10),
-            const Text(
-              "User since 12 Jan, 2024",
-              style: TextStyle(
-                  color: Colors.blueGrey,
-                  letterSpacing: 2,
-                  fontWeight: FontWeight.w400),
+           Text(
+              "Korisnik od ${user.registrationDate ?? "date null"}",
+              style: const TextStyle(
+                  color: Colors.black87,
+                  letterSpacing: 1,
+                  fontWeight: FontWeight.w400,
+                  fontSize: 15),
             )
           ],
         ));
@@ -297,8 +318,14 @@ class _UserProfileState extends State<UserProfile> {
                 letterSpacing: 1),
           ),
           trailing: IconButton(
-              onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(builder: (builder) => const EditProfile()));
+              onPressed: () async{
+               var result = await Navigator.of(context).push(MaterialPageRoute(builder: (builder) => EditProfile(user: user,)));
+               if(result!=null && result.toString().contains("ok")){
+                setState(() {
+                  isLoading=true;
+                });
+                fetchData();
+               }
               },
               icon: const Icon(
                 Icons.arrow_forward_ios,
@@ -308,5 +335,17 @@ class _UserProfileState extends State<UserProfile> {
         ),
       ),
     );
+  }
+  
+  Future<void> fetchData() async{
+    try {
+      var data = await _userProvider.fetchUserProfile();
+      setState(() {
+        user = data;
+        isLoading=false;
+      });
+    } catch (e) {
+      MyDialogs.showError(context, e.toString());
+    }
   }
 }

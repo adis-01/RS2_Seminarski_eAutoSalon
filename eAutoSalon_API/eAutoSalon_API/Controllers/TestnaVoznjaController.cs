@@ -61,5 +61,12 @@ namespace eAutoSalon_API.Controllers
         {
             await _service.Complete(id);
         }
+
+        [HttpGet("GetHistory/{id}")]
+        [Authorize(Roles = "Korisnik,Administrator,Urednik")]
+        public async Task<List<VMTestna_Historija>> GetHistory(int id)
+        {
+            return await _service.GetHistory(id);
+        }
     }
 }

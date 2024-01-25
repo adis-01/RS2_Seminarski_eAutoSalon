@@ -81,5 +81,12 @@ namespace eAutoSalon_API.Controllers
             return await base.Update(id, req);
         }
 
+        [Authorize(Roles = "Korisnik,Administrator,Urednik")]
+        [HttpGet("getUserId")]
+        public async Task<int> GetUserId([FromQuery] string username)
+        {
+            return await _service.GetUserId(username);
+        }
+
     }
 }

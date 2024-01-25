@@ -227,5 +227,11 @@ namespace eAutoSalon.Services.Services
 
             return list;
         }
+
+        public async Task<int> GetUserId(string username)
+        {
+            var entity = await _context.Korisnicis.Where(x=>x.Username==username).FirstOrDefaultAsync() ?? throw new UserException("Nepostojeće ID polje");
+            return entity.KorisnikId;
+        }
     }
 }

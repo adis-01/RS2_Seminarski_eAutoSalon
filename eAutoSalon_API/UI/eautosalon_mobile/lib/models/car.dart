@@ -1,4 +1,9 @@
 
+import 'package:intl/intl.dart';
+import 'package:json_annotation/json_annotation.dart';
+part 'car.g.dart';
+
+@JsonSerializable()
 class Car{
   int? automobilId;
   String? brojSasije;
@@ -28,6 +33,14 @@ class Car{
       this.cijena
   );
 
-  //String get formattedPrice { return NumberFormat.currency(locale: 'en_US', symbol: '').format(cijena);}
+  String? get proizvodjacModel{
+    return "$proizvodjac $model";
+  }
+
+  String get formattedPrice { return NumberFormat.currency(locale: 'en_US', symbol: '').format(cijena);}
+
+  factory Car.fromJson(Map<String,dynamic> json) => _$CarFromJson(json);
+
+  Map<String,dynamic> toJson() => _$CarToJson(this);
 
 }

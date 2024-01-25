@@ -19,7 +19,7 @@ class _NewsCommentsState extends State<NewsComments> {
           child: Padding(
             padding: const EdgeInsets.all(10),
             child: Column(
-              children: [
+              children: const [
                
               ],
             ),

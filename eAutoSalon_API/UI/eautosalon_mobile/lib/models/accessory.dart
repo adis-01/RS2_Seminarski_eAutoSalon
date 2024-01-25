@@ -1,3 +1,9 @@
+
+import 'package:json_annotation/json_annotation.dart';
+
+part 'accessory.g.dart';
+
+@JsonSerializable()
 class DodatnaOprema {
   int? opremaId;
   bool? klima;
@@ -31,4 +37,9 @@ class DodatnaOprema {
       this.komandeVolan,
       this.startStop,
       this.podizaciStakala);
+
+  factory DodatnaOprema.fromJson(Map<String,dynamic> json) => _$DodatnaOpremaFromJson(json);
+
+  Map<String,dynamic> toJson() => _$DodatnaOpremaToJson(this);
+  
 }

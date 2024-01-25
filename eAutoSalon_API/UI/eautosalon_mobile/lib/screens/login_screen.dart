@@ -1,6 +1,7 @@
 
 import 'package:eautosalon_mobile/screens/home_page_screen.dart';
 import 'package:eautosalon_mobile/screens/regist_scr.dart';
+import 'package:eautosalon_mobile/utils/helpers.dart';
 import 'package:flutter/material.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -80,6 +81,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         GestureDetector(
                           onTap: (){
+                            logIn();
                             Navigator.of(context).push(MaterialPageRoute(builder: (builder) => const HomePage()));
                           },
                           child: Container(
@@ -125,5 +127,10 @@ class _LoginScreenState extends State<LoginScreen> {
            ),
             ),
     );
+  }
+  
+  void logIn() {
+    Authorization.username = _usernameController.text;
+    Authorization.password = _passwordController.text;
   }
 }

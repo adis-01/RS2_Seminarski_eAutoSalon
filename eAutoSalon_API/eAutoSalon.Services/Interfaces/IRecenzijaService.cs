@@ -13,5 +13,6 @@ namespace eAutoSalon.Services.Interfaces
     public interface IRecenzijaService : IBaseCRUDService<VMRecenzije,RecenzijaSearchObject,RecenzijaInsert,RecenzijaUpdate>
     {
         Task<double> GetAverage();
+        Task<List<VMRecenzije>> GetByKorisnik(int korisnikId);
     }
 }
