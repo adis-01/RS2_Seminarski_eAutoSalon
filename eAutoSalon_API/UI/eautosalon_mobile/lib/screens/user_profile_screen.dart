@@ -5,6 +5,7 @@ import 'package:eautosalon_mobile/screens/edit_profile_screen.dart';
 import 'package:eautosalon_mobile/screens/history_user_comments.dart';
 import 'package:eautosalon_mobile/screens/history_user_reviews.dart';
 import 'package:eautosalon_mobile/screens/history_user_testdrives.dart';
+import 'package:eautosalon_mobile/screens/login_screen.dart';
 import 'package:eautosalon_mobile/screens/password_change_screen.dart';
 import 'package:eautosalon_mobile/utils/dialog_helper.dart';
 import 'package:eautosalon_mobile/utils/helpers.dart';
@@ -123,7 +124,14 @@ class _UserProfileState extends State<UserProfile> {
 
   GestureDetector buildLogOut() {
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        MyDialogs.showQuestion(context, 'Da li ste sigurni da se želite odjaviti?', () {
+          Authorization.username = "";
+          Authorization.password = "";
+          Navigator.of(context).pop();
+          Navigator.of(context).push(MaterialPageRoute(builder: (builder) => const LoginScreen()));
+         });
+      },
       child: Container(
         margin: const EdgeInsets.all(20),
         padding: const EdgeInsets.all(15),
@@ -181,7 +189,7 @@ class _UserProfileState extends State<UserProfile> {
         size: 25,
       ),
       title: const Text(
-        "HISTORIJA",
+        "AKTIVNOST",
         style: TextStyle(
             color: Colors.black,
             fontWeight: FontWeight.w400,

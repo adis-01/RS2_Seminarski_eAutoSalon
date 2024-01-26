@@ -28,6 +28,26 @@ class TestDriveProvider extends BaseProvider<TestDrives>{
     }
   }
 
+  Future<List<String>> getSlobodne(int automobilId,DateTime datum) async{
+    var url = "$baseUrl$endpoint/GetAvailableAppointments/$automobilId?datum=$datum";
+    var uri = Uri.parse(url);
+
+    var headers = createHeaders();
+    var req = await http.get(uri,headers: headers);
+
+    if(isValidResponse(req)){
+      List<String> lista = [];
+      var data = jsonDecode(req.body);
+      for (var item in data) {
+        lista.add(item);
+      }
+      return lista;
+    }
+    else{
+      throw Exception('Greška...');
+    }
+  }
+
   @override
   TestDrives fromJson(object) {
     return TestDrives.fromJson(object);

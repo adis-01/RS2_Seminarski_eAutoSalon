@@ -25,9 +25,17 @@ namespace eAutoSalon.Services.Services
         {
             if (!string.IsNullOrWhiteSpace(search?.TipNovosti))
             {
-                query = query.Where(x => x.Tip == search.TipNovosti);
+                if(search?.TipNovosti != "Svi")
+                {
+                    query = query.Where(x => x.Tip == search!.TipNovosti);
+                }
             }
             return query;
+        }
+
+        public override IQueryable<Novosti> AddInclude(IQueryable<Novosti> query)
+        {
+            return query.Include("Korisnik");
         }
 
         public override IQueryable<Novosti> Order(IQueryable<Novosti> query)

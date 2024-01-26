@@ -1,4 +1,11 @@
 
+import 'package:intl/intl.dart';
+import 'package:json_annotation/json_annotation.dart';
+import 'news_author.dart';
+
+part 'news.g.dart';
+
+@JsonSerializable()
 class News{
   int? novostiId;
   String? tip;
@@ -6,15 +13,20 @@ class News{
   String? sadrzaj;
   String? slika;
   DateTime? datumObjave;
-  //KorisnikClanak? korisnik;
+  KorisnikClanak? korisnik;
 
-  // String? get autor{
-  //   return "${korisnik?.firstName} ${korisnik?.lastName}";
-  // }
+  News(this.novostiId, this.tip, this.naslov, this.sadrzaj, this.datumObjave, this.slika, this.korisnik);
 
-  News(this.novostiId, this.tip, this.naslov, this.sadrzaj, this.datumObjave, this.slika, /*this.korisnik*/);
+   String? get autor{
+    return "${korisnik?.firstName} ${korisnik?.lastName}";
+  }
 
-  // String get date{
-  //   return DateFormat('dd-MM-yyyy').format(datumObjave!);
-  // }
+  String? get date{
+    return datumObjave != null ? DateFormat.yMMMMd().format(datumObjave!) : "date null";
+  }
+
+  factory News.fromJson(Map<String,dynamic> json) => _$NewsFromJson(json);
+
+  Map<String,dynamic> toJson() => _$NewsToJson(this);
+
 }

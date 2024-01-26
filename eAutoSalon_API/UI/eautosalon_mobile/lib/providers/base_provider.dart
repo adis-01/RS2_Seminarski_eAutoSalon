@@ -86,7 +86,6 @@ abstract class BaseProvider<T> with ChangeNotifier {
 
     var headers = createHeaders();
     var obj = jsonEncode(object);
-
     var response = await http.post(uri, headers: headers, body: obj);
 
     if(isValidResponse(response)){

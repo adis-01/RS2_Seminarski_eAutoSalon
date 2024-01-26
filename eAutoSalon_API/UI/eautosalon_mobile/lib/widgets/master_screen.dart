@@ -2,6 +2,7 @@
 
 import 'package:eautosalon_mobile/screens/login_screen.dart';
 import 'package:eautosalon_mobile/utils/dialog_helper.dart';
+import 'package:eautosalon_mobile/utils/helpers.dart';
 import 'package:flutter/material.dart';
 
 class MyAppBar extends StatelessWidget {
@@ -19,6 +20,9 @@ class MyAppBar extends StatelessWidget {
         actions: [
           IconButton(onPressed: (){
             MyDialogs.showQuestion(context, 'Da li ste sigurni da se želite odjaviti?', () {
+              Authorization.username = "";
+              Authorization.password = "";
+              Navigator.of(context).pop();
               Navigator.of(context).push(MaterialPageRoute(builder: (builder) => const LoginScreen()));
              });
           }, icon: const Icon(Icons.logout, size: 20, color: Colors.white,))

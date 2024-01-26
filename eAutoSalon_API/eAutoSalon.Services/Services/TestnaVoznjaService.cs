@@ -162,6 +162,7 @@ namespace eAutoSalon.Services.Services
         {
             var testna = new TestnaVoznja();
             _mapper.Map(req, testna);
+            testna.UposlenikId = await _context.Uposlenicis.Where(x => x.Title == "Testiranje").Select(i=>i.UposlenikId).FirstOrDefaultAsync();
             await _context.TestnaVoznjas.AddAsync(testna);
             testna.Status = "Aktivna";
             await _context.SaveChangesAsync();

@@ -4,6 +4,7 @@ import 'package:eautosalon_mobile/providers/accessory_provider.dart';
 import 'package:eautosalon_mobile/providers/car_provider.dart';
 import 'package:eautosalon_mobile/providers/comment_provider.dart';
 import 'package:eautosalon_mobile/providers/employee_provider.dart';
+import 'package:eautosalon_mobile/providers/news_provider.dart';
 import 'package:eautosalon_mobile/providers/review_provider.dart';
 import 'package:eautosalon_mobile/providers/test_drive_provider.dart';
 import 'package:eautosalon_mobile/providers/user_provider.dart';
@@ -24,6 +25,7 @@ void main() {
         ChangeNotifierProvider(create: (_) => OpremaProvider()),
         ChangeNotifierProvider(create: (_) => TestDriveProvider()),
         ChangeNotifierProvider(create: (_) => KomentarProvider()),
+        ChangeNotifierProvider(create: (_) => NewsProvider())
       ],
       child: const MyApp(),
     )

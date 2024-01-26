@@ -30,8 +30,9 @@ class KomentarProvider extends BaseProvider<Comment>{
     }
   }
 
-  Future<SearchResult<Comment>> getKomentare(int novostId) async{
-    var url = "$baseUrl$endpoint/Komentari_Novost/$novostId";
+  Future<SearchResult<Comment>> getKomentare(int novostId, dynamic params) async{
+    var queryString = getQueryString(params);
+    var url = "$baseUrl$endpoint/Komentari_Novost/$novostId?$queryString";
     var uri = Uri.parse(url);
 
     var headers = createHeaders();

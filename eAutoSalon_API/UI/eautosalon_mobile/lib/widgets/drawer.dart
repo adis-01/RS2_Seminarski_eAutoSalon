@@ -5,6 +5,7 @@ import 'package:eautosalon_mobile/screens/news_screen.dart';
 import 'package:eautosalon_mobile/screens/reviews_screen.dart';
 import 'package:eautosalon_mobile/screens/user_profile_screen.dart';
 import 'package:eautosalon_mobile/utils/dialog_helper.dart';
+import 'package:eautosalon_mobile/utils/helpers.dart';
 import 'package:eautosalon_mobile/widgets/drawer_list_tile.dart';
 import 'package:flutter/material.dart';
 
@@ -97,6 +98,9 @@ class MyDrawer extends StatelessWidget {
                 icon: Icons.logout, 
                 onTap: (){
                   MyDialogs.showQuestion(context, 'Da li ste sigurni da se želite odjaviti?', () { 
+                    Authorization.username = "";
+                    Authorization.password = "";
+                    Navigator.of(context).pop();
                     Navigator.of(context).push(MaterialPageRoute(builder: (builder) => const LoginScreen()));
                   });
                 }

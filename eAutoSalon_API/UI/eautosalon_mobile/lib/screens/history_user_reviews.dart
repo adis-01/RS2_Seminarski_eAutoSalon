@@ -67,7 +67,7 @@ class _HistoryReviewsState extends State<HistoryReviews> {
               ),
               child: review.komentar != "" ?
                 Text(review.komentar ?? "CAN NOT LOAD", style: const TextStyle(color: Colors.black54, fontWeight: FontWeight.w500, fontSize: 17),) 
-              : const Text("Nema komentara", style: TextStyle(color: Colors.black54, fontSize: 16, fontWeight: FontWeight.w500),),
+              : const Text("Nema komentara", style: TextStyle(color: Colors.black54, fontSize: 16, fontWeight: FontWeight.w500, fontStyle: FontStyle.italic),),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,

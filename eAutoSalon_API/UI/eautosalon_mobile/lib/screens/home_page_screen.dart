@@ -24,6 +24,8 @@ class _HomePageState extends State<HomePage> {
   int currentPage = 1;
   final _pageSize = 4;
   late CarProvider _carProvider;
+  bool clearFilters = false;
+  Map<String, dynamic>? filters;
 
   @override
   void initState() {
@@ -61,11 +63,14 @@ class _HomePageState extends State<HomePage> {
               children: [
                 buildHeader(),
                 const SizedBox(height: 20),
-                Column(
+                (result?.totalPages ?? 0) > 0
+                ?
+                 Column(
                   children: result?.list.map((Car automobil) => buildCarContainer(automobil)).toList() ?? [],
-                ),
+                )
+                : const Center(child: Text("Nema proizvoda", style: TextStyle(color: Colors.black87, fontSize: 18, fontWeight: FontWeight.w400),textAlign: TextAlign.center,)),
                 const SizedBox(height: 20),
-                buildPagingArrows()
+                (result?.totalPages ?? 0) > 0 ? buildPagingArrows() : const Text("")
               ],
             ),
           ),
@@ -79,16 +84,40 @@ class _HomePageState extends State<HomePage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   const Text("NA STANJU", style: TextStyle(fontWeight: FontWeight.w500, color: Colors.blueGrey, fontSize: 15),),
-                  MaterialButton(
-                    padding: const EdgeInsets.all(5),
+                  !clearFilters ?
+                   MaterialButton(
+                    padding: const EdgeInsets.all(8),
                     color: Colors.black87,
                     shape: const CircleBorder(),
-                    onPressed: (){
-                      showDialog(
+                    onPressed: () async{
+                    var result = await showDialog(
                         context: context, 
                         builder: (context) =>  const FilterCar()
                       );
+                    if(result != null){
+                      setState(() {
+                        filters = Map.from(result);
+                        currentPage = 1;
+                        filters!['PageSize'] = _pageSize;
+                        isLoading = true;
+                      });
+                      getFiltered(filters);
+                    }
                   }, child: const Icon(Icons.filter_alt_outlined, color: Colors.white,))
+                  :
+                  MaterialButton(
+                    padding: const EdgeInsets.all(8),
+                    color: Colors.black87,
+                    shape: const CircleBorder(),
+                    onPressed: () {
+                      setState(() {
+                        currentPage = 1;
+                        isLoading = true;
+                        clearFilters=false;
+                        filters = null;
+                      });
+                      loadData();
+                  }, child: const Icon(Icons.clear_rounded, color: Colors.white,))
                 ],
               );
   }
@@ -110,7 +139,7 @@ class _HomePageState extends State<HomePage> {
                           isLoading = true;
                           currentPage--;
                         });
-                        loadData();
+                        filters != null ? getFiltered(filters) : loadData();
                       } : null,
                       child: const Icon(Icons.arrow_back, color: Colors.white,),
                     ),
@@ -131,7 +160,7 @@ class _HomePageState extends State<HomePage> {
                           isLoading=true;
                           currentPage++;
                         });
-                        loadData();
+                        filters != null ? getFiltered(filters) : loadData();
                       } : null,
                       child: const Icon(Icons.arrow_forward, color: Colors.white,),
                     ),
@@ -232,7 +261,7 @@ class _HomePageState extends State<HomePage> {
   
   Future<void> loadData() async{
     try {
-      var data = await _carProvider.getPaged({'PageSize' : _pageSize, 'Page' : currentPage});
+      var data = await _carProvider.getAktivne({'PageSize' : _pageSize, 'Page' : currentPage});
       setState(() {
         result = data;
         isLoading = false;
@@ -241,4 +270,19 @@ class _HomePageState extends State<HomePage> {
       MyDialogs.showError(context, e.toString());
     }
   }
+
+  Future<void> getFiltered (dynamic params) async{
+    try {
+      filters!['Page'] = currentPage;
+      var data = await _carProvider.getFiltered(params);
+      setState(() {
+        result = data;
+        isLoading=false;
+        clearFilters = true;
+      });
+    } catch (e) {
+      MyDialogs.showError(context, e.toString());
+    }
+  }
+
 }

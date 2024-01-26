@@ -98,7 +98,7 @@ class _CarDetailsState extends State<CarDetails> {
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
                   color: Colors.grey[600],
                   onPressed: (){
-                    showDialog(context: context, builder: (context) => const TestDriveDialog());
+                    showDialog(context: context, builder: (context) =>  TestDriveDialog(automobilId: widget.automobil.automobilId!,));
                 },
                 child:const Text("TESTNA VOŽNJA", style: TextStyle(color: Colors.white),),);
   }

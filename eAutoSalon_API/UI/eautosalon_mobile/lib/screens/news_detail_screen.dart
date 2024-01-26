@@ -1,31 +1,54 @@
+import 'package:eautosalon_mobile/providers/comment_provider.dart';
 import 'package:eautosalon_mobile/screens/news_comments_screen.dart';
+import 'package:eautosalon_mobile/utils/dialog_helper.dart';
+import 'package:eautosalon_mobile/utils/helpers.dart';
 import 'package:eautosalon_mobile/widgets/master_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../models/news.dart';
+import '../providers/user_provider.dart';
 
 class NewsDetail extends StatefulWidget {
-  const NewsDetail({super.key});
+  final News news;
+  const NewsDetail({super.key, required this.news});
 
   @override
   State<NewsDetail> createState() => _NewsDetailState();
 }
 
 class _NewsDetailState extends State<NewsDetail> {
+
+  late UserProvider _userProvider;
+  int userId = 0;
+  bool isLoading = true;
+
   final String _lorem =
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Aliquam malesuada bibendum arcu vitae elementum curabitur vitae. Aenean pharetra magna ac placerat vestibulum lectus mauris ultrices. Sollicitudin aliquam ultrices sagittis orci a scelerisque purus. Facilisis volutpat est velit egestas dui. Tristique risus nec feugiat in fermentum posuere urna. Viverra tellus in hac habitasse platea dictumst vestibulum rhoncus est. Viverra justo nec ultrices dui sapien eget. Sit amet justo donec enim diam. Non arcu risus quis varius quam quisque id. Nunc consequat interdum varius sit amet mattis. Pharetra et ultrices neque ornare aenean euismod elementum nisi quis. Nunc scelerisque viverra mauris in aliquam sem fringilla ut morbi. Nibh nisl condimentum id venenatis a condimentum. Ornare massa eget egestas purus viverra accumsan in nisl. Non tellus orci ac auctor augue mauris augue. Turpis in eu mi bibendum neque egestas. Tristique senectus et netus et malesuada fames ac turpis egestas. In nibh mauris cursus mattis molestie a iaculis at erat. Sit amet nisl suscipit adipiscing bibendum est ultricies integer quis. Sed ullamcorper morbi tincidunt ornare. Vivamus arcu felis bibendum ut tristique et egestas. Natoque penatibus et magnis dis. Fringilla ut morbi tincidunt augue interdum velit euismod in. Habitasse platea dictumst vestibulum rhoncus est pellentesque elit ullamcorper dignissim. Ullamcorper eget nulla facilisi etiam dignissim. Viverra suspendisse potenti nullam ac tortor vitae purus. Ullamcorper malesuada proin libero nunc consequat interdum varius sit. At erat pellentesque adipiscing commodo elit.";
+
+  @override
+  void initState() {
+    super.initState();
+    _userProvider=context.read<UserProvider>();
+    fetchData();
+  }
 
   @override
   Widget build(BuildContext context) {
     return MyAppBar(
         title: '',
-        body: SingleChildScrollView(
+        body:
+        isLoading ? const Center(child: CircularProgressIndicator(color: Colors.black87,),)
+        :
+         SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(15),
             child: Column(
               children: [
                 //naslov
-                const Text(
-                  "Google is redefining mobile with artificial intelligence",
-                  style: TextStyle(
+                 Text(
+                 widget.news.naslov ?? "Naslov null",
+                  style: const TextStyle(
                       color: Colors.black87,
                       fontWeight: FontWeight.w700,
                       wordSpacing: 1,
@@ -82,7 +105,7 @@ class _NewsDetailState extends State<NewsDetail> {
   GestureDetector buildCommentsButton() {
     return GestureDetector(
                       onTap: () {
-                        Navigator.of(context).push(MaterialPageRoute(builder: (builder) => const NewsComments()));
+                        Navigator.of(context).push(MaterialPageRoute(builder: (builder) => NewsComments(novostId: widget.news.novostiId!,korisnikId: userId,)));
                       },
                       child: Container(
                         width: double.infinity,
@@ -92,7 +115,7 @@ class _NewsDetailState extends State<NewsDetail> {
                             borderRadius: BorderRadius.circular(15),
                             color: Colors.black54),
                         child: Text(
-                          "KOMENTARI (2)",
+                          "KOMENTARI",
                           textAlign: TextAlign.center,
                           style: TextStyle(
                               letterSpacing: 1.5,
@@ -106,7 +129,7 @@ class _NewsDetailState extends State<NewsDetail> {
 
   Text buildText() {
     return Text(
-      _lorem,
+      widget.news.sadrzaj == "" ? _lorem : widget.news.sadrzaj!,
       style: const TextStyle(
           height: 1.35,
           color: Colors.black54,
@@ -118,15 +141,15 @@ class _NewsDetailState extends State<NewsDetail> {
 
   Row buildDate() {
     return Row(
-      children: const [
-        Icon(
+      children: [
+        const Icon(
           Icons.date_range,
           color: Colors.black54,
         ),
-        SizedBox(width: 3),
+        const SizedBox(width: 3),
         Text(
-          "08-01-2024",
-          style: TextStyle(
+          widget.news.date ?? "DATE NULL",
+          style: const TextStyle(
             color: Colors.black87,
             fontWeight: FontWeight.w400,
           ),
@@ -137,15 +160,15 @@ class _NewsDetailState extends State<NewsDetail> {
 
   Row buildAuthorCreds() {
     return Row(
-      children: const [
-        Icon(
+      children: [
+        const Icon(
           Icons.edit_note,
           color: Colors.black54,
         ),
-        SizedBox(width: 5),
+        const SizedBox(width: 5),
         Text(
-          "A U T O R",
-          style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w400),
+          widget.news.korisnik?.fullname ?? "null",
+          style: const TextStyle(color: Colors.black87, fontWeight: FontWeight.w400),
         )
       ],
     );
@@ -158,17 +181,30 @@ class _NewsDetailState extends State<NewsDetail> {
       margin: const EdgeInsets.only(bottom: 10),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(15), color: Colors.white),
-      child: const SizedBox(
+      child: SizedBox(
         width: double.infinity,
         height: double.infinity,
-        child: Center(
+        child: widget.news.slika == "" ?
+         const Center(
           child: Icon(
             Icons.no_photography,
-            size: 55,
+           size: 55,
             color: Colors.black87,
           ),
-        ),
+        ) : fromBase64String(widget.news.slika!),
       ),
     );
+  }
+  
+  Future<void> fetchData() async{
+    try {
+      var data = await _userProvider.getUserId();
+      setState(() {
+        userId = data;
+        isLoading=false;
+      });
+    } catch (e) {
+      MyDialogs.showError(context, e.toString());
+    }
   }
 }
