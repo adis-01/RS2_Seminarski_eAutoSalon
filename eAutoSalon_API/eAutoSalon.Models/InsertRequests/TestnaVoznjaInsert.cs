@@ -12,8 +12,6 @@ namespace eAutoSalon.Models.InsertRequests
 
         public int? KorisnikId { get; set; }
 
-        public int? UposlenikId { get; set; }
-
-        public DateTime DatumVrijeme { get; set; }
+        public string datum { get; set; }
     }
 }

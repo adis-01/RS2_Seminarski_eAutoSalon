@@ -14,7 +14,7 @@ namespace eAutoSalon.Services.Interfaces
         List<string> GetDostupne(int id, DateTime datum);
         Task<PagedList<VMTestnaVoznja>> GetAktivneTestne(TestnaVoznjaSearchObject? search = null);
         Task<PagedList<VMTestnaVoznja>> GetZavrseneTestne(TestnaVoznjaSearchObject? search = null);
-        Task Insert(TestnaVoznjaInsert req);
+        Task<VMTestnaVoznja> NovaTestna(TestnaVoznjaInsert req);
         Task Complete(int id);
         Task Cancel(int id);
         Task<List<VMTestna_Historija>> GetHistory(int korisnikId);

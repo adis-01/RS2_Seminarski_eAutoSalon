@@ -1,5 +1,8 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:eautosalon_mobile/providers/test_drive_provider.dart';
 import 'package:eautosalon_mobile/utils/dialog_helper.dart';
+import 'package:eautosalon_mobile/utils/helpers.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -25,7 +28,6 @@ class _TestDriveDialogState extends State<TestDriveDialog> {
   void initState() {
     super.initState();
     _testDriveProvider=context.read<TestDriveProvider>();
-    //getAvailableAppointments();
   }
 
   @override
@@ -62,7 +64,16 @@ class _TestDriveDialogState extends State<TestDriveDialog> {
                   borderRadius: BorderRadius.circular(15)
                 ),
                 child: lista.isEmpty ?
-                const Center(child: Icon(Icons.data_array, size: 27, color: Colors.black54,))
+                Column(
+                  children: const[
+                    Icon(Icons.data_array_rounded, size: 25, color: Colors.black54,),
+                    SizedBox(height: 10),
+                    Text("Nema slobodnih termina / Odabrali ste subotu ili nedjelju", 
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.black54, fontSize: 15, fontWeight: FontWeight.w500),),
+                    SizedBox(height: 5)
+                  ],
+                )
                 :
                  Wrap(
                   alignment: WrapAlignment.center,
@@ -109,15 +120,15 @@ class _TestDriveDialogState extends State<TestDriveDialog> {
                     if(date != null){
                       setState(() {
                         datum = date;
-                        isLoading = true;
+                        isLoading=true;
                         termin = null;
                       });
                       getAvailableAppointments();
                     }
                     else{
                       setState(() {
-                        termin = null;
                         disabledButton = true;
+                        termin = null;
                       });
                     }
                 }, child: const Text(
@@ -167,7 +178,10 @@ class _TestDriveDialogState extends State<TestDriveDialog> {
             null 
             :
             (){
-
+              setState(() {
+                isLoading = true;
+              });
+              saveData();
             },
             child: const Text("REZERVACIJA", style: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.w500, letterSpacing: 0.5),),
           ),
@@ -179,8 +193,8 @@ class _TestDriveDialogState extends State<TestDriveDialog> {
     return GestureDetector(
                     onTap: (){
                       setState(() {
-                        disabledButton = false;
                         termin = time;
+                        disabledButton = false;
                       });
                     },
                     child: Container(
@@ -201,8 +215,31 @@ class _TestDriveDialogState extends State<TestDriveDialog> {
     try {
       var satnice = await _testDriveProvider.getSlobodne(widget.automobilId, datum);
       setState(() {
-        isLoading = false;
-        lista = satnice;
+        lista=satnice;
+        isLoading=false;
+      });
+    } catch (e) {
+      MyDialogs.showError(context, e.toString());
+    }
+  }
+  
+  Future<void> saveData() async{
+    try {
+      String datumVrijeme = DateTime(
+        datum.year,
+        datum.month,
+        datum.day,
+        int.parse(termin!.split(':')[0]),
+        int.parse(termin!.split(':')[1]),
+      ).toIso8601String();
+      var request = {
+        'datum' : datumVrijeme,
+        'KorisnikId' : Authorization.userId,
+        'AutomobilId' : widget.automobilId
+      };
+      await _testDriveProvider.insert(request);
+      Navigator.of(context).pop({
+        "ok"
       });
     } catch (e) {
       MyDialogs.showError(context, e.toString());

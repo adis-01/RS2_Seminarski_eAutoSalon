@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 class Authorization{
   static String? username;
   static String? password;
+  static int? userId;
 }
 
 Image fromBase64String(String image){

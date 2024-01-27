@@ -15,5 +15,6 @@ namespace eAutoSalon.Services.Interfaces
         Task<PagedList<VMNovosti>> getVlastite(string username, NovostiSearchObject? search = null);
         Task<PagedList<VMNovosti>> getOstale(string username, NovostiSearchObject? search = null);
         Task<int> getUserId(string username);
+        Task<PagedList<VMNovosti>> getSve(NovostiSearchObject? search = null);
     }
 }

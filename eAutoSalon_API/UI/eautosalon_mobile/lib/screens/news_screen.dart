@@ -17,7 +17,6 @@ class NewsScreen extends StatefulWidget {
 }
 
 class _NewsScreenState extends State<NewsScreen> {
-
   String tipNovosti = "Svi";
   final _formKey = GlobalKey<FormBuilderState>();
   SearchResult<News>? result;
@@ -50,9 +49,7 @@ class _NewsScreenState extends State<NewsScreen> {
                       key: _formKey,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          buildDropdownContainer()
-                        ],
+                        children: [buildDropdownContainer()],
                       ),
                     ),
                     Column(
@@ -73,48 +70,44 @@ class _NewsScreenState extends State<NewsScreen> {
 
   Container buildDropdownContainer() {
     return Container(
-                          width: 200,
-                          margin: const EdgeInsets.only(top: 5, bottom: 20),
-                          padding: const EdgeInsets.only(left: 10,right: 10, top: 5, bottom: 5),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(12),
-                            color: Colors.white70
-                          ),
-                          child:FormBuilderDropdown(
-      decoration: const InputDecoration(
-        border: InputBorder.none
-      ),
-      onChanged: (value) {
-        if(value != null && value.isNotEmpty){
-          setState(() {
-            tipNovosti = value;
-            isLoading=true;
-            currentPage=1;
-          });
-          fetchData();
-        }
-      },
-      name: 'TipNovosti',
-      initialValue: tipNovosti,
-      items: const [
-        DropdownMenuItem(
-          value: 'Svi',
-          child: Text('Sve'),
-        ),
-        DropdownMenuItem(
-          value: 'Novost',
-          child: Text('Novosti'),
-        ),
-        DropdownMenuItem(
-          value: 'Recenzija',
-          child: Text('Recenzije'),
-        ),
-        DropdownMenuItem(
-          value: 'Kolumna',
-          child: Text('Kolumne'),
-        )
-      ]) ,
-                        );
+      width: 200,
+      margin: const EdgeInsets.only(top: 5, bottom: 20),
+      padding: const EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 5),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(12), color: Colors.white70),
+      child: FormBuilderDropdown(
+          decoration: const InputDecoration(border: InputBorder.none),
+          onChanged: (value) {
+            if (value != null && value.isNotEmpty) {
+              setState(() {
+                tipNovosti = value;
+                isLoading = true;
+                currentPage = 1;
+              });
+              fetchData();
+            }
+          },
+          name: 'TipNovosti',
+          initialValue: tipNovosti,
+          items: const [
+            DropdownMenuItem(
+              value: 'Svi',
+              child: Text('Sve'),
+            ),
+            DropdownMenuItem(
+              value: 'Novost',
+              child: Text('Novosti'),
+            ),
+            DropdownMenuItem(
+              value: 'Recenzija',
+              child: Text('Recenzije'),
+            ),
+            DropdownMenuItem(
+              value: 'Kolumna',
+              child: Text('Kolumne'),
+            )
+          ]),
+    );
   }
 
   Container buildNewsContainer(News item) {
@@ -129,16 +122,30 @@ class _NewsScreenState extends State<NewsScreen> {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               GestureDetector(
-                onTap: (){
-                  Navigator.of(context).push(MaterialPageRoute(builder: (builder) => NewsDetail(news: item)));
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (builder) => NewsDetail(news: item)));
                 },
                 child: Container(
                   margin: const EdgeInsets.only(bottom: 5),
                   child: Row(
                     children: [
-                        Text("Vidi detalje", style: TextStyle(letterSpacing: 0.5,color: Colors.blue[600], fontWeight: FontWeight.bold, fontSize: 18),),
-                        const SizedBox(width: 5,),
-                        Icon(Icons.arrow_forward_ios, size: 20, color: Colors.blue[600],)
+                      Text(
+                        "Vidi detalje",
+                        style: TextStyle(
+                            letterSpacing: 0.5,
+                            color: Colors.blue[600],
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18),
+                      ),
+                      const SizedBox(
+                        width: 5,
+                      ),
+                      Icon(
+                        Icons.arrow_forward_ios,
+                        size: 20,
+                        color: Colors.blue[600],
+                      )
                     ],
                   ),
                 ),
@@ -147,39 +154,51 @@ class _NewsScreenState extends State<NewsScreen> {
           ),
           Container(
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(15),
-              border: Border.all(
-                color: Colors.black,
-                width: 0.1
-              )
-            ),
+                borderRadius: BorderRadius.circular(15),
+                border: Border.all(color: Colors.black, width: 0.1)),
             padding: const EdgeInsets.all(5),
             margin: const EdgeInsets.only(bottom: 15, top: 10),
             width: double.infinity,
             height: 200,
-            child: item.slika != "" ?
-            fromBase64String(item.slika!)
-            : Center(child: Icon(Icons.no_photography_outlined, size: 40, color: Colors.blue[600],)),
+            child: item.slika != ""
+                ? fromBase64String(item.slika!)
+                : Center(
+                    child: Icon(
+                    Icons.no_photography_outlined,
+                    size: 40,
+                    color: Colors.blue[600],
+                  )),
           ),
-           Row(
+          Row(
             children: [
               Container(
                 margin: const EdgeInsets.only(right: 10),
                 padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  border: Border.all(
-                    color: Colors.black87,
-                    width: 0.2
-                  )
+                    shape: BoxShape.circle,
+                    border: Border.all(color: Colors.black87, width: 0.2)),
+                child: const Center(
+                  child: Icon(Icons.edit_note),
                 ),
-                child: const Center(child: Icon(Icons.edit_note),),
               ),
-              Text(item.autor ?? "Author unknown", style: const TextStyle(fontSize: 16, color: Colors.black87, fontWeight: FontWeight.w500),)
+              Text(
+                item.autor ?? "Author unknown",
+                style: const TextStyle(
+                    fontSize: 16,
+                    color: Colors.black87,
+                    fontWeight: FontWeight.w500),
+              )
             ],
           ),
           const SizedBox(height: 10),
-          Text(item.naslov ?? "null", textAlign: TextAlign.start,style: const TextStyle(color: Colors.black87, fontSize: 18, fontWeight: FontWeight.bold),)
+          Text(
+            item.naslov ?? "null",
+            textAlign: TextAlign.start,
+            style: const TextStyle(
+                color: Colors.black87,
+                fontSize: 18,
+                fontWeight: FontWeight.bold),
+          )
         ],
       ),
     );
@@ -250,12 +269,17 @@ class _NewsScreenState extends State<NewsScreen> {
 
   Future<void> fetchData() async {
     try {
-      var data = await _newsProvider
-          .getPaged({'TipNovosti' : tipNovosti,'PageSize': _pageSize, 'Page': currentPage});
-      setState(() {
+      var data = await _newsProvider.getSve({
+        'TipNovosti': tipNovosti,
+        'PageSize': _pageSize,
+        'Page': currentPage
+      });
+      if(mounted){
+        setState(() {
         result = data;
         isLoading = false;
       });
+      }
     } catch (e) {
       MyDialogs.showError(context, e.toString());
     }

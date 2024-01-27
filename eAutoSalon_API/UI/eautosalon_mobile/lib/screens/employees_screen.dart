@@ -129,10 +129,12 @@ class _EmployeesScreenState extends State<EmployeesScreen> {
   Future<void> fetchData() async {
     try {
       var data = await _employeeProvider.getAll();
-      setState(() {
+      if(mounted){
+        setState(() {
         result = data;
         isLoading = false;
       });
+      }
     } catch (e) {
       MyDialogs.showError(context, e.toString());
     }

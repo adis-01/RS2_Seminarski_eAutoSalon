@@ -21,28 +21,6 @@ namespace eAutoSalon.Services.Services
         {
         }
 
-        public override IQueryable<Novosti> AddFilter(IQueryable<Novosti> query, NovostiSearchObject? search = null)
-        {
-            if (!string.IsNullOrWhiteSpace(search?.TipNovosti))
-            {
-                if(search?.TipNovosti != "Svi")
-                {
-                    query = query.Where(x => x.Tip == search!.TipNovosti);
-                }
-            }
-            return query;
-        }
-
-        public override IQueryable<Novosti> AddInclude(IQueryable<Novosti> query)
-        {
-            return query.Include("Korisnik");
-        }
-
-        public override IQueryable<Novosti> Order(IQueryable<Novosti> query)
-        {
-            query = query.OrderByDescending(x => x.NovostiId);
-            return query;
-        }
 
         public override async Task<VMNovosti> Insert(NovostInsert req)
         {
@@ -126,6 +104,46 @@ namespace eAutoSalon.Services.Services
 
             int id = entity.KorisnikId;
             return id;
+        }
+
+        public async Task<PagedList<VMNovosti>> getSve(NovostiSearchObject? search = null)
+        {
+            var q = _context.Novostis.OrderByDescending(x => x.NovostiId).Include("Korisnik").AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(search?.TipNovosti))
+            {
+                if(search.TipNovosti != "Svi")
+                {
+                    q = q.Where(x=>x.Tip == search.TipNovosti);
+                }
+            }
+
+            var list = new PagedList<VMNovosti>()
+            {
+                PageCount = await q.CountAsync(),
+            };
+
+            if (search?.PageSize != null)
+            {
+                double? pageCount = list.PageCount;
+                double? pageSize = search.PageSize;
+                if (pageCount.HasValue && pageSize.HasValue)
+                {
+                    list.TotalPages = (int)Math.Ceiling(pageCount.Value / pageSize.Value);
+                }
+            }
+
+            if (search?.Page.HasValue == true && search?.PageSize.HasValue == true)
+            {
+                q = q.Skip(search.PageSize.Value * (search.Page.Value - 1)).Take(search.PageSize.Value);
+                list.HasNext = search.Page.Value < list.TotalPages;
+            }
+
+            var lista = await q.ToListAsync();
+
+            list.List = _mapper.Map<List<VMNovosti>>(lista);
+
+            return list;
         }
     }
 }

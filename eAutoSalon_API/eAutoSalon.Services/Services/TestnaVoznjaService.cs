@@ -158,14 +158,16 @@ namespace eAutoSalon.Services.Services
             return list;
         }
 
-        public async Task Insert(TestnaVoznjaInsert req)
+        public async Task<VMTestnaVoznja> NovaTestna(TestnaVoznjaInsert req)
         {
             var testna = new TestnaVoznja();
             _mapper.Map(req, testna);
             testna.UposlenikId = await _context.Uposlenicis.Where(x => x.Title == "Testiranje").Select(i=>i.UposlenikId).FirstOrDefaultAsync();
+            testna.DatumVrijeme = DateTime.Parse(req.datum);
             await _context.TestnaVoznjas.AddAsync(testna);
             testna.Status = "Aktivna";
             await _context.SaveChangesAsync();
+            return _mapper.Map<VMTestnaVoznja>(testna);
         }
     }
 }

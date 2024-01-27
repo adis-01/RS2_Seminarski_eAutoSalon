@@ -1,5 +1,8 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:eautosalon_mobile/screens/car_accessories_screen.dart';
 import 'package:eautosalon_mobile/screens/checkout_screen.dart';
+import 'package:eautosalon_mobile/utils/dialog_helper.dart';
 import 'package:eautosalon_mobile/utils/helpers.dart';
 import 'package:eautosalon_mobile/widgets/master_screen.dart';
 import 'package:eautosalon_mobile/widgets/test_drive_picker.dart';
@@ -97,8 +100,16 @@ class _CarDetailsState extends State<CarDetails> {
                   padding: const EdgeInsets.all(15),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
                   color: Colors.grey[600],
-                  onPressed: (){
-                    showDialog(context: context, builder: (context) =>  TestDriveDialog(automobilId: widget.automobil.automobilId!,));
+                  onPressed: () async{
+                    var result = await showDialog(context: context, builder: (context) =>  TestDriveDialog(automobilId: widget.automobil.automobilId!,));
+                    if(result != null && result.toString().contains("ok")){
+                      MyDialogs.showSuccess(
+                        context,
+                        'Uspješna rezervacija, istu možete provjeriti u odgovarajućoj sekciji na Korisničkom profilu', 
+                        () { 
+                          Navigator.of(context).pop();
+                        });
+                    }
                 },
                 child:const Text("TESTNA VOŽNJA", style: TextStyle(color: Colors.white),),);
   }

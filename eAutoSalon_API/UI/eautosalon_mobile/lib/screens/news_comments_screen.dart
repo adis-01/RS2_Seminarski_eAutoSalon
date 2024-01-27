@@ -4,14 +4,14 @@ import 'package:eautosalon_mobile/models/comment.dart';
 import 'package:eautosalon_mobile/models/search_result.dart';
 import 'package:eautosalon_mobile/providers/comment_provider.dart';
 import 'package:eautosalon_mobile/utils/dialog_helper.dart';
+import 'package:eautosalon_mobile/utils/helpers.dart';
 import 'package:eautosalon_mobile/widgets/master_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class NewsComments extends StatefulWidget {
   final int novostId;
-  final int korisnikId;
-  const NewsComments({super.key, required this.novostId, required this.korisnikId});
+  const NewsComments({super.key, required this.novostId});
 
   @override
   State<NewsComments> createState() => _NewsCommentsState();
@@ -242,7 +242,7 @@ class _NewsCommentsState extends State<NewsComments> {
     try {
       await _komentarProvider.insert({
         'sadrzaj' : _commentController.text,
-        'korisnikId' : widget.korisnikId,
+        'korisnikId' : Authorization.userId,
         'novostiId' : widget.novostId
       });
       MyDialogs.showSuccess(context, 'Uspješno dodan komentar', () {

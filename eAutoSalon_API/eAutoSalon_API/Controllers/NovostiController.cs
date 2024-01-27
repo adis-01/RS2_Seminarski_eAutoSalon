@@ -46,12 +46,18 @@ namespace eAutoSalon_API.Controllers
             return await base.Update(id, req);
         }
 
-        [Authorize(Roles = "Korisnik")]
+        [Authorize(Roles = "Korisnik,Administrator,Urednik")]
         [HttpGet("userID")]
         public async Task<int> getUserId([FromQuery] string username)
         {
             return await _service.getUserId(username);
         }
-            
+
+        [Authorize(Roles ="Korisnik,Administrator,Urednik")]
+        [HttpGet("getSve")]
+        public async Task<PagedList<VMNovosti>> getSve([FromQuery]NovostiSearchObject? search = null)
+        {
+            return await _service.getSve(search);
+        }
     }
 }

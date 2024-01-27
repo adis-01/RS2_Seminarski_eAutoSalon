@@ -1,7 +1,6 @@
-import 'package:eautosalon_mobile/providers/user_provider.dart';
-import 'package:eautosalon_mobile/utils/dialog_helper.dart';
+
+import 'package:eautosalon_mobile/utils/helpers.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class ReviewDialog extends StatefulWidget {
   const ReviewDialog({super.key});
@@ -14,15 +13,10 @@ class _ReviewDialogState extends State<ReviewDialog> {
 
   int currentRating = 1;
   final TextEditingController _commentController = TextEditingController();
-  bool isLoading = true;
-  late UserProvider _userProvider;
-  int userId = 0;
 
   @override
   void initState() {
     super.initState();
-    _userProvider = context.read<UserProvider>();
-    fetchData();
   }
 
   @override
@@ -34,8 +28,7 @@ class _ReviewDialogState extends State<ReviewDialog> {
       SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(15),
-          child: isLoading ? const Center(child: CircularProgressIndicator(color: Colors.black87,),)
-          :
+          child: 
            Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -101,7 +94,7 @@ class _ReviewDialogState extends State<ReviewDialog> {
                       {
                         'Ocjena' : currentRating,
                         'Komentar' : _commentController.text,
-                        'KorisnikId' : userId
+                        'KorisnikId' : Authorization.userId
                       }
                     );
                   }, child: const Text("SAČUVAJ", style: TextStyle(fontSize: 15, color: Colors.white, fontWeight: FontWeight.w400),),),
@@ -112,16 +105,5 @@ class _ReviewDialogState extends State<ReviewDialog> {
       ),
     );
   }
-  
-  Future<void> fetchData() async{
-    try {
-     var id = await _userProvider.getUserId();
-     setState(() {
-       userId=id;
-       isLoading=false;
-     });
-    } catch (e) {
-      MyDialogs.showError(context, e.toString());
-    }
-  }
+ 
 }

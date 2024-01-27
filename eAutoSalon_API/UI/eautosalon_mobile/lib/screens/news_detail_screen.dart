@@ -1,13 +1,9 @@
-import 'package:eautosalon_mobile/providers/comment_provider.dart';
 import 'package:eautosalon_mobile/screens/news_comments_screen.dart';
-import 'package:eautosalon_mobile/utils/dialog_helper.dart';
 import 'package:eautosalon_mobile/utils/helpers.dart';
 import 'package:eautosalon_mobile/widgets/master_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 import '../models/news.dart';
-import '../providers/user_provider.dart';
 
 class NewsDetail extends StatefulWidget {
   final News news;
@@ -19,9 +15,7 @@ class NewsDetail extends StatefulWidget {
 
 class _NewsDetailState extends State<NewsDetail> {
 
-  late UserProvider _userProvider;
-  int userId = 0;
-  bool isLoading = true;
+
 
   final String _lorem =
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Aliquam malesuada bibendum arcu vitae elementum curabitur vitae. Aenean pharetra magna ac placerat vestibulum lectus mauris ultrices. Sollicitudin aliquam ultrices sagittis orci a scelerisque purus. Facilisis volutpat est velit egestas dui. Tristique risus nec feugiat in fermentum posuere urna. Viverra tellus in hac habitasse platea dictumst vestibulum rhoncus est. Viverra justo nec ultrices dui sapien eget. Sit amet justo donec enim diam. Non arcu risus quis varius quam quisque id. Nunc consequat interdum varius sit amet mattis. Pharetra et ultrices neque ornare aenean euismod elementum nisi quis. Nunc scelerisque viverra mauris in aliquam sem fringilla ut morbi. Nibh nisl condimentum id venenatis a condimentum. Ornare massa eget egestas purus viverra accumsan in nisl. Non tellus orci ac auctor augue mauris augue. Turpis in eu mi bibendum neque egestas. Tristique senectus et netus et malesuada fames ac turpis egestas. In nibh mauris cursus mattis molestie a iaculis at erat. Sit amet nisl suscipit adipiscing bibendum est ultricies integer quis. Sed ullamcorper morbi tincidunt ornare. Vivamus arcu felis bibendum ut tristique et egestas. Natoque penatibus et magnis dis. Fringilla ut morbi tincidunt augue interdum velit euismod in. Habitasse platea dictumst vestibulum rhoncus est pellentesque elit ullamcorper dignissim. Ullamcorper eget nulla facilisi etiam dignissim. Viverra suspendisse potenti nullam ac tortor vitae purus. Ullamcorper malesuada proin libero nunc consequat interdum varius sit. At erat pellentesque adipiscing commodo elit.";
@@ -29,8 +23,6 @@ class _NewsDetailState extends State<NewsDetail> {
   @override
   void initState() {
     super.initState();
-    _userProvider=context.read<UserProvider>();
-    fetchData();
   }
 
   @override
@@ -38,8 +30,6 @@ class _NewsDetailState extends State<NewsDetail> {
     return MyAppBar(
         title: '',
         body:
-        isLoading ? const Center(child: CircularProgressIndicator(color: Colors.black87,),)
-        :
          SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(15),
@@ -105,7 +95,7 @@ class _NewsDetailState extends State<NewsDetail> {
   GestureDetector buildCommentsButton() {
     return GestureDetector(
                       onTap: () {
-                        Navigator.of(context).push(MaterialPageRoute(builder: (builder) => NewsComments(novostId: widget.news.novostiId!,korisnikId: userId,)));
+                        Navigator.of(context).push(MaterialPageRoute(builder: (builder) => NewsComments(novostId: widget.news.novostiId!)));
                       },
                       child: Container(
                         width: double.infinity,
@@ -178,6 +168,7 @@ class _NewsDetailState extends State<NewsDetail> {
     return Container(
       width: double.infinity,
       height: 180,
+      padding: const EdgeInsets.all(5),
       margin: const EdgeInsets.only(bottom: 10),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(15), color: Colors.white),
@@ -196,15 +187,4 @@ class _NewsDetailState extends State<NewsDetail> {
     );
   }
   
-  Future<void> fetchData() async{
-    try {
-      var data = await _userProvider.getUserId();
-      setState(() {
-        userId = data;
-        isLoading=false;
-      });
-    } catch (e) {
-      MyDialogs.showError(context, e.toString());
-    }
-  }
 }

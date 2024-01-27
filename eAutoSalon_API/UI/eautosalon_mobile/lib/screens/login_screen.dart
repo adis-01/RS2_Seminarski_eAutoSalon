@@ -1,8 +1,14 @@
 
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:eautosalon_mobile/screens/home_page_screen.dart';
 import 'package:eautosalon_mobile/screens/regist_scr.dart';
+import 'package:eautosalon_mobile/utils/dialog_helper.dart';
 import 'package:eautosalon_mobile/utils/helpers.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../providers/user_provider.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -16,6 +22,14 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   bool obscureText = true;
+  late UserProvider _userProvider;
+  bool isLoading = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _userProvider=context.read<UserProvider>();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -82,7 +96,6 @@ class _LoginScreenState extends State<LoginScreen> {
                         GestureDetector(
                           onTap: (){
                             logIn();
-                            Navigator.of(context).push(MaterialPageRoute(builder: (builder) => const HomePage()));
                           },
                           child: Container(
                             width: double.infinity,
@@ -129,8 +142,16 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
   
-  void logIn() {
+  Future<void> logIn() async{
     Authorization.username = _usernameController.text;
     Authorization.password = _passwordController.text;
+    try {
+     var data = await _userProvider.getUserId();
+     Authorization.userId = data;
+     Navigator.of(context).push(MaterialPageRoute(builder: (builder) => const HomePage()));
+    } catch (e) {
+      MyDialogs.showError(context, e.toString());
+    }
   }
+  
 }
