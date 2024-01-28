@@ -90,7 +90,7 @@ class _CarDetailsState extends State<CarDetails> {
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
                   color: Colors.grey[600],
                   onPressed: (){
-                    Navigator.of(context).push(MaterialPageRoute(builder: (builder) => const CheckoutPage()));
+                    Navigator.of(context).push(MaterialPageRoute(builder: (builder) => CheckoutPage(car: widget.automobil,)));
                 },
                 child: const Text("ONLINE PLAĆANJE", style: TextStyle(color: Colors.white),),);
   }

@@ -20,6 +20,12 @@ namespace eAutoSalon.Services.Services
         {
         }
 
+        public override IQueryable<Recenzije> Order(IQueryable<Recenzije> query)
+        {
+            query = query.OrderByDescending(x => x.RecenzijaId);
+            return query;
+        }
+
         public override IQueryable<Recenzije> AddInclude(IQueryable<Recenzije> query)
         {
             return query.Include("Korisnik");

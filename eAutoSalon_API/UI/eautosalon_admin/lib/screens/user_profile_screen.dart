@@ -76,7 +76,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                         ),
                         const SizedBox(height: 10),
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text("User since ${user.registered ?? "[date null]"}", style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w400, color: Colors.blueGrey), textAlign: TextAlign.start,),
                           ],
@@ -95,7 +95,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                               const Text("Email", style: TextStyle(fontSize: 15, color: Colors.blueGrey, letterSpacing: 1),),
                               Text(user.email ?? "no_mail@unknown.com",
                            textAlign: TextAlign.center,
-                           style: const TextStyle(fontSize: 16, letterSpacing: 1.5, color: Colors.black87, fontWeight: FontWeight.w500),
+                           style: const TextStyle(fontSize: 16, letterSpacing: 1, color: Colors.black87, fontWeight: FontWeight.w400),
                            ),
                             ],
                           )
@@ -113,7 +113,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                             children: [
                               const Text("Ime i prezime", style: TextStyle(fontSize: 15, color: Colors.blueGrey, letterSpacing: 1),),
                               Text("${user.firstName ?? "null"} ${user.lastName ?? "null"}",
-                              style: const TextStyle(color: Colors.black87, fontSize: 16, letterSpacing: 1.5, fontWeight: FontWeight.bold))
+                              style: const TextStyle(fontSize: 16, letterSpacing: 1, color: Colors.black87, fontWeight: FontWeight.w400)),
                             ],
                           ),
                         ),
@@ -131,7 +131,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                               const Text("Username", style: TextStyle(fontSize: 15, color: Colors.blueGrey, letterSpacing: 1),),
                               const SizedBox(height: 5),
                               Text(user.username ?? "null",
-                              style: const TextStyle(color: Colors.black87, fontSize: 16, letterSpacing: 1.5, fontWeight: FontWeight.bold))
+                              style: const TextStyle(fontSize: 16, letterSpacing: 1, color: Colors.black87, fontWeight: FontWeight.w400),)
                             ],
                           ),
                         ),

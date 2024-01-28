@@ -71,8 +71,8 @@ class _EmployeesScreenState extends State<EmployeesScreen> {
                         ? Expanded(
                             child: SingleChildScrollView(
                             child: Wrap(
-                                spacing: 15,
-                                runSpacing: 15,
+                                spacing: 50,
+                                runSpacing: 25,
                                 children: result?.list
                                         .map(
                                           (Employee item) =>
@@ -93,7 +93,7 @@ class _EmployeesScreenState extends State<EmployeesScreen> {
   Container _buildCard(BuildContext context, Employee employee) {
     return Container(
       padding: const EdgeInsets.all(15),
-      width: 280,
+      width: 300,
       decoration: const BoxDecoration(
           color: Color(0xFFC4C4C4),
           borderRadius: BorderRadius.only(

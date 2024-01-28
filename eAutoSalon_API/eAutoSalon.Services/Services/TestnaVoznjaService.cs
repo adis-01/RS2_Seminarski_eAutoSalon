@@ -111,6 +111,7 @@ namespace eAutoSalon.Services.Services
         public async Task<List<VMTestna_Historija>> GetHistory(int korisnikId)
         {
             var list = await _context.TestnaVoznjas.Where(x => x.KorisnikId == korisnikId)
+                       .OrderByDescending(x=>x.TestnaVoznjaId)
                        .Include("Automobil")
                        .Include("Uposlenik")
                        .ToListAsync();

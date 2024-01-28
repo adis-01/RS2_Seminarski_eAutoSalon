@@ -236,11 +236,6 @@ class _UsersScreenState extends State<UsersScreen> {
                   child: Text('Edit',
                       style: TextStyle(
                           fontSize: 15, fontWeight: FontWeight.w700)))),
-          DataColumn(
-              label: Expanded(
-                  child: Text('Delete',
-                      style: TextStyle(
-                          fontSize: 15, fontWeight: FontWeight.w700)))),
         ],
         rows: result?.list
                 .map((User user) => DataRow(cells: [
@@ -259,29 +254,6 @@ class _UsersScreenState extends State<UsersScreen> {
                           color: Colors.black54,
                         ),
                       )),
-                      DataCell(IconButton(
-                        splashRadius: 15,
-                        onPressed: () {
-                          CustomDialogs.showQuestion(context,
-                              'Izbrisati korisnika ${user.firstName} ${user.lastName}?',
-                              () async {
-                            try {
-                              await _userProvider.changeState(user.korisnikId!);
-                              CustomDialogs.showSuccess(
-                                  context, 'Uspješno izbrisan korisnik', () {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (builder) => const UsersScreen()));
-                              });
-                            } catch (e) {
-                              CustomDialogs.showError(context, e.toString());
-                            }
-                          });
-                        },
-                        icon: Icon(
-                          Icons.delete,
-                          color: Colors.red[400],
-                        ),
-                      ))
                     ]))
                 .toList() ??
             []);

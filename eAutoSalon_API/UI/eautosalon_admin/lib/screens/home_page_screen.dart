@@ -74,7 +74,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
                                   fetchPaged(filters);
                                 }
                               },
-                              child: const Icon(Icons.filter_alt_rounded, color: Colors.white),
+                              child: const Icon(Icons.tune, color: Colors.white),
                             ),
                           )
                           :
@@ -92,7 +92,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
                                     });
                                     fetchData();
                                   },
-                                  child: const Icon(Icons.cleaning_services, color: Colors.white),
+                                  child: const Icon(Icons.clear, color: Colors.white),
                                 ),
                               ) ,
                           Tooltip(

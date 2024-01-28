@@ -21,7 +21,7 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
 
   double? average;
   int currentPage = 1;
-  final _pageSize = 5;
+  final _pageSize = 6;
   SearchResult<Review>? result;
   late ReviewProvider _reviewProvider;
   bool isLoading = true;
@@ -73,7 +73,9 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
                 ),
                 const SizedBox(height: 20),
                 (result?.total ?? 0) != 0 ?
-                Column(
+                Wrap(
+                  spacing: 20,
+                  runSpacing: 20,
                   children: 
                    result?.list.map((Review review) => buildReviewBox(context, review) ).toList() ?? []
                 ) : const Center(child: Text("NO DATA", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.blueGrey, fontSize: 18),),),
@@ -90,7 +92,7 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
     return Container(
               padding: const EdgeInsets.all(10),
               margin: const EdgeInsets.only(bottom: 10),
-              width: 550,
+              width: 500,
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12),
                   color: Colors.white70),

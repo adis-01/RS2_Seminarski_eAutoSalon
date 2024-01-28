@@ -103,7 +103,7 @@ class _HomePageState extends State<HomePage> {
                       });
                       getFiltered(filters);
                     }
-                  }, child: const Icon(Icons.filter_alt_outlined, color: Colors.white,))
+                  }, child: const Icon(Icons.tune_rounded, color: Colors.white,))
                   :
                   MaterialButton(
                     padding: const EdgeInsets.all(8),

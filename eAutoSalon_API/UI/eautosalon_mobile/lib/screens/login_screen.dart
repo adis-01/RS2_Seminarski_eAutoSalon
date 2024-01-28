@@ -3,6 +3,7 @@
 
 import 'package:eautosalon_mobile/screens/home_page_screen.dart';
 import 'package:eautosalon_mobile/screens/regist_scr.dart';
+import 'package:eautosalon_mobile/screens/verif_screen.dart';
 import 'package:eautosalon_mobile/utils/dialog_helper.dart';
 import 'package:eautosalon_mobile/utils/helpers.dart';
 import 'package:flutter/material.dart';
@@ -132,6 +133,14 @@ class _LoginScreenState extends State<LoginScreen> {
                               child: const Text("Registrujte se.", style: TextStyle(color: Colors.blue, fontWeight: FontWeight.w500, fontSize: 15 ),),
                             )
                           ],
+                        ),
+                        const SizedBox(height: 30),
+                        
+                        GestureDetector(
+                          onTap: (){
+                            Navigator.of(context).push(MaterialPageRoute(builder: (builder) => const VerificationScreen()));
+                          },
+                          child: const Text("Verifikacija", style: TextStyle(color: Colors.blue, fontWeight: FontWeight.w500, fontSize: 17),),
                         )
                       ],
                     ),

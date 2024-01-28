@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:eautosalon_admin/screens/user_profile_screen.dart';
+import 'package:eautosalon_admin/utils/util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:provider/provider.dart';
@@ -153,6 +154,7 @@ class _EditProfileState extends State<EditProfile> {
                                 if (_formKey.currentState!.saveAndValidate()) {
                                   try {
                                     await _userProvider.update(widget.user.korisnikId!, _formKey.currentState!.value);
+                                  Authorization.username = _formKey.currentState!.value['username'];
                                   CustomDialogs.showSuccess(context, 'Uspješno uređivanje podataka', () {
                                       Navigator.of(context).push(
                                         MaterialPageRoute(builder: (builder) => const UserProfileScreen())

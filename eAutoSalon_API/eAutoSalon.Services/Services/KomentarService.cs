@@ -32,7 +32,7 @@ namespace eAutoSalon.Services.Services
 
         public async Task<PagedList<VMKomentari>> GetAllKomentari_Novost(int id, KomentariSearchObject? searchObject = null)
         {
-            var comms =  _context.Komentaris.Where(x=>x.NovostiId==id).Include("Korisnik").AsQueryable();
+            var comms =  _context.Komentaris.Where(x=>x.NovostiId==id).Include("Korisnik").OrderByDescending(x=>x.KomentarId).AsQueryable();
 
             var list = new PagedList<VMKomentari>
             {

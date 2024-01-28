@@ -190,7 +190,7 @@ class _UserProfileState extends State<UserProfile> {
         size: 25,
       ),
       title: const Text(
-        "AKTIVNOST",
+        "AKTIVNOSTI",
         style: TextStyle(
             color: Colors.black,
             fontWeight: FontWeight.w400,
