@@ -43,7 +43,11 @@ class _ReviewDialogState extends State<ReviewDialog> {
                   }, icon: const Icon(Icons.close, size: 25, color: Colors.black87,))
                 ],
               ),
-              const SizedBox(height: 25),
+              Container(
+                margin: const EdgeInsets.symmetric(vertical: 20, horizontal: 5),
+                width: double.infinity,
+                child: const Text("Odaberite zvjezdicu (1-5) kako biste dali odgovarajuću ocjenu", style: TextStyle(color: Colors.black54, fontSize: 14, fontWeight: FontWeight.w500),textAlign: TextAlign.center,),
+              ),
               Center(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -76,7 +80,7 @@ class _ReviewDialogState extends State<ReviewDialog> {
                     fillColor: Colors.black,
                     border: InputBorder.none,
                     hintText: 'Ukoliko želite, ostavite i komentar...',
-                    hintStyle:  TextStyle(color: Colors.black54, fontSize: 15),
+                    hintStyle:  TextStyle(color: Colors.blueGrey, fontSize: 15),
                   ),
                   minLines: 2,
                   maxLines: 3,
@@ -98,7 +102,7 @@ class _ReviewDialogState extends State<ReviewDialog> {
                       }
                     );
                   }, child: const Text("SAČUVAJ", style: TextStyle(fontSize: 15, color: Colors.white, fontWeight: FontWeight.w400),),),
-              )
+              ),
             ],
           ),
         ),

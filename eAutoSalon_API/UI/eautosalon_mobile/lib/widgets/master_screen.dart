@@ -12,25 +12,27 @@ class MyAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.grey[300],
-      appBar: AppBar(
-        centerTitle: true,
-        backgroundColor: Colors.black87,
-        actions: [
-          IconButton(onPressed: (){
-            MyDialogs.showQuestion(context, 'Da li ste sigurni da se želite odjaviti?', () {
-              Authorization.username = "";
-              Authorization.password = "";
-              Navigator.of(context).pop();
-              Navigator.of(context).push(MaterialPageRoute(builder: (builder) => const LoginScreen()));
-             });
-          }, icon: const Icon(Icons.logout, size: 20, color: Colors.white,))
-        ],
-        title: Text(title.toUpperCase(), 
-        style: const TextStyle(fontSize: 14, color: Colors.white, fontWeight: FontWeight.w400,letterSpacing: 1.5),),
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: Colors.grey[300],
+        appBar: AppBar(
+          centerTitle: true,
+          backgroundColor: Colors.black87,
+          actions: [
+            IconButton(onPressed: (){
+              MyDialogs.showQuestion(context, 'Da li ste sigurni da se želite odjaviti?', () {
+                Authorization.username = "";
+                Authorization.password = "";
+                Navigator.of(context).pop();
+                Navigator.of(context).push(MaterialPageRoute(builder: (builder) => const LoginScreen()));
+               });
+            }, icon: const Icon(Icons.logout, size: 20, color: Colors.white,))
+          ],
+          title: Text(title.toUpperCase(), 
+          style: const TextStyle(fontSize: 14, color: Colors.white, fontWeight: FontWeight.w400,letterSpacing: 1.5),),
+        ),
+        body: body,
       ),
-      body: body,
     );
   }
 }

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:eautosalon_mobile/models/news.dart';
 import 'package:eautosalon_mobile/models/search_result.dart';
 import 'package:eautosalon_mobile/providers/news_provider.dart';
@@ -112,92 +114,34 @@ class _NewsScreenState extends State<NewsScreen> {
 
   Container buildNewsContainer(News item) {
     return Container(
-      padding: const EdgeInsets.all(10),
-      margin: const EdgeInsets.only(bottom: 15),
       width: double.infinity,
+      padding: const EdgeInsets.all(10),
+      margin: const EdgeInsets.only(bottom: 10),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(22),
+        color: Colors.white
+      ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              GestureDetector(
-                onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (builder) => NewsDetail(news: item)));
-                },
-                child: Container(
-                  margin: const EdgeInsets.only(bottom: 5),
-                  child: Row(
-                    children: [
-                      Text(
-                        "Vidi detalje",
-                        style: TextStyle(
-                            letterSpacing: 0.5,
-                            color: Colors.blue[600],
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18),
-                      ),
-                      const SizedBox(
-                        width: 5,
-                      ),
-                      Icon(
-                        Icons.arrow_forward_ios,
-                        size: 20,
-                        color: Colors.blue[600],
-                      )
-                    ],
-                  ),
-                ),
-              )
-            ],
-          ),
-          Container(
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(15),
-                border: Border.all(color: Colors.black, width: 0.1)),
-            padding: const EdgeInsets.all(5),
-            margin: const EdgeInsets.only(bottom: 15, top: 10),
+          SizedBox(
             width: double.infinity,
-            height: 200,
-            child: item.slika != ""
-                ? fromBase64String(item.slika!)
-                : Center(
-                    child: Icon(
-                    Icons.no_photography_outlined,
-                    size: 40,
-                    color: Colors.blue[600],
-                  )),
-          ),
-          Row(
-            children: [
-              Container(
-                margin: const EdgeInsets.only(right: 10),
-                padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    border: Border.all(color: Colors.black87, width: 0.2)),
-                child: const Center(
-                  child: Icon(Icons.edit_note),
-                ),
-              ),
-              Text(
-                item.autor ?? "Author unknown",
-                style: const TextStyle(
-                    fontSize: 16,
-                    color: Colors.black87,
-                    fontWeight: FontWeight.w500),
-              )
-            ],
+            height: 140,
+            child: item.slika != "" ? fromBase64String(item.slika!) : const Center(child: Icon(Icons.no_photography, color: Colors.black54,),),
           ),
           const SizedBox(height: 10),
-          Text(
-            item.naslov ?? "null",
-            textAlign: TextAlign.start,
-            style: const TextStyle(
-                color: Colors.black87,
-                fontSize: 18,
-                fontWeight: FontWeight.bold),
+          Text(item.naslov ?? "null", style: TextStyle(fontSize: 17, fontWeight: FontWeight.w600, letterSpacing: 0.8, color: Colors.grey[900]),),
+          const SizedBox(height: 8),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(item.autor ?? "author unknown", style: const TextStyle(fontSize: 16, color: Colors.black54, fontWeight: FontWeight.w500, letterSpacing: 0.5),),
+              MaterialButton(
+                onPressed: (){
+                  Navigator.of(context).push(MaterialPageRoute(builder: (builder) => NewsDetail(news: item)));
+              },
+              child: const Icon(Icons.more_horiz, color: Colors.black, size: 33,),)
+            ],
           )
         ],
       ),

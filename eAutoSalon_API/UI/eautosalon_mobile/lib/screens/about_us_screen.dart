@@ -60,8 +60,8 @@ class _AboutScreenState extends State<AboutScreen> {
                   style: TextStyle(
                       color: Colors.blueGrey,
                       fontSize: 17,
-                      letterSpacing: 1.5,
-                      fontWeight: FontWeight.w400),
+                      letterSpacing: 1,
+                      fontWeight: FontWeight.w500),
                 ),
                 const SizedBox(height: 25),
                 const Icon(
@@ -78,7 +78,7 @@ class _AboutScreenState extends State<AboutScreen> {
                       color: Colors.blueGrey,
                       fontSize: 17,
                       letterSpacing: 1.5,
-                      fontWeight: FontWeight.w400),
+                      fontWeight: FontWeight.w500),
                 ),
                 const SizedBox(height: 25),
                 const Icon(
@@ -92,15 +92,15 @@ class _AboutScreenState extends State<AboutScreen> {
                   style: TextStyle(
                       fontSize: 17,
                       color: Colors.blueGrey,
-                      fontWeight: FontWeight.w400),
+                      fontWeight: FontWeight.w500),
                 ),
                 const SizedBox(height: 5),
                 const Text(
                   "08:00 - 16:00",
                   style: TextStyle(
-                      fontSize: 16,
+                      fontSize: 17,
                       color: Colors.blueGrey,
-                      fontWeight: FontWeight.w300),
+                      fontWeight: FontWeight.w400),
                 )
               ],
             ),

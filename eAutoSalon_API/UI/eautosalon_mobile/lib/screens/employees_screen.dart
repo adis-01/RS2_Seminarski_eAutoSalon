@@ -31,95 +31,71 @@ class _EmployeesScreenState extends State<EmployeesScreen> {
   Widget build(BuildContext context) {
     return MyAppBar(
         title: 'Uposlenici',
-        body: isLoading ?
-            const Center(child: CircularProgressIndicator(color: Colors.black87,))
+        body: isLoading
+            ? const Center(
+                child: CircularProgressIndicator(
+                color: Colors.black87,
+              ))
             : SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(35),
-            child: Column(
-              children: [
-                const Text(
-                  "NAŠ TIM",
-                  style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.black45,
-                      fontWeight: FontWeight.w500,
-                      letterSpacing: 1),
+                child: Padding(
+                  padding: const EdgeInsets.all(35),
+                  child: Column(
+                    children: [
+                      const Text(
+                        "NAŠ TIM",
+                        style: TextStyle(
+                            fontSize: 18,
+                            color: Colors.black45,
+                            fontWeight: FontWeight.w500,
+                            letterSpacing: 1.5),
+                      ),
+                      const SizedBox(height: 20),
+                      Column(
+                        children: result?.list
+                                .map((Employee obj) => buildEmployeeCard(obj))
+                                .toList() ??
+                            [],
+                      )
+                    ],
+                  ),
                 ),
-                const SizedBox(height: 20),
-                Column(
-                  children: result?.list
-                          .map((Employee obj) => buildEmployeeCard(obj))
-                          .toList() ??
-                      [],
-                )
-              ],
-            ),
-          ),
-        ));
+              ));
   }
 
   Container buildEmployeeCard(Employee employee) {
     return Container(
+      padding: const EdgeInsets.all(15),
+      margin: const EdgeInsets.symmetric(vertical: 10),
       width: double.infinity,
-      padding: const EdgeInsets.all(20),
-      margin: const EdgeInsets.only(bottom: 10),
-      decoration: const BoxDecoration(
-          color: Colors.white38,
-          borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(8), bottomRight: Radius.circular(8))),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8),
+        color: Colors.white
+      ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          //slika
           SizedBox(
-            width: double.infinity,
-            height: 140,
-            child: Center(
-                child: employee.slika != ""
-                    ? fromBase64String(employee.slika!)
-                    : const Icon(
-                        Icons.no_photography,
-                        size: 80,
-                        color: Colors.black87,
-                      )),
+            width: 150,
+            height: 130,
+            child: employee.slika == ""
+             ?  
+            Icon(Icons.no_photography_rounded, size: 30, color: Colors.blue[600],) :
+            fromBase64String(employee.slika!),
           ),
           const SizedBox(height: 5),
-          //ime i prezime
           Text(
             "${employee.firstName ?? "null"} ${employee.lastName ?? "null"}",
-            style: const TextStyle(
-                color: Colors.black54,
-                letterSpacing: 2,
-                fontWeight: FontWeight.w500,
-                fontSize: 16),
+            style: const TextStyle(fontSize: 17, color: Colors.black54, fontWeight: FontWeight.w500, letterSpacing: 0.7),
           ),
-          const SizedBox(height: 5),
-          //pozicija
+          const SizedBox(height: 8),
           Text(
-            employee.title?.toUpperCase() ?? "NO TITLE",
-            style: const TextStyle(
-                color: Colors.grey, fontSize: 15, letterSpacing: 1.5),
+            employee.title?.toUpperCase() ?? "null",
+            style: const TextStyle(fontSize: 16,letterSpacing: 0.5, fontWeight: FontWeight.w500, color: Colors.black87),
           ),
           const SizedBox(height: 15),
-          //kontakt
-          Row(
-            children: [
-              const Icon(
-                Icons.mail,
-                size: 25,
-                color: Colors.black54,
-              ),
-              const SizedBox(width: 8),
-              Text(
-                "${employee.kontakt}",
-                style: const TextStyle(
-                    color: Colors.black87,
-                    letterSpacing: 1.4,
-                    fontWeight: FontWeight.w400,
-                    fontSize: 14),
-              )
-            ],
+          Text(
+            employee.kontakt ?? "null",
+            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600, letterSpacing: 0.2, color: Colors.blueGrey),
           )
         ],
       ),
@@ -128,12 +104,12 @@ class _EmployeesScreenState extends State<EmployeesScreen> {
 
   Future<void> fetchData() async {
     try {
-      var data = await _employeeProvider.getAll();
-      if(mounted){
+      var data = await _employeeProvider.getAktivne();
+      if (mounted) {
         setState(() {
-        result = data;
-        isLoading = false;
-      });
+          result = data;
+          isLoading = false;
+        });
       }
     } catch (e) {
       MyDialogs.showError(context, e.toString());

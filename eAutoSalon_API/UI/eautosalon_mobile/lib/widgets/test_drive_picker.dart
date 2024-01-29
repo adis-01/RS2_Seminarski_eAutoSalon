@@ -144,8 +144,8 @@ class _TestDriveDialogState extends State<TestDriveDialog> {
 
   Container buildInfo() {
     return Container(
-              padding: const EdgeInsets.all(8),
-              margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+              padding: const EdgeInsets.all(10),
+              margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(15),
                 border: Border.all(
@@ -156,9 +156,9 @@ class _TestDriveDialogState extends State<TestDriveDialog> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                    Icon(Icons.info, color: Colors.blue[600], size: 18,),
+                    Icon(Icons.info, color: Colors.grey[900], size: 20,),
                     const SizedBox(height: 5),
-                    const Text("Odaberite datum, zatim satnicu, te izvršite rezervaciju klikom na dugme", style: TextStyle(fontSize: 16,fontWeight: FontWeight.w400, color: Colors.black87),)
+                    const Text("Odaberite datum, zatim satnicu, te izvršite rezervaciju klikom na dugme", style: TextStyle(fontSize: 15,letterSpacing: 0.5,fontWeight: FontWeight.w400, color: Colors.black87),)
                 ],
               ),
             );
