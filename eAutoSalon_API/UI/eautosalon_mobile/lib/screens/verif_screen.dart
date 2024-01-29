@@ -42,7 +42,6 @@ class _VerificationScreenState extends State<VerificationScreen> {
                 onTap: (){
                   if(_formKey.currentState!=null){
                     if(_formKey.currentState!.saveAndValidate()){
-                      print(_formKey.currentState!.value);
                     }
                   }
                 },

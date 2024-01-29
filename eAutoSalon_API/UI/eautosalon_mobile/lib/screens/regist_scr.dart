@@ -60,7 +60,6 @@ class _RegistrationState extends State<Registration> {
                     onTap: (){
                       if(_formKey.currentState!=null){
                         if(_formKey.currentState!.saveAndValidate()){
-                          print(_formKey.currentState!.value);
                         }
                       }
                     },

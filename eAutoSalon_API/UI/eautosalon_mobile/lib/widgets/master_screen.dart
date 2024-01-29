@@ -17,7 +17,7 @@ class MyAppBar extends StatelessWidget {
         backgroundColor: Colors.grey[300],
         appBar: AppBar(
           centerTitle: true,
-          backgroundColor: Colors.black87,
+          backgroundColor: Colors.black,
           actions: [
             IconButton(onPressed: (){
               MyDialogs.showQuestion(context, 'Da li ste sigurni da se želite odjaviti?', () {

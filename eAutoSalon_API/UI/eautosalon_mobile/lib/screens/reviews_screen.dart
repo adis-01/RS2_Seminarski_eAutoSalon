@@ -2,9 +2,9 @@
 
 import 'package:eautosalon_mobile/models/search_result.dart';
 import 'package:eautosalon_mobile/providers/review_provider.dart';
+import 'package:eautosalon_mobile/screens/review_insert_screen.dart';
 import 'package:eautosalon_mobile/utils/dialog_helper.dart';
 import 'package:eautosalon_mobile/widgets/master_screen.dart';
-import 'package:eautosalon_mobile/widgets/review_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -49,12 +49,7 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
                     children: [
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            children: [buildReviewButton()],
-                          ),
-                          buildAverageReview()
-                        ],
+                        children: [buildAverage(), buildButton()],
                       ),
                       const SizedBox(height: 20),
                       Column(
@@ -72,52 +67,63 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
               ));
   }
 
-  Row buildAverageReview() {
-    return Row(
-      children: [
-        Container(
-          padding: const EdgeInsets.all(5),
-          decoration: const BoxDecoration(
-              shape: BoxShape.circle, color: Colors.black54),
-          child: const Center(
-              child: Icon(
-            Icons.star,
-            color: Colors.white,
-          )),
+  GestureDetector buildButton() {
+    return GestureDetector(
+      onTap: () async {
+        var result = await Navigator.of(context).push(
+            MaterialPageRoute(builder: (builder) => const ReviewInsert()));
+        if (result != null) {
+          setState(() {
+            isLoading = true;
+          });
+          saveData(result);
+        }
+      },
+      child: Container(
+        padding: const EdgeInsets.all(15),
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(15), color: Colors.grey[900]),
+        child: Row(
+          children: const [
+            Text(
+              "Recenzirajte",
+              style: TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w400,
+                  letterSpacing: 0.5,
+                  color: Colors.white),
+            ),
+            SizedBox(width: 5),
+            Icon(
+              Icons.arrow_forward,
+              size: 20,
+              color: Colors.white,
+            )
+          ],
         ),
-        const SizedBox(width: 10),
-        Text(
-          average.toStringAsFixed(2),
-          style: const TextStyle(
-              color: Colors.blueGrey,
-              fontSize: 15,
-              fontWeight: FontWeight.w400,
-              letterSpacing: 1.5),
-        )
-      ],
+      ),
     );
   }
 
-  GestureDetector buildReviewButton() {
-    return GestureDetector(
-        onTap: () async{
-          var result = await showDialog( context: context, builder: (context) => const ReviewDialog()); 
-          if(result != null){
-            setState(() {
-              isLoading=true;
-            });
-            saveData(result);
-          }
-        },
-        child: Container(
-          padding: const EdgeInsets.all(10),
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(5), color: Colors.black87),
-          child: const Text(
-            "RECENZIRAJTE",
-            style: TextStyle(color: Colors.white, fontWeight: FontWeight.w400),
+  Row buildAverage() {
+    return Row(
+      children: [
+        Icon(
+          Icons.star,
+          size: 27,
+          color: Colors.yellow[800],
+        ),
+        const SizedBox(width: 3),
+        Text(
+          "${average.toStringAsFixed(2)} / 5.0",
+          style: const TextStyle(
+            fontSize: 17,
+            color: Colors.black87,
+            fontWeight: FontWeight.w600,
           ),
-        ));
+        )
+      ],
+    );
   }
 
   Row buildPagingArrows() {
@@ -253,7 +259,7 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
                           fontSize: 16),
                     )
                   : Text(
-                      object.komentar ?? "no data", 
+                      object.komentar ?? "no data",
                       style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w500,
@@ -269,23 +275,27 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
       var data = await _reviewProvider
           .getPaged({'PageSize': _pageSize, 'Page': currentPage});
       var avg = await _reviewProvider.getAverage();
-      setState(() {
-        result = data;
-        isLoading = false;
-        average = avg;
-      });
+      if (mounted) {
+        setState(() {
+          result = data;
+          isLoading = false;
+          average = avg;
+        });
+      }
     } catch (e) {
       MyDialogs.showError(context, e.toString());
     }
   }
-  
-  Future<void> saveData(dynamic object) async{
+
+  Future<void> saveData(dynamic object) async {
     try {
       await _reviewProvider.insert(object);
-      MyDialogs.showSuccess(context, 'Hvala na odvojenom vremenu i recenziji, na ovaj način doprinosite radu i poboljšanju auto salona', () {
+      MyDialogs.showSuccess(context,
+          'Hvala na odvojenom vremenu i recenziji, na ovaj način doprinosite radu i poboljšanju auto salona',
+          () {
         Navigator.of(context).pop();
         fetchData();
-       });
+      });
     } catch (e) {
       MyDialogs.showError(context, e.toString());
     }

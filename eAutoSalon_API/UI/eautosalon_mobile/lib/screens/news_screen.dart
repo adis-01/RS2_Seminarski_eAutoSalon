@@ -1,4 +1,3 @@
-import 'dart:convert';
 
 import 'package:eautosalon_mobile/models/news.dart';
 import 'package:eautosalon_mobile/models/search_result.dart';

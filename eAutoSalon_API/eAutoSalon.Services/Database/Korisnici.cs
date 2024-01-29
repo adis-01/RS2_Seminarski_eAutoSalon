@@ -39,5 +39,7 @@ public partial class Korisnici
 
     public virtual ICollection<TestnaVoznja> TestnaVoznjas { get; set; } = new List<TestnaVoznja>();
 
+    public virtual ICollection<Transakcije> Transakcijes { get; set; } = new List<Transakcije>();
+
     public virtual ICollection<ZavrseniPoslovi> ZavrseniPoslovis { get; set; } = new List<ZavrseniPoslovi>();
 }

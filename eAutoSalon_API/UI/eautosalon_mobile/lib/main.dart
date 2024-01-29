@@ -7,13 +7,17 @@ import 'package:eautosalon_mobile/providers/employee_provider.dart';
 import 'package:eautosalon_mobile/providers/news_provider.dart';
 import 'package:eautosalon_mobile/providers/review_provider.dart';
 import 'package:eautosalon_mobile/providers/test_drive_provider.dart';
+import 'package:eautosalon_mobile/providers/transaction_provider.dart';
 import 'package:eautosalon_mobile/providers/user_provider.dart';
 import 'package:eautosalon_mobile/screens/initial_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:provider/provider.dart';
-
+import 'keys.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  Stripe.publishableKey = const String.fromEnvironment('pubKey', defaultValue: pubKey);
   HttpOverrides.global=MyHttpOverrides();
   runApp(
     MultiProvider(
@@ -25,7 +29,8 @@ void main() {
         ChangeNotifierProvider(create: (_) => OpremaProvider()),
         ChangeNotifierProvider(create: (_) => TestDriveProvider()),
         ChangeNotifierProvider(create: (_) => KomentarProvider()),
-        ChangeNotifierProvider(create: (_) => NewsProvider())
+        ChangeNotifierProvider(create: (_) => NewsProvider()),
+        ChangeNotifierProvider(create: (_) => TransactionProvider())
       ],
       child: const MyApp(),
     )

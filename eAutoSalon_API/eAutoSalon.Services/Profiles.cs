@@ -56,6 +56,12 @@ namespace eAutoSalon.Services
             CreateMap<TestnaVoznja,VMTestnaVoznja>();
             CreateMap<TestnaVoznja,VMTestna_Historija>();
 
+            CreateMap<ZavrseniPosaoInsert, ZavrseniPoslovi>();
+            CreateMap<ZavrseniPoslovi, VMZavrseni_Poslovi>();
+
+            CreateMap<Transakcije, VMTransakcija>();
+            CreateMap<TransakcijaInsert, Transakcije>();
+
             CreateMap<Uloge, VMUloga>();
         }
     }

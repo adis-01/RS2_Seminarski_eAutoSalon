@@ -1,5 +1,7 @@
 import 'dart:convert';
+import 'package:flutter_stripe/flutter_stripe.dart';
 
+import '../keys.dart';
 import 'package:eautosalon_mobile/widgets/master_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -14,13 +16,18 @@ class CheckoutPage extends StatefulWidget {
 }
 
 class _CheckoutPageState extends State<CheckoutPage> {
+
   Map<String, dynamic>? paymentIntent;
+  bool isLoading = false;
+  int amount = 0;
+  String secretKey = const String.fromEnvironment("secretKey", defaultValue: secKey);
 
   @override
   Widget build(BuildContext context) {
     return MyAppBar(
         title: 'Checkout',
-        body: SingleChildScrollView(
+        body: isLoading ? const Center(child: CircularProgressIndicator(color: Colors.black87,),) 
+        : SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(5),
             child: Column(
@@ -45,7 +52,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                     children: const [
                       Icon(Icons.info_rounded, color: Colors.black54, size: 17,),
                       SizedBox(height: 5),
-                      Text("Nakon što pritisnete dugme, popunite neophodna polja i potvrdite transakciju",
+                      Text("Nakon što pritisnete dugme popunite neophodna polja i potvrdite transakciju",
                       style: TextStyle(color: Colors.black54, fontWeight: FontWeight.w500, fontSize: 16, letterSpacing: 0.5),)
                     ],
                   ),
@@ -114,7 +121,12 @@ class _CheckoutPageState extends State<CheckoutPage> {
 
   GestureDetector buildButton() {
     return GestureDetector(
-      onTap: () {},
+      onTap: () async{
+         setState(() {
+          isLoading=true;
+        });
+        await makePayment();
+      },
       child: Container(
         width: double.infinity,
         decoration: BoxDecoration(
@@ -204,46 +216,66 @@ class _CheckoutPageState extends State<CheckoutPage> {
     );
   }
 
-  // Future<Map<String, dynamic>> makePaymentIntent() async {
-  //   final body = {
-  //     'amount': widget.car.cijena.toString(),
-  //     'currency': 'USD',
-  //     'payment_method_types[]': 'card',
-  //   };
+  Future<Map<String, dynamic>> makePaymentIntent() async {
+    final body = {
+      'amount': calculateAmount().toString(),
+      'currency': 'USD',
+      'payment_method_types[]': 'card',
+    };
 
-  //   final headers = {
-  //     'Authorization': 'Bearer $secKey',
-  //     'Content-Type': 'application/x-www-form-urlencoded',
-  //   };
+    final headers = {
+      'Authorization': 'Bearer $secretKey',
+      'Content-Type': 'application/x-www-form-urlencoded',
+    };
 
-  //   final response = await http.post(
-  //     Uri.parse("https://api.stripe.com/v1/payment_intents"),
-  //     headers: headers,
-  //     body: body,
-  //   );
+    final response = await http.post(
+      Uri.parse("https://api.stripe.com/v1/payment_intents"),
+      headers: headers,
+      body: body,
+    );
 
-  //   return jsonDecode(response.body);
-  // }
+    return jsonDecode(response.body);
+  }
 
-  // Future<void> displayPaymentSheet() async {
-  //   await Stripe.instance.presentPaymentSheet();
-  // }
+  Future<void> displayPaymentSheet() async {
+    try {
+      await Stripe.instance.presentPaymentSheet();
+      setState(() {
+        isLoading=false;
+      });
+    } catch (e) {
+      setState(() {
+        isLoading=false;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: Colors.red[400],
+          padding: const EdgeInsets.all(15),
+          content: const Text("Transakcija otkazana", style: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.w500, letterSpacing: 0.5,),textAlign: TextAlign.center,),
+        )
+      );
+    }
+  }
 
-  // Future<void> makePayment() async {
-  //   try {
-  //     final paymentIntent = await makePaymentIntent();
-  //     await Stripe.instance.initPaymentSheet(
-  //       paymentSheetParameters: SetupPaymentSheetParameters(
-  //         merchantDisplayName: 'Automobil prodaja',
-  //         paymentIntentClientSecret: paymentIntent['client_secret'],
-  //         style: ThemeMode.dark,
-  //       ),
-  //     );
-  //     await displayPaymentSheet();
-  //   } catch (e) {
-  //     throw Exception(e);
-  //   }
-  // }
+  Future<void> makePayment() async {
+    try {
+      final paymentIntent = await makePaymentIntent();
+      await Stripe.instance.initPaymentSheet(
+        paymentSheetParameters: SetupPaymentSheetParameters(
+          merchantDisplayName: 'Automobil prodaja',
+          paymentIntentClientSecret: paymentIntent['client_secret'],
+          style: ThemeMode.dark,
+        ),
+      );
+      await displayPaymentSheet();
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
+  int calculateAmount(){
+    return amount = (widget.car.cijena! * 100).round();
+  }
 
   
 

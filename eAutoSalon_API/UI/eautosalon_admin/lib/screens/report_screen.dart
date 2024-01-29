@@ -1,7 +1,11 @@
+import 'package:eautosalon_admin/providers/review_provider.dart';
+import 'package:eautosalon_admin/providers/user_provider.dart';
 import 'package:eautosalon_admin/screens/home_page_screen.dart';
+import 'package:eautosalon_admin/utils/dialogs.dart';
 import 'package:eautosalon_admin/widgets/master_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:provider/provider.dart';
 
 class ReportScreen extends StatefulWidget {
   const ReportScreen({super.key});
@@ -12,6 +16,18 @@ class ReportScreen extends StatefulWidget {
 
 class _ReportScreenState extends State<ReportScreen> {
   final _formKey = GlobalKey<FormBuilderState>();
+  int totalUsers = 0;
+  double average = 0.00;
+  late ReviewProvider _reviewProvider;
+  late UserProvider _userProvider;
+  bool isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _reviewProvider = context.read<ReviewProvider>();
+    fetchData();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +35,8 @@ class _ReportScreenState extends State<ReportScreen> {
         title: 'Izvještaj',
         body: Padding(
           padding: const EdgeInsets.all(25),
-          child: SingleChildScrollView(
+          child: isLoading ? const Center(child: CircularProgressIndicator(),)
+          : SingleChildScrollView(
             child: Column(
               children: [
                 Row(
@@ -183,11 +200,6 @@ class _ReportScreenState extends State<ReportScreen> {
           )),
           DataColumn(
               label: Icon(
-            Icons.business,
-            color: Colors.grey[700],
-          )),
-          DataColumn(
-              label: Icon(
             Icons.date_range,
             color: Colors.grey[700],
           ))
@@ -197,7 +209,6 @@ class _ReportScreenState extends State<ReportScreen> {
             DataCell(Text('Audi A6')),
             DataCell(Text('\$15,423.00')),
             DataCell(Text('Kupac')),
-            DataCell(Text('Uposlenik')),
             DataCell(Text('Datum'))
           ])
         ],
@@ -235,18 +246,18 @@ class _ReportScreenState extends State<ReportScreen> {
           ],
         ),
         Column(
-          children: const [
-            Text(
+          children: [
+            const Text(
               "Prosječna ocjena",
               style: TextStyle(
                   fontSize: 15,
                   color: Colors.blueGrey,
                   fontWeight: FontWeight.w600),
             ),
-            SizedBox(height: 3),
+            const SizedBox(height: 3),
             Text(
-              "3.28",
-              style: TextStyle(
+              average.toStringAsFixed(2),
+              style: const TextStyle(
                   fontSize: 18,
                   color: Colors.black87,
                   fontWeight: FontWeight.bold),
@@ -270,5 +281,17 @@ class _ReportScreenState extends State<ReportScreen> {
           Icons.arrow_back,
           color: Colors.white,
         ));
+  }
+  
+  Future<void> fetchData() async{
+    try {
+      var avg = await _reviewProvider.getAverage();
+      setState(() {
+        average=avg;
+        isLoading=false;
+      });
+    } catch (e) {
+      CustomDialogs.showError(context, e.toString());
+    }
   }
 }

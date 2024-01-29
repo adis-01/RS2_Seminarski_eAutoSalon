@@ -33,7 +33,7 @@ class _HistoryCommentsState extends State<HistoryComments> {
        body: Padding(
         padding: const EdgeInsets.all(10),
         child: isLoading ? 
-        const Center(child: CircularProgressIndicator(),)
+        const Center(child: CircularProgressIndicator(color: Colors.black87,),)
         :
         SingleChildScrollView(
           child: list.isNotEmpty 

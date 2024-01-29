@@ -40,7 +40,7 @@ class _HomePageState extends State<HomePage> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.black87,
+          backgroundColor: Colors.black,
           actions: [
             IconButton(onPressed: (){
               MyDialogs.showQuestion(context, 'Da li ste sigurni da se želite odjaviti?', () {

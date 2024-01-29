@@ -31,6 +31,8 @@ public partial class EAutoSalonTestContext : DbContext
 
     public virtual DbSet<TestnaVoznja> TestnaVoznjas { get; set; }
 
+    public virtual DbSet<Transakcije> Transakcijes { get; set; }
+
     public virtual DbSet<Uloge> Uloges { get; set; }
 
     public virtual DbSet<Uposlenici> Uposlenicis { get; set; }
@@ -238,6 +240,33 @@ public partial class EAutoSalonTestContext : DbContext
                 .HasConstraintName("FK_Uposlenik_TestnaVoznja");
         });
 
+        modelBuilder.Entity<Transakcije>(entity =>
+        {
+            entity.HasKey(e => e.TransakcijaId).HasName("PK__Transakc__BED360B32C9FDA6C");
+
+            entity.ToTable("Transakcije");
+
+            entity.Property(e => e.TransakcijaId).HasColumnName("TransakcijaID");
+            entity.Property(e => e.BrojTransakcije)
+                .HasMaxLength(255)
+                .IsUnicode(false);
+            entity.Property(e => e.DatumTransakcije).HasColumnType("datetime");
+            entity.Property(e => e.Iznos)
+                .HasMaxLength(255)
+                .IsUnicode(false);
+            entity.Property(e => e.KorisnikId).HasColumnName("KorisnikID");
+            entity.Property(e => e.TipTransakcije)
+                .HasMaxLength(255)
+                .IsUnicode(false);
+            entity.Property(e => e.Valuta)
+                .HasMaxLength(255)
+                .IsUnicode(false);
+
+            entity.HasOne(d => d.Korisnik).WithMany(p => p.Transakcijes)
+                .HasForeignKey(d => d.KorisnikId)
+                .HasConstraintName("FK__Transakci__Koris__0880433F");
+        });
+
         modelBuilder.Entity<Uloge>(entity =>
         {
             entity.HasKey(e => e.UlogaId).HasName("PK__Uloge__DCAB23EB3EE27DDE");
@@ -284,8 +313,8 @@ public partial class EAutoSalonTestContext : DbContext
             entity.Property(e => e.Id).HasColumnName("ID");
             entity.Property(e => e.AutomobilId).HasColumnName("AutomobilID");
             entity.Property(e => e.DatumProdaje).HasColumnType("date");
+            entity.Property(e => e.Iznos).HasColumnType("decimal(18, 2)");
             entity.Property(e => e.KorisnikId).HasColumnName("KorisnikID");
-            entity.Property(e => e.UposlenikId).HasColumnName("UposlenikID");
 
             entity.HasOne(d => d.Automobil).WithMany(p => p.ZavrseniPoslovis)
                 .HasForeignKey(d => d.AutomobilId)
@@ -294,10 +323,6 @@ public partial class EAutoSalonTestContext : DbContext
             entity.HasOne(d => d.Korisnik).WithMany(p => p.ZavrseniPoslovis)
                 .HasForeignKey(d => d.KorisnikId)
                 .HasConstraintName("FK_Korisnik");
-
-            entity.HasOne(d => d.Uposlenik).WithMany(p => p.ZavrseniPoslovis)
-                .HasForeignKey(d => d.UposlenikId)
-                .HasConstraintName("FK_Uposlenik");
         });
 
         OnModelCreatingPartial(modelBuilder);

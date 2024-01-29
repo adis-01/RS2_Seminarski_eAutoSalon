@@ -75,6 +75,18 @@ class CarProvider extends BaseProvider<Car>{
 
   }
 
+  Future<void> changeState(int automobilId) async{
+    var url = "$baseUrl$endpoint/PromijeniStatus/$automobilId";
+    var uri =Uri.parse(url);
+
+    var headers = createHeaders();
+    var req = await http.post(uri,headers: headers);
+
+    if(!isValidResponse(req)){
+      throw Exception('Greška...');
+    }
+  }
+
   @override
   Car fromJson(object) {
     return Car.fromJson(object);
