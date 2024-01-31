@@ -141,12 +141,7 @@ namespace eAutoSalon.Services.Services
             return list;
         }
 
-        public async Task PromijeniStatus(int automobilId)
-        {
-            var entity = await _context.Automobilis.FindAsync(automobilId) ?? throw new Exception("Nema automobila sa tim ID poljem");
-            entity.State = "Prodano";
-            await _context.SaveChangesAsync();
-        }
+  
 
         public async Task<PagedList<VMAutomobil>> GetFiltered(AutomobilSearchObject? search = null)
         {

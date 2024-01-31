@@ -213,6 +213,11 @@ class _UsersScreenState extends State<UsersScreen> {
         columns: const [
           DataColumn(
               label: Expanded(
+                  child: Text('KorisnikID',
+                      style: TextStyle(
+                          fontSize: 15, fontWeight: FontWeight.w700)))),
+          DataColumn(
+              label: Expanded(
                   child: Text('Username',
                       style: TextStyle(
                           fontSize: 15, fontWeight: FontWeight.w700)))),
@@ -239,6 +244,7 @@ class _UsersScreenState extends State<UsersScreen> {
         ],
         rows: result?.list
                 .map((User user) => DataRow(cells: [
+                      DataCell(Text(user.korisnikId.toString())),
                       DataCell(Text(user.username ?? "username")),
                       DataCell(Text(user.firstName ?? "fname")),
                       DataCell(Text(user.lastName ?? "lname")),

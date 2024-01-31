@@ -26,6 +26,7 @@ class _ReportScreenState extends State<ReportScreen> {
   void initState() {
     super.initState();
     _reviewProvider = context.read<ReviewProvider>();
+    _userProvider=context.read<UserProvider>();
     fetchData();
   }
 
@@ -58,18 +59,6 @@ class _ReportScreenState extends State<ReportScreen> {
                   child: Column(
                     children: [
                       buildHeader(),
-                      Center(
-                        child: Container(
-                          margin: const EdgeInsets.only(
-                              top: 10, bottom: 10, right: 20, left: 20),
-                          width: double.infinity,
-                          padding: const EdgeInsets.all(15),
-                          decoration: BoxDecoration(
-                              color: Colors.grey[200],
-                              borderRadius: BorderRadius.circular(10)),
-                          child: buildReport(context),
-                        ),
-                      ),
                       const SizedBox(height: 20),
                       buildFooterData()
                     ],
@@ -147,74 +136,6 @@ class _ReportScreenState extends State<ReportScreen> {
         ));
   }
 
-  Column buildReport(BuildContext context) {
-    return Column(
-      children: [
-        Center(
-          child: buildTable(),
-        ),
-        const SizedBox(height: 10),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            Text(
-              "Ukupno:",
-              style: TextStyle(
-                  fontSize: 15,
-                  color: Colors.blueGrey,
-                  fontWeight: FontWeight.w600),
-            ),
-            const SizedBox(width: 3),
-            Text(
-              "\$15,423.00",
-              style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.black87,
-                  fontWeight: FontWeight.bold),
-            )
-          ],
-        )
-      ],
-    );
-  }
-
-  SingleChildScrollView buildTable() {
-    return SingleChildScrollView(
-      child: DataTable(
-        columns: [
-          DataColumn(
-              label: Icon(
-            Icons.directions_car,
-            color: Colors.grey[700],
-          )),
-          DataColumn(
-              label: Text("\$",
-                  style: TextStyle(
-                      fontSize: 19,
-                      color: Colors.green[500],
-                      fontWeight: FontWeight.bold))),
-          DataColumn(
-              label: Icon(
-            Icons.person,
-            color: Colors.grey[700],
-          )),
-          DataColumn(
-              label: Icon(
-            Icons.date_range,
-            color: Colors.grey[700],
-          ))
-        ],
-        rows: [
-          DataRow(cells: [
-            DataCell(Text('Audi A6')),
-            DataCell(Text('\$15,423.00')),
-            DataCell(Text('Kupac')),
-            DataCell(Text('Datum'))
-          ])
-        ],
-      ),
-    );
-  }
 
   Row buildHeader() {
     return Row(
@@ -231,15 +152,15 @@ class _ReportScreenState extends State<ReportScreen> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Column(
-          children: const [
-            Text("Ukupno korisnika",
+          children: [
+            const Text("Ukupno korisnika",
                 style: TextStyle(
                     fontSize: 15,
                     color: Colors.blueGrey,
                     fontWeight: FontWeight.w600)),
-            SizedBox(height: 3),
-            Text("25",
-                style: TextStyle(
+            const SizedBox(height: 3),
+            Text(totalUsers.toString(),
+                style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
                     color: Colors.black87))
@@ -286,8 +207,10 @@ class _ReportScreenState extends State<ReportScreen> {
   Future<void> fetchData() async{
     try {
       var avg = await _reviewProvider.getAverage();
+      var total = await _userProvider.getTotalNumber();
       setState(() {
         average=avg;
+        totalUsers = total;
         isLoading=false;
       });
     } catch (e) {

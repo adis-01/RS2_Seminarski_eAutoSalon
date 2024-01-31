@@ -48,8 +48,18 @@ namespace eAutoSalon.Services.Services
             ZavrseniPoslovi entity = new();
             _mapper.Map(req, entity);
             entity.DatumProdaje = DateTime.Now;
-            _context.Add(entity);
+            _context.ZavrseniPoslovis.Add(entity);
             await _context.SaveChangesAsync();
+
+            var state = await _context.Automobilis.FindAsync(req.AutomobilId);
+
+            if (state != null)
+            {
+                state.State = "Prodano";
+            }
+
+            await _context.SaveChangesAsync();
+
             return _mapper.Map<VMZavrseni_Poslovi>(entity);
         }
     }

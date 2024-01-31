@@ -233,5 +233,12 @@ namespace eAutoSalon.Services.Services
             var entity = await _context.Korisnicis.Where(x=>x.Username==username).FirstOrDefaultAsync() ?? throw new UserException("Nepostojeće ID polje");
             return entity.KorisnikId;
         }
+
+        public async Task<int> GetTotal()
+        {
+            int total = await _context.Korisnicis.Where(x=>x.State=="Aktivan").CountAsync();
+
+            return total;
+        }
     }
 }

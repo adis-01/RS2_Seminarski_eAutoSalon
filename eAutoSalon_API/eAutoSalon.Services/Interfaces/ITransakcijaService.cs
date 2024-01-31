@@ -11,5 +11,6 @@ namespace eAutoSalon.Services.Interfaces
     public interface ITransakcijaService
     {
         Task<VMTransakcija> Insert(TransakcijaInsert req);
+        Task<List<VMTransakcija>> GetAll();
     }
 }

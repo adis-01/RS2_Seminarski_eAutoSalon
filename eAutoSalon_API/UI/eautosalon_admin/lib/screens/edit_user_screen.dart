@@ -52,7 +52,7 @@ class _EditUserState extends State<EditUser> {
                 Container(
                   padding: const EdgeInsets.only(
                       left: 25, right: 25, top: 20, bottom: 15),
-                  width: 500,
+                  width: 700,
                   decoration: BoxDecoration(
                       color: Colors.grey[350],
                       border: Border.all(color: Colors.blueGrey, width: 0.4),
@@ -64,7 +64,7 @@ class _EditUserState extends State<EditUser> {
                 const SizedBox(height: 5),
                 Container(
                   padding: const EdgeInsets.all(15),
-                  width: 500,
+                  width: 700,
                   decoration: BoxDecoration(
                       border: Border.all(color: Colors.blueGrey, width: 0.4),
                       borderRadius: const BorderRadius.only(
@@ -94,7 +94,6 @@ class _EditUserState extends State<EditUser> {
                   initialValue: _initialValue,
                   child: Column(
                     children: [
-                      const SizedBox(height: 30),
                       Wrap(
                         spacing: 15,
                         runSpacing: 20,
@@ -102,7 +101,7 @@ class _EditUserState extends State<EditUser> {
                         children: [
                           buildReadOnly('Id', 'ID'),
                           SizedBox(
-                            width: 200,
+                            width: 250,
                             child: FormBuilderTextField(
                               autovalidateMode:
                                   AutovalidateMode.onUserInteraction,
@@ -128,7 +127,7 @@ class _EditUserState extends State<EditUser> {
                             ),
                           ),
                           SizedBox(
-                            width: 200,
+                            width: 250,
                             child: FormBuilderTextField(
                               autovalidateMode:
                                   AutovalidateMode.onUserInteraction,
@@ -144,7 +143,7 @@ class _EditUserState extends State<EditUser> {
                             ),
                           ),
                           SizedBox(
-                            width: 200,
+                            width: 250,
                             child: FormBuilderTextField(
                               autovalidateMode:
                                   AutovalidateMode.onUserInteraction,
@@ -177,7 +176,7 @@ class _EditUserState extends State<EditUser> {
 
   SizedBox buildReadOnly(String fieldname, String textlabel) {
     return SizedBox(
-      width: 200,
+      width: 250,
       child: FormBuilderTextField(
         style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
         readOnly: true,

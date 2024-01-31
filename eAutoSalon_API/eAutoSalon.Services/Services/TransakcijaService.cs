@@ -3,6 +3,7 @@ using eAutoSalon.Models.InsertRequests;
 using eAutoSalon.Models.ViewModels;
 using eAutoSalon.Services.Database;
 using eAutoSalon.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,6 +23,13 @@ namespace eAutoSalon.Services.Services
             _mapper = mapper;
         }
 
+        public async Task<List<VMTransakcija>> GetAll()
+        {
+            var list = await _context.Transakcijes.OrderByDescending(x => x.TransakcijaId).ToListAsync();
+
+            return _mapper.Map<List<VMTransakcija>>(list);
+        }
+
         public async Task<VMTransakcija> Insert(TransakcijaInsert req)
         {
             Transakcije transakcija = new();
@@ -29,7 +37,7 @@ namespace eAutoSalon.Services.Services
             transakcija.DatumTransakcije = DateTime.Now;
             _context.Add(transakcija);
             await _context.SaveChangesAsync();
-            return _mapper.Map<VMTransakcija>(req);
+            return _mapper.Map<VMTransakcija>(transakcija);
         }
     }
 }

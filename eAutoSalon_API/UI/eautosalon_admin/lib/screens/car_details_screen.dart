@@ -1,11 +1,12 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:eautosalon_admin/models/car.dart';
-import 'package:eautosalon_admin/providers/car_provider.dart';
+import 'package:eautosalon_admin/providers/report_provider.dart';
 import 'package:eautosalon_admin/screens/home_page_screen.dart';
 import 'package:eautosalon_admin/utils/dialogs.dart';
 import 'package:eautosalon_admin/utils/util.dart';
 import 'package:eautosalon_admin/widgets/car_accessories_dialog.dart';
+import 'package:eautosalon_admin/widgets/change_car_state_dialog.dart';
 import 'package:eautosalon_admin/widgets/edit_car_dialog.dart';
 import 'package:eautosalon_admin/widgets/master_screen.dart';
 import 'package:flutter/material.dart';
@@ -20,11 +21,11 @@ class CarDetails extends StatefulWidget {
 }
 
 class _CarDetailsState extends State<CarDetails> {
-  late CarProvider _carProvider;
+  late ReportProvider _reportProvider;
   @override
   void initState() {
     super.initState();
-    _carProvider = context.read<CarProvider>();
+    _reportProvider = context.read<ReportProvider>();
   }
 
   @override
@@ -110,16 +111,10 @@ class _CarDetailsState extends State<CarDetails> {
                   Tooltip(
                     message: 'Ukoliko je automobil prodan, promijenite status istog',
                     child: ElevatedButton(
-                    onPressed: () {
-                      try {
-                       CustomDialogs.showQuestion(context, 'Promijeniti status automobila?', () { 
-                         changeState();
-                        CustomDialogs.showSuccess(context, 'Uspješno promijenjen status', () { 
-                          Navigator.of(context).push(MaterialPageRoute(builder: (builder) => const HomePageScreen()));
-                        });
-                       });
-                      } catch (e) {
-                        CustomDialogs.showError(context, e.toString());
+                    onPressed: () async{
+                      var result = await showDialog(context: context, builder: (context) => ChangeCarStateDialog(automobil: widget.automobil));
+                      if(result!=null){
+                        saveData(result);
                       }
                     },
                     style: ElevatedButton.styleFrom(
@@ -245,7 +240,15 @@ class _CarDetailsState extends State<CarDetails> {
     );
   }
 
-  Future<void> changeState() async{
-    await _carProvider.promijeniState(widget.automobil.automobilId!);
+  Future<void> saveData(dynamic request) async{
+    try {
+      await _reportProvider.insert(request);
+      CustomDialogs.showSuccess(context, 'Uspješno promijenjen status automobila', () { 
+        Navigator.of(context).push(MaterialPageRoute(builder: (builder) => const HomePageScreen()));
+      });
+    } catch (e) {
+      CustomDialogs.showError(context, e.toString());
+    }
   }
+
 }

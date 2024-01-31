@@ -20,5 +20,6 @@ namespace eAutoSalon.Services.Interfaces
         Task ChangeState(int userId);
         Task<PagedList<VMKorisnik>> getAktivne(SearchObject? search = null);
         Task<int> GetUserId(string username);
+        Task<int> GetTotal();
     }
 }

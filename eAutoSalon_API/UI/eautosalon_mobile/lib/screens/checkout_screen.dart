@@ -1,5 +1,13 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:convert';
+import 'package:eautosalon_mobile/providers/finished_b_provider.dart';
+import 'package:eautosalon_mobile/providers/transaction_provider.dart';
+import 'package:eautosalon_mobile/screens/home_page_screen.dart';
+import 'package:eautosalon_mobile/utils/dialog_helper.dart';
+import 'package:eautosalon_mobile/utils/helpers.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
+import 'package:provider/provider.dart';
 
 import '../keys.dart';
 import 'package:eautosalon_mobile/widgets/master_screen.dart';
@@ -21,12 +29,35 @@ class _CheckoutPageState extends State<CheckoutPage> {
   bool isLoading = false;
   int amount = 0;
   String secretKey = const String.fromEnvironment("secretKey", defaultValue: secKey);
+  late FinishedBusinessProvider _fbProvider;
+  late TransactionProvider _transactionProvider;
+
+
+  @override
+  void initState() {
+    super.initState();
+    _transactionProvider = context.read<TransactionProvider>();
+    _fbProvider = context.read<FinishedBusinessProvider>();
+  }
 
   @override
   Widget build(BuildContext context) {
     return MyAppBar(
         title: 'Checkout',
-        body: isLoading ? const Center(child: CircularProgressIndicator(color: Colors.black87,),) 
+        body: isLoading ?  Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Center(
+                child: Column(
+                  children: const [
+                    CircularProgressIndicator(color: Colors.black87,), 
+              SizedBox(height: 10),
+              Text("Molimo sačekajte, nemojte izlaziti...", style: TextStyle(color: Colors.black87, fontSize: 15, fontWeight: FontWeight.w400),)
+                  ],
+                ),
+              )
+            ],
+          )
         : SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(5),
@@ -240,9 +271,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
   Future<void> displayPaymentSheet() async {
     try {
       await Stripe.instance.presentPaymentSheet();
-      setState(() {
-        isLoading=false;
-      });
+      await saveData();
     } catch (e) {
       setState(() {
         isLoading=false;
@@ -259,11 +288,11 @@ class _CheckoutPageState extends State<CheckoutPage> {
 
   Future<void> makePayment() async {
     try {
-      final paymentIntent = await makePaymentIntent();
+      paymentIntent = await makePaymentIntent();
       await Stripe.instance.initPaymentSheet(
         paymentSheetParameters: SetupPaymentSheetParameters(
           merchantDisplayName: 'Automobil prodaja',
-          paymentIntentClientSecret: paymentIntent['client_secret'],
+          paymentIntentClientSecret: paymentIntent!['client_secret'],
           style: ThemeMode.dark,
         ),
       );
@@ -275,6 +304,36 @@ class _CheckoutPageState extends State<CheckoutPage> {
 
   int calculateAmount(){
     return amount = (widget.car.cijena! * 100).round();
+  }
+
+  Future<void> saveData() async{
+    try {
+      Map<String,dynamic> transaction = {
+        'BrojTransakcije' : paymentIntent!['id'],
+        'Iznos' : widget.car.formattedPrice,
+        'Valuta' : paymentIntent!['currency'],
+        'TipTransakcije' : paymentIntent!['payment_method_types'][0],
+        'KorisnikId' : Authorization.userId
+      };
+      
+      Map<String,dynamic> finishedB = {
+        'Iznos' : widget.car.cijena,
+        'IsOnline' : true,
+        'KorisnikId' : Authorization.userId,
+        'AutomobilId' : widget.car.automobilId
+      };
+
+      await _transactionProvider.insert(transaction);
+      await _fbProvider.insert(finishedB);
+      setState(() {
+        isLoading=false;
+      });
+      MyDialogs.showSuccess(context, 'Uspješna transakcija, hvala Vam na povjerenju', () {
+          Navigator.of(context).push(MaterialPageRoute(builder: (builder) => const HomePage()));
+       });
+    } catch (e) {
+      MyDialogs.showError(context, e.toString());
+    }
   }
 
   

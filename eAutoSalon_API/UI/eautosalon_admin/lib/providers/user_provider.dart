@@ -98,6 +98,24 @@ class UserProvider extends BaseProvider<User> {
     }
   }
 
+  Future<int> getTotalNumber() async{
+    var url = "$baseUrl$endp/GetTotalNumber";
+    var uri = Uri.parse(url);
+
+    var headers = createHeaders();
+    var req = await http.get(uri,headers: headers);
+
+    if(isValidResponse(req)){
+      int total = 0;
+      var data = jsonDecode(req.body);
+      total = data;
+      return total;
+    }
+    else{
+      throw Exception('Greška...');
+    }
+  }
+
   @override
   User fromJson(data) {
     return User.fromJson(data);

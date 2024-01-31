@@ -66,12 +66,11 @@ class _InsertNewScreenEditorState extends State<InsertNewScreenEditor> {
                                   thickness: 0.3, color: Colors.blueGrey),
                               const SizedBox(height: 15),
                               SizedBox(
-                                width: 130,
-                                height: 35,
-                                child: ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                        backgroundColor:
-                                            Colors.blueGrey),
+                                width: 250,
+                                child: MaterialButton(
+                                   color: Colors.blueGrey,
+                                   padding: const EdgeInsets.all(15),
+                                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                                     onPressed: () {
                                       saveData();
                                     },

@@ -16,6 +16,5 @@ namespace eAutoSalon.Services.Interfaces
         Task<PagedList<VMAutomobil>> GetProdane(AutomobilSearchObject? search = null);
         Task<PagedList<VMAutomobil>> GetFiltered(AutomobilSearchObject? search = null);
         Task<List<string>> GetProizvodjace();
-        Task PromijeniStatus(int automobilId);
     }
 }

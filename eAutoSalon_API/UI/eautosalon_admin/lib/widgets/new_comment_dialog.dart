@@ -85,9 +85,9 @@ class _NewCommentDialogState extends State<NewCommentDialog> {
                         width: 150,
                         child: MaterialButton(
                             color: Colors.blueGrey,
-                            padding: const EdgeInsets.all(20),
+                            padding: const EdgeInsets.all(15),
                             shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12)),
+                                borderRadius: BorderRadius.circular(8)),
                             onPressed: buttonDisabled
                                 ? null
                                 : () {

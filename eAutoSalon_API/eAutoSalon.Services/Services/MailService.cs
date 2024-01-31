@@ -71,7 +71,7 @@ namespace eAutoSalon.Services.Services
                                  autoDelete: false,
                                  arguments: null);
 
-            VMEmail_Token obj = new VMEmail_Token()
+            VMEmail_Token obj = new ()
             {
                 Mail = email,
                 Token = "game is the game"

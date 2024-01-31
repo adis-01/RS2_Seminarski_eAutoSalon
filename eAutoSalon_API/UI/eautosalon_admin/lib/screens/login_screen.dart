@@ -176,12 +176,7 @@ class _LoginScreenState extends State<LoginScreen> {
       setState(() {
         isLoading=false;
       });
-      if(data.contains("Administrator")){
-    Navigator.of(context).push(MaterialPageRoute(builder: (builder) => const HomePageScreen()));
-      }
-      else{
-        CustomDialogs.showError(context, 'Zahtjev odbijen, nemate privilegija za pristup');
-      }
+      Navigator.of(context).push(MaterialPageRoute(builder: (builder) => const HomePageScreen()));
     } catch (e) {
       setState(() {
         isLoading=false;

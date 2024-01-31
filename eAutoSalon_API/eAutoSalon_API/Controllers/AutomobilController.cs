@@ -52,12 +52,6 @@ namespace eAutoSalon_API.Controllers
             return await _service.GetProdane(search);
         }
 
-        [Authorize(Roles ="Korisnik")]
-        [HttpPost("PromijeniStatus/{automobilId}")]
-        public async Task PromijeniStatus(int automobilId)
-        {
-            await _service.PromijeniStatus(automobilId);
-        }
 
         [Authorize(Roles ="Korisnik,Administrator")]
         [HttpGet("GetProizvodjace")]

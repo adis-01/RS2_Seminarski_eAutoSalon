@@ -2,6 +2,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:eautosalon_mobile/screens/home_page_screen.dart';
+import 'package:eautosalon_mobile/screens/insert_code_screen.dart';
 import 'package:eautosalon_mobile/screens/regist_scr.dart';
 import 'package:eautosalon_mobile/screens/verif_screen.dart';
 import 'package:eautosalon_mobile/utils/dialog_helper.dart';
@@ -138,7 +139,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         
                         GestureDetector(
                           onTap: (){
-                            Navigator.of(context).push(MaterialPageRoute(builder: (builder) => const VerificationScreen()));
+                            Navigator.of(context).push(MaterialPageRoute(builder: (builder) => const InsertCode(email: "adis.sipkovic@edu.fit.ba",)));
                           },
                           child: const Text("Verifikacija", style: TextStyle(color: Colors.blue, fontWeight: FontWeight.w500, fontSize: 17),),
                         )
