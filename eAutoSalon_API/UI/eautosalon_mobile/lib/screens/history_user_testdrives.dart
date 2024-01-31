@@ -163,10 +163,13 @@ class _HistoryTestDrivesState extends State<HistoryTestDrives> {
   Future<void> fetchData() async {
     try {
       var data = await _testDriveProvider.getHistory(widget.korisnikId);
+
+      if(mounted){
       setState(() {
         _list = data;
         isLoading = false;
       });
+      }
     } catch (e) {
       MyDialogs.showError(context, e.toString());
     }

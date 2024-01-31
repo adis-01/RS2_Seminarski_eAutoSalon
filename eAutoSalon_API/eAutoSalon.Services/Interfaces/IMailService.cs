@@ -11,7 +11,6 @@ namespace eAutoSalon.Services.Interfaces
     public interface IMailService
     {
         Task StartRabbitMQ(string email);
-        void SendToWorker(TestnaVoznjaInsert entity);
-        void Contact(MailObject req);
+        Task Contact(MailObject req);
     } 
 }

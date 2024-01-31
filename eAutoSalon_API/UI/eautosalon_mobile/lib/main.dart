@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:eautosalon_mobile/providers/accessory_provider.dart';
 import 'package:eautosalon_mobile/providers/car_provider.dart';
 import 'package:eautosalon_mobile/providers/comment_provider.dart';
+import 'package:eautosalon_mobile/providers/contact_provider.dart';
 import 'package:eautosalon_mobile/providers/employee_provider.dart';
 import 'package:eautosalon_mobile/providers/finished_b_provider.dart';
 import 'package:eautosalon_mobile/providers/news_provider.dart';
@@ -32,7 +33,8 @@ void main() {
         ChangeNotifierProvider(create: (_) => KomentarProvider()),
         ChangeNotifierProvider(create: (_) => NewsProvider()),
         ChangeNotifierProvider(create: (_) => TransactionProvider()),
-        ChangeNotifierProvider(create: (_) => FinishedBusinessProvider())
+        ChangeNotifierProvider(create: (_) => FinishedBusinessProvider()),
+        ChangeNotifierProvider(create: (_) => ContactProvider())
       ],
       child: const MyApp(),
     )

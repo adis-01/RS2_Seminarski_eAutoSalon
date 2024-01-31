@@ -20,29 +20,30 @@ namespace eAutoSalon.Services.Services
        private readonly string mailPass = "frhaexjyedayript";
        private readonly int port = 587;
 
-        public void Contact(MailObject req)
+        public async Task Contact(MailObject req)
         {
-            string sender = req.Mail!;
-            string content = req.Content!;
-            string subject = "Mail Service Customer Support";
+            string content = $"<p>From: <b>{req.FullName}</b> | Mail Address: <b>{req.Mail}</b>,</p><br><p>{req.Content}</p>";
+            string subject = "Contact Us Customer Support Form";
 
-            SmtpClient client = new (serverAddress)
+
+            var message = new MailMessage()
             {
-                Port = port,
-                Credentials = new NetworkCredential(mailSender, mailPass),
-                EnableSsl = true,
+               From = new MailAddress(req.Mail),
+               To = { new MailAddress("eautosalon.verif@gmail.com") },
+               Subject = subject,
+               Body = content,
+               IsBodyHtml = true
             };
 
-            MailMessage mailing = new (sender, mailSender)
+            var smtpClient = new SmtpClient(serverAddress, port)
             {
-                Subject = subject,
-                Body = content,
-                IsBodyHtml = false
+                Credentials = new NetworkCredential(mailSender,mailPass),
+                EnableSsl = true
             };
 
             try
             {
-                client.Send(mailing);
+                await smtpClient.SendMailAsync(message);
                 Console.WriteLine("Mail sent");
             }
             catch (Exception ex)
@@ -51,13 +52,9 @@ namespace eAutoSalon.Services.Services
             }
         }
 
-        public void SendToWorker(TestnaVoznjaInsert entity)
-        {
-            //TODO
-            throw new NotImplementedException();
-        }
+  
 
-
+    
         public async Task StartRabbitMQ(string email)
         {
             var factory = new ConnectionFactory { HostName = "localhost" };

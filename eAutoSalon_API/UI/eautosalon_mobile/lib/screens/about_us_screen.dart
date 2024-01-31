@@ -1,4 +1,4 @@
-import 'package:eautosalon_mobile/widgets/mail_dialog.dart';
+import 'package:eautosalon_mobile/screens/mail_send_screen.dart';
 import 'package:eautosalon_mobile/widgets/master_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -31,9 +31,7 @@ class _AboutScreenState extends State<AboutScreen> {
                       const SizedBox(height: 15),
                       GestureDetector(
                         onTap: (){
-                          showDialog(
-                            context: context, builder: (context) => const MailDialog()
-                          );
+                          Navigator.of(context).push(MaterialPageRoute(builder: (builder) => const MailSendScreen()));
                         },
                         child: Container(
                           padding: const EdgeInsets.all(15),
@@ -42,7 +40,14 @@ class _AboutScreenState extends State<AboutScreen> {
                             borderRadius: BorderRadius.circular(12),
                             color: Colors.black87
                           ),
-                          child: const Text("POŠALJITE MAIL", textAlign: TextAlign.center, style: TextStyle(color: Colors.white, fontWeight: FontWeight.w400, letterSpacing: 2),),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: const[
+                              Text("Pošaljite mail", style: TextStyle(fontSize: 17, color: Colors.white, fontWeight: FontWeight.w400),),
+                              SizedBox(width: 5),
+                              Icon(Icons.arrow_forward, size: 22, color: Colors.white,)
+                            ],
+                          ),
                         ),
                       )
                     ],

@@ -106,10 +106,12 @@ class _HistoryCommentsState extends State<HistoryComments> {
   Future<void> fetchData() async{
     try {
       var data = await _komentarProvider.getHistory(widget.korisnikId);
+      if(mounted){
       setState(() {
         list=data;
         isLoading=false;
       });
+      }
     } catch (e) {
       MyDialogs.showError(context, e.toString());
     }

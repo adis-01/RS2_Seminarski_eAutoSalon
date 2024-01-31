@@ -9,7 +9,8 @@ namespace eAutoSalon.Models.InsertRequests
 {
     public class MailObject
     {
-        public string? Mail { get; set; }
-        public string? Content { get; set; }
+        public string Mail { get; set; }
+        public string Content { get; set; }
+        public string FullName { get; set; }
     }
 }

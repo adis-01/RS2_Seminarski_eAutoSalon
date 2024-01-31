@@ -17,10 +17,10 @@ namespace eAutoSalon_API.Controllers
             _service = service;
         }
 
-        [HttpPost("SendMailSupport")]
-        public void SendMailSupport([FromBody] MailObject req)
+        [HttpPost("ContactPage")]
+        public async Task SendMailSupport([FromBody] MailObject req)
         {
-            _service.Contact(req);
+           await _service.Contact(req);
         }
     }
 }

@@ -110,10 +110,12 @@ Center noDataContainer() {
   Future<void> fetchData() async{
     try {
       var data = await _reviewProvider.getHistory(widget.korisnikId);
+      if(mounted){
       setState(() {
         list=data;
         isLoading = false;
       });
+      }
     } catch (e) {
       MyDialogs.showError(context, e.toString());
     }
