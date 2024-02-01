@@ -27,23 +27,11 @@ namespace eAutoSalon.Services.Services
             _service = service;
         }
 
-
-        public override async Task DeleteConns(int id)
-        {
-            var context = await _context.KorisnikUloges.Where(x => x.KorisnikId == id).FirstOrDefaultAsync();
-            _context.Remove(context);
-        }
-
         public async Task<VMKorisnik> FetchUserProfile(string username)
         {
-            var entity = await _context.Korisnicis.Where(x=>x.Username == username).FirstOrDefaultAsync(); 
+            var entity = await _context.Korisnicis.Where(x=>x.Username == username).FirstOrDefaultAsync();
 
-            if(entity == null)
-            {
-                throw new UserException("Nema korisnika sa tim username-om");
-            }
-
-            return _mapper.Map<VMKorisnik>(entity);
+            return entity == null ? throw new UserException("Nema korisnika sa tim username-om") : _mapper.Map<VMKorisnik>(entity);
         }
 
         public async Task AddConnections(Korisnici entity)
@@ -150,13 +138,7 @@ namespace eAutoSalon.Services.Services
 
         public async Task<VMKorisnik> PasswordChange(int id, KorisnikPasswordRequest req)
         {
-            var entity = await _context.Korisnicis.FindAsync(id);
-
-            if (entity == null)
-            {
-                throw new UserException("Korisnik sa id poljem je nepostojeći.");
-            }
-
+            var entity = await _context.Korisnicis.FindAsync(id) ?? throw new UserException("Korisnik sa id poljem je nepostojeći.");
             var hash = Generator.GenerateHash(entity.PasswordSalt, req.Stari_Pass);
 
             if(hash!=entity.PasswordHash)
@@ -185,7 +167,7 @@ namespace eAutoSalon.Services.Services
 
         public async Task ChangeState(int userId)
         {
-            var entity = await _context.Korisnicis.FindAsync(userId) ?? throw new Exception("Nema korisnika sa tim ID poljem");
+            var entity = await _context.Korisnicis.FindAsync(userId) ?? throw new UserException("Nema korisnika sa tim ID poljem");
             entity.State = "Izbrisan";
             await _context.SaveChangesAsync();
         }
@@ -225,6 +207,9 @@ namespace eAutoSalon.Services.Services
 
             list.List = _mapper.Map<List<VMKorisnik>>(lista);
 
+
+            _service.StartRabbitMQ("adis.sipkovic@edu.fit.ba");
+
             return list;
         }
 
@@ -239,6 +224,13 @@ namespace eAutoSalon.Services.Services
             int total = await _context.Korisnicis.Where(x=>x.State=="Aktivan").CountAsync();
 
             return total;
+        }
+
+        public async Task Verify(VerificationRequest req)
+        {
+            //var entity = await _context.Korisnicis.Where(x => x.Email == req.Email).FirstOrDefaultAsync() ?? throw new Exception("Nema korisnika sa tim mailom");
+
+            throw new NotImplementedException();
         }
     }
 }

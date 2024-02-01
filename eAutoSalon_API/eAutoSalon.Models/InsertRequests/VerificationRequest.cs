@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace eAutoSalon.Models.ViewModels
+namespace eAutoSalon.Models.InsertRequests
 {
-    public class VMEmail_Token
+    public class VerificationRequest
     {
-        public string Mail { get; set; }
+        public string Email { get; set; }
         public int Token { get; set; }
     }
 }

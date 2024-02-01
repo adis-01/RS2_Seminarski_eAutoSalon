@@ -10,7 +10,7 @@ namespace eAutoSalon.Services.Interfaces
 {
     public interface IMailService
     {
-        Task StartRabbitMQ(string email);
+        void StartRabbitMQ(string email);
         Task Contact(MailObject req);
     } 
 }

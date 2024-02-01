@@ -19,7 +19,8 @@ namespace eAutoSalon.RabbitMQ_C
             int port = 587;
             string to = obj.Mail;
             string subject = "Mail Verification";
-            string content = "Hvala na ukazanoj prilici, vaš verifikacijski token je " + obj.Token;
+            string content = $"<p>Poštovani,</p> <br>Hvala Vam na pruženoj prilici i registraciji. Kako biste kompletirali registraciju, potrebno je da iskoristite token u nastavku maila. <br>" +
+                                    $"<p>Verifikacijski Token: {obj.Token} </p> <br> <br> <p> S poštovanjem, eAutoSalon </p>";
 
             SmtpClient client = new SmtpClient(serverAddress)
             {
@@ -32,7 +33,7 @@ namespace eAutoSalon.RabbitMQ_C
             {
                 Subject = subject,
                 Body = content,
-                IsBodyHtml = false
+                IsBodyHtml = true
             };
 
             try

@@ -7,13 +7,11 @@ using eAutoSalon.Models.ViewModels;
 using eAutoSalon.RabbitMQ_C;
 
 
-Console.WriteLine("Hello, World!");
-
 var factory = new ConnectionFactory { HostName = "localhost" };
 using var connection = factory.CreateConnection();
 using var channel = connection.CreateModel();
 
-channel.QueueDeclare(queue: "hello",
+channel.QueueDeclare(queue: "email_sending",
                      durable: false,
                      exclusive: false,
                      autoDelete: false,
@@ -27,10 +25,9 @@ consumer.Received += (model, ea) =>
     var body = ea.Body.ToArray();
     var message = Encoding.UTF8.GetString(body);
     var entitet = JsonConvert.DeserializeObject<VMEmail_Token>(message);
-
-    Mail.Send(entitet);
+    Mail.Send(entitet!);
 };
-channel.BasicConsume(queue: "hello",
+channel.BasicConsume(queue: "email_sending",
                      autoAck: true,
                      consumer: consumer);
 

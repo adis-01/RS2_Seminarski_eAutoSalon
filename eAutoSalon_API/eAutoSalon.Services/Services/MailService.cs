@@ -55,34 +55,44 @@ namespace eAutoSalon.Services.Services
   
 
     
-        public async Task StartRabbitMQ(string email)
+        public void StartRabbitMQ(string email)
         {
             var factory = new ConnectionFactory { HostName = "localhost" };
             
             using var connection = factory.CreateConnection();
             using var channel = connection.CreateModel();
 
-            channel.QueueDeclare(queue: "hello",
+            channel.QueueDeclare(queue: "email_sending",
                                  durable: false,
                                  exclusive: false,
                                  autoDelete: false,
                                  arguments: null);
 
-            VMEmail_Token obj = new ()
+            VMEmail_Token obj = new()
             {
                 Mail = email,
-                Token = "game is the game"
+                Token = GenerateRandomNo()
             };
 
-            string message = "Pozvana GET metoda " + DateTime.Now.ToString();
+            
             var body = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(obj));
 
             channel.BasicPublish(exchange: string.Empty,
-                                 routingKey: "hello",
+                                 routingKey: "email_sending",
                                  basicProperties: null,
                                  body: body);
         }
 
-        
+
+        public int GenerateRandomNo()
+        {
+            int _min = 1000;
+            int _max = 10000;
+            Random _rdm = new Random();
+            return _rdm.Next(_min, _max);
+        }
+
+
+
     }
 }
