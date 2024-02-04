@@ -20,6 +20,7 @@ class ReportScreen extends StatefulWidget {
 class _ReportScreenState extends State<ReportScreen> {
 
   Map<String,dynamic> filter = {'mjesec' : 0};
+  int initialValue = 0;
   ReportModel? report;
   final _formKey = GlobalKey<FormBuilderState>();
   int totalUsers = 0;
@@ -168,11 +169,12 @@ class _ReportScreenState extends State<ReportScreen> {
                     onChanged: (value){
                       setState(() {
                         filter = {'mjesec' : int.parse(value.toString())};
+                        initialValue = value!;
                       });
                     },
                     focusColor: Colors.grey[300],
                     name: 'mjesec',
-                    initialValue: 0,
+                    initialValue: initialValue,
                     decoration: InputDecoration(
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10)),

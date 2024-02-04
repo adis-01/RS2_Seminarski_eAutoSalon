@@ -1,0 +1,55 @@
+version: '3'
+services:
+#mssql docker
+  eautosalon-sql:
+    image: mcr.microsoft.com/mssql/server:2017-latest-ubuntu
+    restart: unless-stopped
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=Test_123!
+      - MSSQL_PID=Developer
+    ports:
+      - 1401:1433
+    expose:
+      - 1433
+    networks:
+      - eautosalonet
+    
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    restart: unless-stopped
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+    networks:
+      - eautosalonet
+
+  eautosalon-api:
+    restart: unless-stopped
+    build:
+      context: .
+    environment:
+      - ConnectionStrings:DefaultConnection=Server=eautosalon-sql,1433;Database=eAutoSalonDB;User=sa;Password=Test_123!;ConnectRetryCount=0; TrustServerCertificate=True
+      - ASPNETCORE_ENVIRONMENT=Development
+      - RABBITMQ_HOST=rabbitmq
+      - RABBITMQ_USER=guest
+      - RABBITMQ_PASS=guest
+    ports:
+      - 7173:7173
+    networks:
+      - eautosalonet
+    links:
+      - eautosalon-sql
+    depends_on:
+      - eautosalon-sql
+      - rabbitmq
+      
+  
+      
+networks:
+  eautosalonet:
+    driver: bridge 

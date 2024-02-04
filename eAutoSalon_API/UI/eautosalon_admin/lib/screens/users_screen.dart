@@ -273,6 +273,7 @@ class _UsersScreenState extends State<UsersScreen> {
           width: 320,
           height: 50,
           child: TextField(
+            cursorColor: Colors.grey,
             controller: _searchController,
             decoration: const InputDecoration(
               prefixIcon: Icon(

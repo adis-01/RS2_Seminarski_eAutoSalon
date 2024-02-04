@@ -4,6 +4,7 @@ import 'package:eautosalon_admin/screens/home_page_screen.dart';
 import 'package:eautosalon_admin/screens/report_screen.dart';
 import 'package:eautosalon_admin/screens/reviews_screen.dart';
 import 'package:eautosalon_admin/screens/test_drives_screen.dart';
+import 'package:eautosalon_admin/screens/transactions_screen.dart';
 import 'package:eautosalon_admin/screens/user_profile_screen.dart';
 import 'package:eautosalon_admin/screens/users_screen.dart';
 import 'package:eautosalon_admin/utils/dialogs.dart';
@@ -83,8 +84,8 @@ class _MasterScreenState extends State<MasterScreen> {
         backgroundColor: Colors.grey[900],
         shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.only(
-          topRight: Radius.circular(8),
-          bottomRight: Radius.circular(8),
+          topRight: Radius.circular(15),
+          bottomRight: Radius.circular(15),
         )),
         child: ListView(
           padding: const EdgeInsets.all(20),
@@ -92,7 +93,7 @@ class _MasterScreenState extends State<MasterScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text("eAutoSalon", style: TextStyle(fontSize: 15, color: Colors.white, letterSpacing: 2.5)),
+                Image.asset("assets/images/car_icon.png", width: 60, height: 70,),
                 IconButton(
                     splashRadius: 20,
                     hoverColor: Colors.black45,
@@ -106,13 +107,7 @@ class _MasterScreenState extends State<MasterScreen> {
                     ))
               ],
             ),
-            const SizedBox(height: 10),
-            const Center(
-              child: Icon(
-                Icons.directions_car_outlined, size: 45, color: Colors.white,
-              ),
-            ),
-            const SizedBox(height: 30),
+            const SizedBox(height:25),
             buildListTile('Automobili', Icons.directions_car, () {
               Navigator.of(context).push(MaterialPageRoute(
                   builder: (builder) => const HomePageScreen()));
@@ -155,6 +150,10 @@ class _MasterScreenState extends State<MasterScreen> {
             const SizedBox(height: 10),
             buildListTile('Recenzije', Icons.star_border, () {
               Navigator.of(context).push(MaterialPageRoute(builder: (builder) => const ReviewsScreen()));
+            }),
+            const SizedBox(height: 10),
+            buildListTile('Transakcije', Icons.payment_rounded, () {
+              Navigator.of(context).push(MaterialPageRoute(builder: (builder) => const TransactionsScreen()));
             }),
             const SizedBox(height: 10),
             buildListTile('Izvještaj', Icons.report, () {

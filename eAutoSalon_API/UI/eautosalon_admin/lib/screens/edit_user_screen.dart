@@ -50,35 +50,34 @@ class _EditUserState extends State<EditUser> {
                 _buildBack(context),
                 const SizedBox(height: 45),
                 Container(
-                  padding: const EdgeInsets.only(
-                      left: 25, right: 25, top: 20, bottom: 15),
-                  width: 700,
+                  padding: const EdgeInsets.all(20),
+                  width: 450,
                   decoration: BoxDecoration(
                       color: Colors.grey[350],
                       border: Border.all(color: Colors.blueGrey, width: 0.4),
-                      borderRadius: const BorderRadius.only(
-                          topRight: Radius.circular(15),
-                          bottomLeft: Radius.circular(15))),
+                      borderRadius: BorderRadius.circular(15),
+                  ),
                   child: _buildForm(context),
                 ),
                 const SizedBox(height: 5),
                 Container(
                   padding: const EdgeInsets.all(15),
-                  width: 700,
+                  width: 450,
                   decoration: BoxDecoration(
                       border: Border.all(color: Colors.blueGrey, width: 0.4),
                       borderRadius: const BorderRadius.only(
                         topLeft: Radius.circular(15),
-                        bottomRight: Radius.circular(15),
-                      )),
+                        topRight: Radius.circular(15)
+                      )
+                    ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: const [
-                      Icon(Icons.info_outline, color: Color(0xFF248BD6)),
-                      SizedBox(height: 3),
+                      Icon(Icons.info_rounded, color: Color(0xFF248BD6)),
+                      SizedBox(height: 5),
                       Text(
                           "Popunite polja, a promjene spasite klikom na dugme - Email i ID polje se ne mogu mijenjati",
-                          style: TextStyle(fontWeight: FontWeight.w500)),
+                          style: TextStyle(fontWeight: FontWeight.w500, color: Colors.black54)),
                     ],
                   ),
                 ),
@@ -101,7 +100,7 @@ class _EditUserState extends State<EditUser> {
                         children: [
                           buildReadOnly('Id', 'ID'),
                           SizedBox(
-                            width: 250,
+                            width: double.infinity,
                             child: FormBuilderTextField(
                               cursorColor: Colors.grey,
                               autovalidateMode:
@@ -128,7 +127,7 @@ class _EditUserState extends State<EditUser> {
                             ),
                           ),
                           SizedBox(
-                            width: 250,
+                            width: double.infinity,
                             child: FormBuilderTextField(
                               cursorColor: Colors.grey,
                               autovalidateMode:
@@ -145,7 +144,7 @@ class _EditUserState extends State<EditUser> {
                             ),
                           ),
                           SizedBox(
-                            width: 250,
+                            width: double.infinity,
                             child: FormBuilderTextField(
                               cursorColor: Colors.grey,
                               autovalidateMode:
@@ -179,7 +178,7 @@ class _EditUserState extends State<EditUser> {
 
   SizedBox buildReadOnly(String fieldname, String textlabel) {
     return SizedBox(
-      width: 250,
+      width: double.infinity,
       child: FormBuilderTextField(
         style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
         readOnly: true,

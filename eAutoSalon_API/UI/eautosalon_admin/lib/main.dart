@@ -6,6 +6,7 @@ import 'package:eautosalon_admin/providers/news_provider.dart';
 import 'package:eautosalon_admin/providers/report_provider.dart';
 import 'package:eautosalon_admin/providers/review_provider.dart';
 import 'package:eautosalon_admin/providers/test_drive_provider.dart';
+import 'package:eautosalon_admin/providers/transaction_provider.dart';
 import 'package:eautosalon_admin/providers/user_provider.dart';
 import 'package:eautosalon_admin/screens/login_screen.dart';
 import 'package:flutter/material.dart';
@@ -23,7 +24,8 @@ void main() {
         ChangeNotifierProvider(create: (_) => NewsProvider()),
         ChangeNotifierProvider(create: (_) => KomentarProvider()),
         ChangeNotifierProvider(create: (_) => ReviewProvider()),
-        ChangeNotifierProvider(create: (_) => ReportProvider())
+        ChangeNotifierProvider(create: (_) => ReportProvider()),
+        ChangeNotifierProvider(create: (_) => TransakcijaProvider())
       ],
       child: const MyApp(),
     )

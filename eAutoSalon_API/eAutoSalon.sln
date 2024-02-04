@@ -9,7 +9,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eAutoSalon.Models", "eAutoS
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eAutoSalon.Services", "eAutoSalon.Services\eAutoSalon.Services.csproj", "{884D7EC8-04EB-480A-A890-D953D24EDE01}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eAutoSalon.RabbitMQ", "eAutoSalon.RabbitMQ-C\eAutoSalon.RabbitMQ.csproj", "{2A6F13AA-5DEE-42D1-97F0-A877535DBB13}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eAutoSalon.RabbitMQ", "eAutoSalon.RabbitMQ-C\eAutoSalon.RabbitMQ.csproj", "{2A6F13AA-5DEE-42D1-97F0-A877535DBB13}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{81E5D5C9-F648-4985-A735-89089BF8B63D}"
+	ProjectSection(SolutionItems) = preProject
+		Dockerfile = Dockerfile
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

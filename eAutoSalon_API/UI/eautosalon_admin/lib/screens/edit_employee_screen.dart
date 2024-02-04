@@ -48,7 +48,7 @@ class _EditEmployeeState extends State<EditEmployee> {
           child: Column(
             children: [
               _buildBack(context),
-              const SizedBox(height: 45),
+              const SizedBox(height: 20),
               Container(
                 padding: const EdgeInsets.only(
                     left: 25, right: 25, top: 20, bottom: 15),
@@ -74,11 +74,11 @@ class _EditEmployeeState extends State<EditEmployee> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: const [
-                    Icon(Icons.info_outline, color: Color(0xFF248BD6)),
-                    SizedBox(height: 3),
+                    Icon(Icons.info_rounded, color: Color(0xFF248BD6)),
+                    SizedBox(height: 5),
                     Text(
                         "Popunite sva polja, a promjene spasite klikom na dugme 'Spasi'",
-                        style: TextStyle(fontWeight: FontWeight.w500)),
+                        style: TextStyle(fontWeight: FontWeight.w500, color: Colors.black54)),
                   ],
                 ),
               ),
@@ -102,8 +102,9 @@ class _EditEmployeeState extends State<EditEmployee> {
                       runSpacing: 20,
                       alignment: WrapAlignment.spaceBetween,
                       children: [
-                        SizedBox(
-                          width: 200,
+                        Container(
+                          margin: const EdgeInsets.only(left: 15, right: 15),
+                          width: double.infinity,
                           child: FormBuilderTextField(
                             cursorColor: Colors.grey,
                             autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -117,8 +118,9 @@ class _EditEmployeeState extends State<EditEmployee> {
                             ]),
                           ),
                         ),
-                        SizedBox(
-                          width: 200,
+                       Container(
+                          margin: const EdgeInsets.only(left: 15, right: 15),
+                          width: double.infinity,
                           child: FormBuilderTextField(
                             cursorColor: Colors.grey,
                             autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -132,8 +134,9 @@ class _EditEmployeeState extends State<EditEmployee> {
                             ]),
                           ),
                         ),
-                        SizedBox(
-                          width: 200,
+                        Container(
+                          margin: const EdgeInsets.only(left: 15, right: 15),
+                          width: double.infinity,
                           child: FormBuilderTextField(
                             cursorColor: Colors.grey,
                             style: const TextStyle(fontSize: 15),
