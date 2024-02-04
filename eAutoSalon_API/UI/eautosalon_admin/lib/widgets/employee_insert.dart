@@ -68,6 +68,7 @@ class _InsertEmployeeState extends State<InsertEmployee> {
                     SizedBox(
                       width: 250,
                       child: FormBuilderTextField(
+                        cursorColor: Colors.grey,
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                         name: 'FirstName',
                         decoration: const InputDecoration(
@@ -85,6 +86,7 @@ class _InsertEmployeeState extends State<InsertEmployee> {
                     SizedBox(
                       width: 250,
                       child: FormBuilderTextField(
+                        cursorColor: Colors.grey,
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                         name: 'LastName',
                         decoration: const InputDecoration(
@@ -103,6 +105,7 @@ class _InsertEmployeeState extends State<InsertEmployee> {
                     SizedBox(
                       width: 250,
                       child: FormBuilderTextField(
+                        cursorColor: Colors.grey,
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                         name: 'Kontakt',
                         decoration: const InputDecoration(

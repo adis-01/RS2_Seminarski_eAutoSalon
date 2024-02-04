@@ -31,6 +31,27 @@ class CarProvider extends BaseProvider<Car>{
     }
   }
 
+
+  Future<List<Car>> recommend(int id) async{
+    var url = "$baseUrl$endpoint/Recommend/$id";
+    var uri = Uri.parse(url);
+
+    var headers = createHeaders();
+    var req = await http.get(uri,headers: headers);
+
+    if(isValidResponse(req)){
+      List<Car> lista = [];
+      var data = jsonDecode(req.body);
+      for (var item in data) {
+        lista.add(fromJson(item));
+      }
+      return lista;
+    }
+    else{
+      throw Exception('Greška....');
+    }
+  }
+
     Future<SearchResult<Car>> getFiltered(dynamic params) async{
     var query = getQueryString(params);
     var url = "$baseUrl$endpoint/GetFiltered?$query";

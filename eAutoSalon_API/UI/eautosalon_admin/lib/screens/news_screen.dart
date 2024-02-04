@@ -37,7 +37,7 @@ class _NewsScreenState extends State<NewsScreen> {
     return EditorMasterScreen(
       isHomePage: true,
       title: 'Novosti drugih urednika',
-       body: isLoading ? const Center(child: CircularProgressIndicator()) :
+       body: isLoading ? const Center(child: CircularProgressIndicator(color: Colors.blueGrey,)) :
         SingleChildScrollView(
          child: Center(
           child: Container(

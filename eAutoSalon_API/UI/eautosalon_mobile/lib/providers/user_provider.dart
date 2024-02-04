@@ -57,6 +57,21 @@ class UserProvider extends BaseProvider<User>{
     }
   }
 
+  Future<void> verify(dynamic request) async{
+    var url = "$baseUrl$endpoint/Verify";
+    var uri = Uri.parse(url);
+    
+    var obj = jsonEncode(request);
+    var headers = {
+      'Content-Type' : 'application/json'
+    };
+
+    var req = await http.post(uri, body: obj, headers: headers);
+    if(!isValidResponse(req)){
+      throw Exception('Greška...');
+    }
+  }
+
   @override
   User fromJson(object) {
     return User.fromJson(object);

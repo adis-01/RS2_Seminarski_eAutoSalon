@@ -1,10 +1,14 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:convert';
 import 'dart:io';
+import 'package:eautosalon_mobile/screens/insert_code_screen.dart';
+import 'package:eautosalon_mobile/utils/dialog_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import '../providers/user_provider.dart';
-import 'package:file_picker/file_picker.dart';
 
 class Registration extends StatefulWidget {
   const Registration({super.key});
@@ -14,12 +18,14 @@ class Registration extends StatefulWidget {
 }
 
 class _RegistrationState extends State<Registration> {
+
+  bool isLoading = false;
   bool obscure = true;
   final _formKey = GlobalKey<FormBuilderState>();
   late UserProvider _userProvider;
   File? _image;
   String? _base64image;
-  String hint = "Klik za upload slike";
+  String hint = "Dodirnite za upload slike";
 
   @override
   void initState() {
@@ -32,7 +38,9 @@ class _RegistrationState extends State<Registration> {
     return SafeArea(
       child: Scaffold(
           backgroundColor: Colors.grey[300],
-          body: Center(
+          body: isLoading ? const Center(child: CircularProgressIndicator(color: Colors.black87,),)
+            :
+           Center(
             child: SingleChildScrollView(
               child: FormBuilder(
                 key: _formKey,
@@ -70,9 +78,29 @@ class _RegistrationState extends State<Registration> {
                     //slika
                     buildImagePicker(),
                     GestureDetector(
-                      onTap: () {
-                        if (_formKey.currentState != null) {
-                          if (_formKey.currentState!.saveAndValidate()) {}
+                      onTap: () async{
+                        try {
+                          if (_formKey.currentState != null) {
+                          if (_formKey.currentState!.saveAndValidate()) {
+                            setState(() {
+                              isLoading = true;
+                            });
+                            Map<String, dynamic> map =
+                                Map.from(_formKey.currentState!.value);
+                            if (_base64image != "") {
+                              map['slikaBase64'] = _base64image;
+                            }
+                            var korisnik =  await _userProvider.insert(map);
+                            MyDialogs.showSuccess(context, 'Uspješno ste registrovani', () { 
+                              Navigator.of(context).push(MaterialPageRoute(builder: (builder) => InsertCode(email: korisnik.email!)));
+                            });
+                          }
+                        }
+                        } catch (e) {
+                          setState(() {
+                            isLoading=false;
+                          });
+                          MyDialogs.showError(context, e.toString());
                         }
                       },
                       child: Container(
@@ -107,35 +135,38 @@ class _RegistrationState extends State<Registration> {
 
   Padding buildImagePicker() {
     return Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 25, vertical: 5),
-                    child: FormBuilderField(
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
-                      name: 'slikaBase64',
-                      validator: (value) {
-                        if (_image == null) {
-                          return 'Polje obavezno';
-                        } else {
-                          return null;
-                        }
-                      },
-                      builder: (field) {
-                        return SizedBox(
-                          width: double.infinity,
-                          child: TextField(
-                            readOnly: true,
-                            decoration: InputDecoration(
-                                border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(15)),
-                                hintText: hint,
-                                suffixIcon: const Icon(Icons.upload),
-                                errorText: field.errorText),
-                            //onTap: uploadImage,
-                          ),
-                        );
-                      },
-                    ),
-                  );
+      padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 5),
+      child: FormBuilderField(
+        autovalidateMode: AutovalidateMode.onUserInteraction,
+        name: 'slikaBase64',
+        builder: (field) {
+          return SizedBox(
+            width: double.infinity,
+            child: TextField(
+              readOnly: true,
+              decoration: InputDecoration(
+                  fillColor: Colors.grey[200],
+                  filled: true,
+                  enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide:
+                          const BorderSide(color: Colors.white, width: 2)),
+                  focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: const BorderSide(color: Colors.black54)),
+                  hintText: hint,
+                  hintStyle: const TextStyle(color: Colors.blueGrey),
+                  suffixIcon: const Icon(
+                    Icons.upload,
+                    color: Colors.black54,
+                  ),
+                  errorText: field.errorText),
+              onTap: uploadImage,
+            ),
+          );
+        },
+      ),
+    );
   }
 
   Padding buildFirstName() {
@@ -349,14 +380,21 @@ class _RegistrationState extends State<Registration> {
     );
   }
 
-  // Future<void> uploadImage() async {
-  //   var result = await FilePicker.platform.pickFiles(type: FileType.image);
-  //   if (result != null && result.files.single.path != null) {
-  //     _image = File(result.files.single.path!);
-  //     _base64image = base64Encode(_image!.readAsBytesSync());
-  //     setState(() {
-  //       hint = result.files.single.name.toString();
-  //     });
-  //   }
-  // }
+  Future<void> uploadImage() async {
+    final pickedImage =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (pickedImage != null) {
+      _image = File(pickedImage.path);
+      _base64image = base64Encode(_image!.readAsBytesSync());
+      setState(() {
+        hint = _image!.path;
+      });
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text(
+        'Canceled',
+        textAlign: TextAlign.center,
+      )));
+    }
+  }
 }

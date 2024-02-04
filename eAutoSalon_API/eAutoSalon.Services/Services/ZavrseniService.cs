@@ -24,7 +24,7 @@ namespace eAutoSalon.Services.Services
             _mapper=mapper;
         }
 
-        public async Task<List<VMZavrseni_Poslovi>> GetAll(ZavrseniSearchObject? search = null)
+        public async Task<VMZavrseniWithSum> GetAll(ZavrseniSearchObject? search = null)
         {
             var q = _context.ZavrseniPoslovis.
                 OrderByDescending(x=>x.Id)
@@ -32,15 +32,24 @@ namespace eAutoSalon.Services.Services
                 .Include("Korisnik")
                 .AsQueryable();
             
-            if(search?.Mjesec != null)
+            if(search?.Mjesec != 0)
             {
-                q = q.Where(x => x.DatumProdaje.Month == search.Mjesec);
+                q = q.Where(x => x.DatumProdaje.Month == search!.Mjesec);
             }
 
+            decimal suma = await q.SumAsync(x => x.Iznos);
+
             var list = await q.ToListAsync();
+            
+            var mappedList = _mapper.Map<List<VMZavrseni_Poslovi>>(list);
 
-            return _mapper.Map<List<VMZavrseni_Poslovi>>(q);
+            var result = new VMZavrseniWithSum
+            {
+                Zavrseni = mappedList,
+                Sum = suma
+            };
 
+            return result;
         }
 
         public async Task<VMZavrseni_Poslovi> Insert(ZavrseniPosaoInsert req)

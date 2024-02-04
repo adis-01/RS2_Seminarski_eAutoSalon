@@ -65,6 +65,7 @@ class _PasswordChangeState extends State<PasswordChange> {
                 SizedBox(
                   width: double.infinity,
                   child: FormBuilderTextField(
+                    cursorColor: Colors.grey,
                     name: 'Stari_Pass',
                     obscureText: _obscure,
                     validator: FormBuilderValidators.required(context,
@@ -93,6 +94,7 @@ class _PasswordChangeState extends State<PasswordChange> {
                 SizedBox(
                   width: double.infinity,
                   child: FormBuilderTextField(
+                    cursorColor: Colors.grey,
                     name: 'Novi_Pass',
                     obscureText: _obscure,
                     validator: FormBuilderValidators.required(context,
@@ -121,6 +123,7 @@ class _PasswordChangeState extends State<PasswordChange> {
                 SizedBox(
                   width: double.infinity,
                   child: FormBuilderTextField(
+                    cursorColor: Colors.grey,
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     name: 'Novi_Pass_Repeat',
                     obscureText: _obscure,

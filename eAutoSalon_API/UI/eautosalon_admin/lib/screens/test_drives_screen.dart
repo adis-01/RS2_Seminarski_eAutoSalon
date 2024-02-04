@@ -40,7 +40,7 @@ class _TestDrivesScreenState extends State<TestDrivesScreen> {
         floatingEnabled: false,
         title: 'Testne vožnje',
         body: isLoading
-            ? const Center(child: CircularProgressIndicator())
+            ? const Center(child: CircularProgressIndicator(color: Colors.blueGrey,))
             : Padding(
                 padding: const EdgeInsets.all(25),
                 child: SingleChildScrollView(

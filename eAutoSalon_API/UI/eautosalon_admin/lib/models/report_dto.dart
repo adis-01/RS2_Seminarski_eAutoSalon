@@ -1,5 +1,6 @@
 
 import 'package:eautosalon_admin/models/user_comm.dart';
+import 'package:intl/intl.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'car_report.dart';
 
@@ -18,8 +19,8 @@ class ReportDto{
     return iznos?.toStringAsFixed(2);
   }
 
-  String? get datum{
-    return datumProdaje?.toLocal().toString();
+   String get datum{
+    return datumProdaje != null ? DateFormat('dd-MM-yyyy').format(datumProdaje!) : "null";
   }
 
   String? get proizvod{

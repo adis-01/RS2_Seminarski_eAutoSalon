@@ -40,7 +40,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
       floatingEnabled: false,
       title: 'Korisnički profil',
        body: isLoading ?
-        const Center(child: CircularProgressIndicator()) 
+        const Center(child: CircularProgressIndicator(color: Colors.blueGrey,)) 
         : Padding(
           padding: const EdgeInsets.all(25),
           child: SingleChildScrollView(

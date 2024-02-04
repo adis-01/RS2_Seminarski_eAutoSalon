@@ -36,7 +36,7 @@ class _PastCarsScreenState extends State<PastCarsScreen> {
         body: Container(
           padding: const EdgeInsets.all(25),
           child: isLoading
-              ? const Center(child: CircularProgressIndicator())
+              ? const Center(child: CircularProgressIndicator(color: Colors.blueGrey,))
               : SingleChildScrollView(
                 child: Column(
                     children: [

@@ -140,9 +140,6 @@ public partial class EAutoSalonTestContext : DbContext
                 .HasMaxLength(255)
                 .IsUnicode(false)
                 .HasDefaultValueSql("('Aktivan')");
-            entity.Property(e => e.Token)
-                .HasMaxLength(255)
-                .IsUnicode(false);
             entity.Property(e => e.Username)
                 .HasMaxLength(255)
                 .IsUnicode(false);

@@ -45,7 +45,7 @@ class _InsertNewScreenEditorState extends State<InsertNewScreenEditor> {
           padding: const EdgeInsets.all(25),
           child: Center(
               child: isLoading
-                  ? const CircularProgressIndicator()
+                  ? const CircularProgressIndicator(color: Colors.blueGrey,)
                   : SingleChildScrollView(
                       child: Container(
                         width: 650,
@@ -96,6 +96,7 @@ class _InsertNewScreenEditorState extends State<InsertNewScreenEditor> {
         SizedBox(
           width: 300,
           child: FormBuilderTextField(
+            cursorColor: Colors.grey,
             autovalidateMode: AutovalidateMode.onUserInteraction,
             name: 'naslov',
             validator: FormBuilderValidators.compose([
@@ -172,6 +173,7 @@ class _InsertNewScreenEditorState extends State<InsertNewScreenEditor> {
         SizedBox(
           width: double.infinity,
           child: FormBuilderTextField(
+            cursorColor: Colors.grey,
             autovalidateMode: AutovalidateMode.onUserInteraction,
             validator: FormBuilderValidators.compose([
               FormBuilderValidators.minLength(context, 50,

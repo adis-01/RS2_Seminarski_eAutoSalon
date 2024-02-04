@@ -105,6 +105,7 @@ class _EditEmployeeState extends State<EditEmployee> {
                         SizedBox(
                           width: 200,
                           child: FormBuilderTextField(
+                            cursorColor: Colors.grey,
                             autovalidateMode: AutovalidateMode.onUserInteraction,
                             name: 'FirstName',
                             decoration: const InputDecoration(
@@ -119,6 +120,7 @@ class _EditEmployeeState extends State<EditEmployee> {
                         SizedBox(
                           width: 200,
                           child: FormBuilderTextField(
+                            cursorColor: Colors.grey,
                             autovalidateMode: AutovalidateMode.onUserInteraction,
                             name: 'LastName',
                             decoration: const InputDecoration(
@@ -133,6 +135,7 @@ class _EditEmployeeState extends State<EditEmployee> {
                         SizedBox(
                           width: 200,
                           child: FormBuilderTextField(
+                            cursorColor: Colors.grey,
                             style: const TextStyle(fontSize: 15),
                             autovalidateMode: AutovalidateMode.onUserInteraction,
                             name: 'Kontakt',

@@ -225,6 +225,7 @@ class _FilterCarDialogState extends State<FilterCarDialog> {
           SizedBox(
             width: double.infinity,
             child: FormBuilderTextField(
+              cursorColor: Colors.grey,
               autovalidateMode: AutovalidateMode.onUserInteraction,
               validator: FormBuilderValidators.compose([
                 FormBuilderValidators.numeric(context,

@@ -4,7 +4,6 @@
 import 'package:eautosalon_mobile/screens/home_page_screen.dart';
 import 'package:eautosalon_mobile/screens/insert_code_screen.dart';
 import 'package:eautosalon_mobile/screens/regist_scr.dart';
-import 'package:eautosalon_mobile/screens/verif_screen.dart';
 import 'package:eautosalon_mobile/utils/dialog_helper.dart';
 import 'package:eautosalon_mobile/utils/helpers.dart';
 import 'package:flutter/material.dart';

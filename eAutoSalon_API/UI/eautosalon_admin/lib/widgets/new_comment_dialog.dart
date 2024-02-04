@@ -62,6 +62,7 @@ class _NewCommentDialogState extends State<NewCommentDialog> {
                   SizedBox(
                       width: double.infinity,
                       child: TextField(
+                        cursorColor: Colors.grey,
                         controller: _commentController,
                         decoration: InputDecoration(
                           border: OutlineInputBorder(

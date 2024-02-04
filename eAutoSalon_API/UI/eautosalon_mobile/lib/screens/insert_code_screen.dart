@@ -1,5 +1,11 @@
+// ignore_for_file: use_build_context_synchronously
+
+import 'package:eautosalon_mobile/providers/user_provider.dart';
+import 'package:eautosalon_mobile/screens/login_screen.dart';
+import 'package:eautosalon_mobile/utils/dialog_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:provider/provider.dart';
 
 class InsertCode extends StatefulWidget {
   final String email;
@@ -10,16 +16,25 @@ class InsertCode extends StatefulWidget {
 }
 
 class _InsertCodeState extends State<InsertCode> {
-  String verifValue = "";
+
+  bool isLoading = false;
+  late UserProvider _userProvider;
   final _formKey = GlobalKey<FormBuilderState>();
-  final TextEditingController first = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _userProvider=context.read<UserProvider>();
+  }
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Scaffold(
+      child:
+      Scaffold(
         backgroundColor: Colors.grey[300],
-        body: Padding(
+        body: isLoading ? const Center(child: CircularProgressIndicator(color: Colors.black87,),) 
+      : Padding(
           padding: const EdgeInsets.all(15),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -44,30 +59,6 @@ class _InsertCodeState extends State<InsertCode> {
               ),
               buildContainerNumber(),
               buildButton(),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text(
-                    "Niste dobili kod?",
-                    style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.black54,
-                        fontWeight: FontWeight.w500),
-                  ),
-                  const SizedBox(width: 5),
-                  GestureDetector(
-                    onTap: () {},
-                    child: const Text(
-                      "Pošalji ponovo",
-                      style: TextStyle(
-                          fontSize: 17,
-                          color: Colors.blue,
-                          fontWeight: FontWeight.bold),
-                    ),
-                  )
-                ],
-              ),
-              Text(verifValue)
             ],
           ),
         ),
@@ -77,10 +68,13 @@ class _InsertCodeState extends State<InsertCode> {
 
   GestureDetector buildButton() {
     return GestureDetector(
-      onTap: () {
+      onTap: ()  async{
         if(_formKey.currentState!=null){
           if(_formKey.currentState!.saveAndValidate()){
-            print (_formKey.currentState!.value);
+            setState(() {
+              isLoading=true;
+            });
+            saveData();
           }
         }
       },
@@ -117,13 +111,12 @@ class _InsertCodeState extends State<InsertCode> {
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8), color: Colors.grey[900]),
         child: FormBuilderTextField(
-          name: 'verifikacijskiKod',
+          name: 'Token',
           validator: FormBuilderValidators.compose([
             FormBuilderValidators.minLength(context, 4, errorText: 'Kod se sastoji od 4 broja'),
             FormBuilderValidators.maxLength(context, 4, errorText: 'Kod se sastoji od 4 broja'),
             FormBuilderValidators.numeric(context, errorText: 'Samo brojevi')
           ]),
-          controller: first,
           textAlign: TextAlign.center,
           style: const TextStyle(
               color: Colors.white,
@@ -141,5 +134,24 @@ class _InsertCodeState extends State<InsertCode> {
         ),
       ),
     );
+  }
+  
+  Future<void> saveData() async{
+    try {
+      String vrijednost = _formKey.currentState!.value['Token'];
+      int token = int.parse(vrijednost);
+      await _userProvider.verify({
+        'Email' : widget.email,
+        'Token' : token
+      });
+      MyDialogs.showSuccess(context, 'Uspješno ste verifikovani, molimo prijavite se', () {
+        Navigator.of(context).push(MaterialPageRoute(builder: (builder) => const LoginScreen()));
+       });
+    } catch (e) {
+      setState(() {
+        isLoading = false;
+      });
+      MyDialogs.showError(context, e.toString());
+    }
   }
 }

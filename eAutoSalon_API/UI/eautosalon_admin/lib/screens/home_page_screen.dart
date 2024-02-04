@@ -46,7 +46,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
         title: 'Automobili',
         body: isLoading
             ? const Center(
-                child: CircularProgressIndicator(),
+                child: CircularProgressIndicator(color: Colors.blueGrey,),
               )
             : SingleChildScrollView(
                 child: Container(

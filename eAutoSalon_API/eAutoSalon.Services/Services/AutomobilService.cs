@@ -70,7 +70,47 @@ namespace eAutoSalon.Services.Services
         }
 
 
-       
+        public double CalculateCosineSimilarity(Automobili product1, Automobili product2)
+        {
+            double[] vector1 = new double[] { product1.GodinaProizvodnje, product1.BrojVrata, product1.PredjeniKilometri, (double)product1.Cijena!, ConvertToDouble(product1.VrstaGoriva) };
+            double[] vector2 = new double[] { product2.GodinaProizvodnje, product2.BrojVrata, product2.PredjeniKilometri, (double)product2.Cijena!, ConvertToDouble(product2.VrstaGoriva)};
+
+            double dotProduct = vector1.Zip(vector2, (a, b) => a * b).Sum();
+
+            double magnitude1 = Math.Sqrt(vector1.Sum(x => x * x));
+            double magnitude2 = Math.Sqrt(vector2.Sum(x => x * x));
+
+            if (magnitude1 == 0 || magnitude2 == 0)
+                return 0;
+            else
+                return dotProduct / (magnitude1 * magnitude2);
+        }
+
+        public List<Automobili> GetTopSimilarProducts(Automobili selectedProduct, List<Automobili> allProducts, int topN = 3)
+        {
+            var similarities = new Dictionary<Automobili, double>();
+
+            foreach (var product in allProducts)
+            {
+                if (product != selectedProduct) 
+                {
+                    double similarity = CalculateCosineSimilarity(selectedProduct, product);
+                    similarities.Add(product, similarity);
+                }
+            }
+
+            return similarities.OrderByDescending(kv => kv.Value).Take(topN).Select(kv => kv.Key).ToList();
+        }
+
+        private double ConvertToDouble(string vrijednost)
+        {
+            if (vrijednost == "Dizel")
+                return 1.0;
+            else if (vrijednost == "Benzin")
+                return 0.0;
+            else
+                return 0.5;
+        }
 
 
         public async Task<PagedList<VMAutomobil>> GetAktivne(AutomobilSearchObject? search = null)
@@ -204,6 +244,17 @@ namespace eAutoSalon.Services.Services
             list.List = _mapper.Map<List<VMAutomobil>>(lista);
 
             return list;
+        }
+
+        public async Task<List<VMAutomobil>> Recommend(int id)
+        {
+            var selectedCar = await _context.Automobilis.FindAsync(id);
+
+            var list = await _context.Automobilis.Where(x=>x.State=="Aktivan").ToListAsync();
+
+            var similarities = GetTopSimilarProducts(selectedCar!, list);
+
+            return _mapper.Map<List<VMAutomobil>>(similarities);
         }
     }
 }

@@ -33,6 +33,14 @@ namespace eAutoSalon_API.Controllers
             return base.GetAll(search);
         }
 
+        [AllowAnonymous]
+        [HttpPost("Verify")]
+        public async Task Verify(VerificationRequest req)
+        {
+            await _service.Verify(req);
+        }
+
+
 
         [HttpPost("ChangePicture/{id}")]
         [Authorize(Roles = "Korisnik")]

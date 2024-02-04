@@ -57,7 +57,7 @@ class _NewCarScreenState extends State<NewCarScreen> {
             ],
           ),
         ),
-      ) : const Center(child: CircularProgressIndicator(),),
+      ) : const Center(child: CircularProgressIndicator(color: Colors.blueGrey,),),
     );
   }
 
@@ -128,6 +128,7 @@ class _NewCarScreenState extends State<NewCarScreen> {
         SizedBox(
           width: 250,
           child: FormBuilderTextField(
+            cursorColor: Colors.grey,
             autovalidateMode: AutovalidateMode.onUserInteraction,
             name: 'Proizvodjac',
             decoration: const InputDecoration(
@@ -144,6 +145,7 @@ class _NewCarScreenState extends State<NewCarScreen> {
         SizedBox(
           width: 250,
           child: FormBuilderTextField(
+            cursorColor: Colors.grey,
             autovalidateMode: AutovalidateMode.onUserInteraction,
             name: 'Model',
             decoration: const InputDecoration(
@@ -160,6 +162,7 @@ class _NewCarScreenState extends State<NewCarScreen> {
         SizedBox(
           width: 250,
           child: FormBuilderTextField(
+            cursorColor: Colors.grey,
             autovalidateMode: AutovalidateMode.onUserInteraction,
             name: 'Boja',
             decoration: const InputDecoration(
@@ -176,6 +179,7 @@ class _NewCarScreenState extends State<NewCarScreen> {
         SizedBox(
           width: 250,
           child: FormBuilderTextField(
+            cursorColor: Colors.grey,
             autovalidateMode: AutovalidateMode.onUserInteraction,
             name: 'BrojSasije',
             decoration: const InputDecoration(
@@ -196,6 +200,7 @@ class _NewCarScreenState extends State<NewCarScreen> {
         SizedBox(
           width: 250,
           child: FormBuilderTextField(
+            cursorColor: Colors.grey,
             autovalidateMode: AutovalidateMode.onUserInteraction,
             name: 'GodinaProizvodnje',
             decoration: const InputDecoration(
@@ -213,6 +218,7 @@ class _NewCarScreenState extends State<NewCarScreen> {
         SizedBox(
           width: 250,
           child: FormBuilderTextField(
+            cursorColor: Colors.grey,
             autovalidateMode: AutovalidateMode.onUserInteraction,
             name: 'PredjeniKilometri',
             decoration: const InputDecoration(
@@ -230,6 +236,7 @@ class _NewCarScreenState extends State<NewCarScreen> {
         SizedBox(
           width: 250,
           child: FormBuilderTextField(
+            cursorColor: Colors.grey,
             autovalidateMode: AutovalidateMode.onUserInteraction,
             name: 'SnagaMotora',
             decoration: const InputDecoration(
@@ -237,15 +244,23 @@ class _NewCarScreenState extends State<NewCarScreen> {
               border: OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(15))),
             ),
-            validator: FormBuilderValidators.compose([
-              FormBuilderValidators.required(context,
-                  errorText: 'Polje obavezno'),
-            ]),
+            validator: (value){
+              if(value == null || value.isEmpty){
+                          return 'Polje je obavezno';
+                        }
+                        else if(!value.contains("KS") && !value.contains("KW")){
+                          return 'Jačina mora biti izražena u KS ili KW';
+                        }
+                        else{
+                          return null;
+                        }
+            },
           ),
         ),
         SizedBox(
           width: 250,
           child: FormBuilderTextField(
+            cursorColor: Colors.grey,
             autovalidateMode: AutovalidateMode.onUserInteraction,
             name: 'BrojVrata',
             decoration: const InputDecoration(
@@ -263,6 +278,7 @@ class _NewCarScreenState extends State<NewCarScreen> {
          SizedBox(
                     width: 250,
                     child: FormBuilderTextField(
+                      cursorColor: Colors.grey,
                        autovalidateMode: AutovalidateMode.onUserInteraction,
                       name: 'Cijena',
                       validator: FormBuilderValidators.compose([

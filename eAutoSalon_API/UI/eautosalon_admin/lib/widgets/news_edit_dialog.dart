@@ -65,6 +65,7 @@ class _EditNewsDialogState extends State<EditNewsDialog> {
                     SizedBox(
                       width: double.infinity,
                       child: FormBuilderTextField(
+                        cursorColor: Colors.grey,
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                         name: 'naslov',
                         decoration: InputDecoration(
@@ -81,6 +82,7 @@ class _EditNewsDialogState extends State<EditNewsDialog> {
                     SizedBox(
                       width: double.infinity,
                       child: FormBuilderTextField(
+                        cursorColor: Colors.grey,
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                         name: 'sadrzaj',
                         decoration: InputDecoration(

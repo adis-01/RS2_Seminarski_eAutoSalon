@@ -55,7 +55,7 @@ namespace eAutoSalon.Services.Services
   
 
     
-        public void StartRabbitMQ(string email)
+        public void StartRabbitMQ(VMEmail_Token obj)
         {
             var factory = new ConnectionFactory { HostName = "localhost" };
             
@@ -67,12 +67,8 @@ namespace eAutoSalon.Services.Services
                                  exclusive: false,
                                  autoDelete: false,
                                  arguments: null);
+            
 
-            VMEmail_Token obj = new()
-            {
-                Mail = email,
-                Token = GenerateRandomNo()
-            };
 
             
             var body = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(obj));
@@ -83,14 +79,6 @@ namespace eAutoSalon.Services.Services
                                  body: body);
         }
 
-
-        public int GenerateRandomNo()
-        {
-            int _min = 1000;
-            int _max = 10000;
-            Random _rdm = new Random();
-            return _rdm.Next(_min, _max);
-        }
 
 
 

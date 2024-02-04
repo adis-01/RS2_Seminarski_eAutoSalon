@@ -11,7 +11,7 @@ namespace eAutoSalon.Services.Interfaces
 {
     public interface IZavrseniService
     {
-        Task<List<VMZavrseni_Poslovi>> GetAll(ZavrseniSearchObject? search = null);
+        Task<VMZavrseniWithSum> GetAll(ZavrseniSearchObject? search = null);
         Task<VMZavrseni_Poslovi> Insert(ZavrseniPosaoInsert req);
     }
 }

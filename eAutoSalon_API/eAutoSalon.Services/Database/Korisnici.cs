@@ -23,11 +23,11 @@ public partial class Korisnici
 
     public DateTime? RegisteredOn { get; set; }
 
-    public string? Token { get; set; }
-
     public bool? Isverified { get; set; }
 
     public string? State { get; set; }
+
+    public int? Token { get; set; }
 
     public virtual ICollection<Komentari> Komentaris { get; set; } = new List<Komentari>();
 

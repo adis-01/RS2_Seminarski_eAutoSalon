@@ -107,6 +107,7 @@ class _EditCarState extends State<EditCar> {
                   SizedBox(
                     width: 230,
                     child: FormBuilderTextField(
+                      cursorColor: Colors.grey,
                        autovalidateMode: AutovalidateMode.onUserInteraction,
                       name: 'Proizvodjac',
                       validator: FormBuilderValidators.compose([
@@ -121,6 +122,7 @@ class _EditCarState extends State<EditCar> {
                    SizedBox(
                     width: 230,
                     child: FormBuilderTextField(
+                      cursorColor: Colors.grey,
                        autovalidateMode: AutovalidateMode.onUserInteraction,
                       name: 'Model',
                       validator: FormBuilderValidators.compose([
@@ -135,11 +137,20 @@ class _EditCarState extends State<EditCar> {
                    SizedBox(
                     width: 230,
                     child: FormBuilderTextField(
+                      cursorColor: Colors.grey,
                        autovalidateMode: AutovalidateMode.onUserInteraction,
                       name: 'SnagaMotora',
-                      validator: FormBuilderValidators.compose([
-                        FormBuilderValidators.required(context, errorText: 'Polje je obavezno')
-                      ]),
+                      validator: (value){
+                        if(value == null || value.isEmpty){
+                          return 'Polje je obavezno';
+                        }
+                        else if(!value.contains("KS") && !value.contains("KW")){
+                          return 'Jačina mora biti izražena u KS ili KW';
+                        }
+                        else{
+                          return null;
+                        }
+                      },
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
                         labelText: 'Snaga motora'
@@ -149,6 +160,7 @@ class _EditCarState extends State<EditCar> {
                    SizedBox(
                     width: 230,
                     child: FormBuilderTextField(
+                      cursorColor: Colors.grey,
                        autovalidateMode: AutovalidateMode.onUserInteraction,
                       name: 'BrojSasije',
                       validator: FormBuilderValidators.compose([
@@ -165,6 +177,7 @@ class _EditCarState extends State<EditCar> {
                    SizedBox(
                     width: 230,
                     child: FormBuilderTextField(
+                      cursorColor: Colors.grey,
                        autovalidateMode: AutovalidateMode.onUserInteraction,
                       name: 'GodinaProizvodnje',
                       validator: FormBuilderValidators.compose([
@@ -180,6 +193,7 @@ class _EditCarState extends State<EditCar> {
                   SizedBox(
                     width: 230,
                     child: FormBuilderTextField(
+                      cursorColor: Colors.grey,
                        autovalidateMode: AutovalidateMode.onUserInteraction,
                       name: 'Cijena',
                       validator: FormBuilderValidators.compose([

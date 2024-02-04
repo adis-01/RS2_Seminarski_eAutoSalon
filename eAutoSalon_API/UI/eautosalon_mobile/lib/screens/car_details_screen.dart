@@ -1,5 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'package:eautosalon_mobile/providers/car_provider.dart';
 import 'package:eautosalon_mobile/screens/car_accessories_screen.dart';
 import 'package:eautosalon_mobile/screens/checkout_screen.dart';
 import 'package:eautosalon_mobile/utils/dialog_helper.dart';
@@ -7,6 +8,7 @@ import 'package:eautosalon_mobile/utils/helpers.dart';
 import 'package:eautosalon_mobile/widgets/master_screen.dart';
 import 'package:eautosalon_mobile/widgets/test_drive_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../models/car.dart';
 
@@ -19,11 +21,24 @@ class CarDetails extends StatefulWidget {
 }
 
 class _CarDetailsState extends State<CarDetails> {
+
+  List<Car> _list = [];
+  late CarProvider _carProvider;
+  bool isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _carProvider=context.read<CarProvider>();
+    fetchData();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MyAppBar(
         title: 'Detalji',
-        body: SingleChildScrollView(
+        body: isLoading ? const Center(child: CircularProgressIndicator(color: Colors.black87,),) 
+        : SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(15),
             child: Column(
@@ -115,20 +130,20 @@ class _CarDetailsState extends State<CarDetails> {
                       color: Colors.black,
                       letterSpacing: 0.5),
                 ),
-                SizedBox(
+                _list.isNotEmpty ? SizedBox(
                     height: 330,
                     child: ListView.builder(
-                      itemCount: 3,
+                      itemCount: _list.length,
                       scrollDirection: Axis.horizontal,
-                      itemBuilder: (context, index) => buildRecommendedBox(),
-                    ))
+                      itemBuilder: (context, index) => buildRecommendedBox(_list[index]),
+                    )) : const Text("Nema preporučenih proizvoda", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500, color: Colors.black54),textAlign: TextAlign.center,)
               ],
             ),
           ),
         ));
   }
 
-  Container buildRecommendedBox() {
+  Container buildRecommendedBox(Car object) {
     return Container(
       width: 300,
       padding: const EdgeInsets.all(10),
@@ -140,15 +155,15 @@ class _CarDetailsState extends State<CarDetails> {
         children: [
           Column(
             children: [
-              SizedBox(
+             object.slika !=  "" ? SizedBox(
                 height: 135,
                 width: double.infinity,
-                child: fromBase64String(widget.automobil.slika!),
-              ),
+                child: fromBase64String(object.slika!),
+              ) : const Center(child: Icon(Icons.no_photography, size: 25, color: Colors.black,),),
               const SizedBox(height: 10),
-              const Text(
-                "Proizvođač model",
-                style: TextStyle(
+              Text(
+                "${object.proizvodjac ?? "null"} ${object.model ?? "null"}",
+                style: const TextStyle(
                     fontSize: 18,
                     color: Colors.black54,
                     fontWeight: FontWeight.w500,
@@ -159,9 +174,9 @@ class _CarDetailsState extends State<CarDetails> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text(
-                "\$99,999.99",
-                style: TextStyle(
+              Text(
+                "\$${object.formattedPrice}",
+                style: const TextStyle(
                     color: Colors.black87,
                     fontSize: 15,
                     fontWeight: FontWeight.bold),
@@ -181,7 +196,9 @@ class _CarDetailsState extends State<CarDetails> {
                   color: Colors.black87,
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(13)),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context).push(MaterialPageRoute(builder: (builder) =>  CarDetails(automobil: object)));
+                  },
                   child: const Icon(
                     Icons.more_horiz,
                     color: Colors.white,
@@ -249,5 +266,19 @@ class _CarDetailsState extends State<CarDetails> {
         ],
       ),
     );
+  }
+  
+  Future<void> fetchData() async{
+    try {
+      var data = await _carProvider.recommend(widget.automobil.automobilId!);
+      if(mounted){
+        setState(() {
+        _list=data;
+        isLoading=false;
+      });
+      }
+    } catch (e) {
+      MyDialogs.showError(context, e.toString());
+    }
   }
 }

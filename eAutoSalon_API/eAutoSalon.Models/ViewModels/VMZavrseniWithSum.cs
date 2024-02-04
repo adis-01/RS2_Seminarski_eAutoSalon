@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace eAutoSalon.Models.ViewModels
 {
-    public class VMEmail_Token
+    public class VMZavrseniWithSum
     {
-        public string Mail { get; set; }
-        public int? Token { get; set; }
+        public List<VMZavrseni_Poslovi> Zavrseni { get; set; }
+        public decimal Sum { get; set; }    
     }
 }

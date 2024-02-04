@@ -70,6 +70,7 @@ class _EditProfileState extends State<EditProfile> {
                 SizedBox(
                   width: double.infinity,
                   child: FormBuilderTextField(
+                    cursorColor: Colors.grey,
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     name: 'firstName',
                     validator: FormBuilderValidators.compose([
@@ -88,6 +89,7 @@ class _EditProfileState extends State<EditProfile> {
                 SizedBox(
                   width: double.infinity,
                   child: FormBuilderTextField(
+                    cursorColor: Colors.grey,
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     name: 'lastName',
                     validator: FormBuilderValidators.compose([
@@ -106,6 +108,7 @@ class _EditProfileState extends State<EditProfile> {
                 SizedBox(
                   width: double.infinity,
                   child: FormBuilderTextField(
+                    cursorColor: Colors.grey,
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     name: 'username',
                     validator: FormBuilderValidators.compose([
@@ -124,6 +127,7 @@ class _EditProfileState extends State<EditProfile> {
                 SizedBox(
                   width: double.infinity,
                   child: FormBuilderTextField(
+                    cursorColor: Colors.grey,
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     name: 'email',
                     validator: FormBuilderValidators.compose([

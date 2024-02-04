@@ -103,6 +103,7 @@ class _EditUserState extends State<EditUser> {
                           SizedBox(
                             width: 250,
                             child: FormBuilderTextField(
+                              cursorColor: Colors.grey,
                               autovalidateMode:
                                   AutovalidateMode.onUserInteraction,
                               name: 'Username',
@@ -129,6 +130,7 @@ class _EditUserState extends State<EditUser> {
                           SizedBox(
                             width: 250,
                             child: FormBuilderTextField(
+                              cursorColor: Colors.grey,
                               autovalidateMode:
                                   AutovalidateMode.onUserInteraction,
                               name: 'FirstName',
@@ -145,6 +147,7 @@ class _EditUserState extends State<EditUser> {
                           SizedBox(
                             width: 250,
                             child: FormBuilderTextField(
+                              cursorColor: Colors.grey,
                               autovalidateMode:
                                   AutovalidateMode.onUserInteraction,
                               name: 'LastName',

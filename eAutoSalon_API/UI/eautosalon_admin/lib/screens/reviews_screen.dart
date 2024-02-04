@@ -40,7 +40,7 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
         title: 'Recenzije korisnika',
         body: Container(
           padding: const EdgeInsets.all(25),
-          child: isLoading ? const Center(child: CircularProgressIndicator())
+          child: isLoading ? const Center(child: CircularProgressIndicator(color: Colors.blueGrey,))
           : SingleChildScrollView(
             child: Column(
               children: [

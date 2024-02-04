@@ -38,6 +38,13 @@ namespace eAutoSalon_API.Controllers
             await base.Delete(id);
         }
 
+        [Authorize(Roles ="Korisnik,Administrator,Urednik")]
+        [HttpGet("Recommend/{id}")]
+        public async Task<List<VMAutomobil>> Recommend(int id)
+        {
+            return await _service.Recommend(id);
+        }
+
         [Authorize(Roles ="Korisnik")]
         [HttpGet("Aktivni")]
         public async Task<PagedList<VMAutomobil>> GetAktivne([FromQuery]AutomobilSearchObject? search = null)

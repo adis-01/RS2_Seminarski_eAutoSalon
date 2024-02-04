@@ -42,10 +42,16 @@ namespace eAutoSalon.Services.Services
                 UlogaId = 2
             };
 
-            //await _service.StartRabbitMQ(entity.Email);
-
             await _context.KorisnikUloges.AddAsync(user_role);
             await _context.SaveChangesAsync();
+
+            var objekat = new VMEmail_Token()
+            {
+                Mail=entity.Email,
+                Token = entity.Token
+            };
+
+            _service.StartRabbitMQ(objekat);
         }
 
         public async Task<List<string>> GetRoles(string username)
@@ -85,6 +91,7 @@ namespace eAutoSalon.Services.Services
             if (req?.SlikaBase64!=null) { korisnik.Slika = Convert.FromBase64String(req.SlikaBase64!); }
             korisnik.RegisteredOn = DateTime.Now;
             korisnik.State = "Aktivan";
+            korisnik.Token = GenerateRandomNo();
             
 
             await _context.Korisnicis.AddAsync(korisnik);
@@ -208,7 +215,6 @@ namespace eAutoSalon.Services.Services
             list.List = _mapper.Map<List<VMKorisnik>>(lista);
 
 
-            _service.StartRabbitMQ("adis.sipkovic@edu.fit.ba");
 
             return list;
         }
@@ -228,9 +234,21 @@ namespace eAutoSalon.Services.Services
 
         public async Task Verify(VerificationRequest req)
         {
-            //var entity = await _context.Korisnicis.Where(x => x.Email == req.Email).FirstOrDefaultAsync() ?? throw new Exception("Nema korisnika sa tim mailom");
+            var entity = await _context.Korisnicis.Where(x => x.Email == req.Email).FirstOrDefaultAsync() ?? throw new UserException("Nema korisnika sa tim mailom");
 
-            throw new NotImplementedException();
+            if (entity.Token != req.Token)
+                throw new UserException("Token nije validan");
+
+            entity.Isverified = true;
+            await _context.SaveChangesAsync();
+        }
+
+        private int GenerateRandomNo()
+        {
+            int _min = 1000;
+            int _max = 10000;
+            Random _rdm = new Random();
+            return _rdm.Next(_min, _max);
         }
     }
 }

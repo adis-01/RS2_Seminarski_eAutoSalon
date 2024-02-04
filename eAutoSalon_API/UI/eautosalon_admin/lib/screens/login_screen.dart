@@ -42,7 +42,7 @@ class _LoginScreenState extends State<LoginScreen> {
               padding: const EdgeInsets.all(25),
               margin: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
               child: isLoading ? 
-              const Center(child: CircularProgressIndicator())
+              const Center(child: CircularProgressIndicator(color: Colors.blueGrey,))
               :
                Column(
                 mainAxisSize: MainAxisSize.min,
@@ -115,6 +115,7 @@ class _LoginScreenState extends State<LoginScreen> {
     return SizedBox(
       width: double.infinity,
       child: TextField(
+        cursorColor: Colors.grey,
         controller: _usernameController,
         decoration: InputDecoration(
             contentPadding:
@@ -134,6 +135,7 @@ class _LoginScreenState extends State<LoginScreen> {
     return SizedBox(
       width: double.infinity,
       child: TextField(
+        cursorColor: Colors.grey,
         controller: _passwordController,
         obscureText: _obscureText,
         decoration: InputDecoration(

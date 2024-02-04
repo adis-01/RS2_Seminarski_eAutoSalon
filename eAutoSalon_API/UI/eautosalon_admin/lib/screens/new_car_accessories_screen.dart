@@ -98,7 +98,7 @@ class _NewCarAccessoriesState extends State<NewCarAccessories> {
                       buildButtons()
                     ],
                   )
-                : const Center(child: CircularProgressIndicator()),
+                : const Center(child: CircularProgressIndicator(color: Colors.blueGrey,)),
           ),
         ));
   }

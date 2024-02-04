@@ -39,7 +39,7 @@ class _NewsDetailsScreenState extends State<NewsDetailsScreen> {
       isHomePage: false,
       title: 'Detalji',
       body: isLoading
-          ? const Center(child: CircularProgressIndicator())
+          ? const Center(child: CircularProgressIndicator(color: Colors.blueGrey,))
           : SingleChildScrollView(
               child: Center(
                 child: Container(

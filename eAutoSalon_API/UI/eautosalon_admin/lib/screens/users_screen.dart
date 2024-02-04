@@ -42,7 +42,7 @@ class _UsersScreenState extends State<UsersScreen> {
         floatingEnabled: false,
         title: 'Korisnici',
         body: isLoading
-            ? const Center(child: CircularProgressIndicator())
+            ? const Center(child: CircularProgressIndicator(color: Colors.blueGrey,))
             : Padding(
                 padding: const EdgeInsets.all(25),
                 child: SingleChildScrollView(

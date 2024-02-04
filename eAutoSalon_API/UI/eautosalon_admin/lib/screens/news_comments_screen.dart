@@ -40,7 +40,7 @@ class _CommentsScreenState extends State<CommentsScreen> {
   Widget build(BuildContext context) {
     return EditorMasterScreen(
       title: 'Komentari',
-      body: isLoading ?  const Center(child: CircularProgressIndicator())
+      body: isLoading ?  const Center(child: CircularProgressIndicator(color: Colors.blueGrey,))
       : Container(
         padding: const EdgeInsets.all(20),
         child: Center(
