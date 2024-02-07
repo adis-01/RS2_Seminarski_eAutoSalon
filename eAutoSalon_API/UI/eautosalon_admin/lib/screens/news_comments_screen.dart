@@ -14,8 +14,7 @@ import '../models/search_result.dart';
 
 class CommentsScreen extends StatefulWidget {
   int novostId;
-  bool isOwner;
-  CommentsScreen({super.key, required this.isOwner, required this.novostId});
+  CommentsScreen({super.key, required this.novostId});
 
   @override
   State<CommentsScreen> createState() => _CommentsScreenState();
@@ -141,7 +140,7 @@ class _CommentsScreenState extends State<CommentsScreen> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
-                              widget.isOwner ? Tooltip(
+                              Tooltip(
                                 message: 'Izbriši komentar',
                                 child: IconButton( 
                                   splashRadius: 20,
@@ -153,7 +152,7 @@ class _CommentsScreenState extends State<CommentsScreen> {
                                   },
                                   icon: Icon(Icons.delete, color: Colors.red[300], size: 22)
                                 ),
-                              ) : const Text(""),
+                              ),
                             ],
                           )
                         ],

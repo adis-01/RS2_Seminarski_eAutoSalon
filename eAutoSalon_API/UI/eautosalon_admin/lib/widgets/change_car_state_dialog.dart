@@ -134,7 +134,7 @@ class _ChangeCarStateDialogState extends State<ChangeCarStateDialog> {
         Navigator.of(context).pop({
           'KorisnikId' : _formKey.currentState!.value['KorisnikId'],
           'AutomobilId' : widget.automobil.automobilId,
-          'Cijena' : widget.automobil.cijena,
+          'Iznos' : widget.automobil.cijena,
           'IsOnline' : false
         });
       }

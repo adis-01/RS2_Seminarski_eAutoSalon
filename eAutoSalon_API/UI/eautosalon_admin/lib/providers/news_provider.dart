@@ -8,14 +8,16 @@ import '../models/search_result.dart';
 class NewsProvider extends BaseProvider<News> {
   NewsProvider() : super("Novosti");
 
-  Future<SearchResult<News>> getOstale(dynamic params) async {
-    var query = getQueryString(params);
-    var url = "$baseUrl$endp/GetOstale?$query";
-    var uri = Uri.parse(url);
-    var headers = createHeaders();
 
-    var req = await http.get(uri, headers: headers);
-    if (isValidResponse(req)) {
+  Future<SearchResult<News>> getSve(dynamic filters) async{
+    var queryString = getQueryString(filters);
+    var url = "$baseUrl$endp/getSve?$queryString";
+    var uri = Uri.parse(url);
+    
+    var headers=createHeaders();
+    var req = await http.get(uri,headers: headers);
+
+    if(isValidResponse(req)){
       SearchResult<News> result = SearchResult<News>();
       var data = jsonDecode(req.body);
       result.hasNext = data['hasNext'];
@@ -24,29 +26,9 @@ class NewsProvider extends BaseProvider<News> {
         result.list.add(fromJson(item));
       }
       return result;
-    } else {
-      throw Exception("Greška...");
     }
-  }
-
-  Future<SearchResult<News>> getVlastite(dynamic params) async {
-    var query = getQueryString(params);
-    var url = "$baseUrl$endp/GetVlastite?$query";
-    var uri = Uri.parse(url);
-    var headers = createHeaders();
-
-    var req = await http.get(uri, headers: headers);
-    if (isValidResponse(req)) {
-      SearchResult<News> result = SearchResult<News>();
-      var data = jsonDecode(req.body);
-      result.hasNext = data['hasNext'];
-      result.total = data['totalPages'];
-      for (var item in data['list']) {
-        result.list.add(fromJson(item));
-      }
-      return result;
-    } else {
-      throw Exception("Greška...");
+    else{
+      throw Exception('Greška...');
     }
   }
 

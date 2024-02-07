@@ -11,9 +11,8 @@ import '../models/news.dart';
 
 class NewsDetailsScreen extends StatefulWidget {
   News object;
-  bool editorsArticle;
   NewsDetailsScreen(
-      {super.key, required this.editorsArticle, required this.object});
+      {super.key, required this.object});
 
   @override
   State<NewsDetailsScreen> createState() => _NewsDetailsScreenState();
@@ -57,7 +56,7 @@ class _NewsDetailsScreenState extends State<NewsDetailsScreen> {
                         children: [
                           const Icon(Icons.newspaper,
                               color: Colors.black, size: 25),
-                          widget.editorsArticle ? Tooltip(
+                         Tooltip(
                             message: 'Uredi',
                             child: IconButton(
                               splashRadius: 20,
@@ -70,7 +69,7 @@ class _NewsDetailsScreenState extends State<NewsDetailsScreen> {
                               icon: const Icon(Icons.edit,
                                   color: Colors.black, size: 25),
                             ),
-                          ) : const Text("")
+                          ) 
                         ],
                       ),
                       const SizedBox(height: 10),
@@ -174,7 +173,6 @@ class _NewsDetailsScreenState extends State<NewsDetailsScreen> {
           onPressed: () {
             Navigator.of(context).push(MaterialPageRoute(
                 builder: (builder) => CommentsScreen(
-                      isOwner: widget.editorsArticle,
                       novostId: widget.object.novostiId ?? 0,
                     )));
           },
