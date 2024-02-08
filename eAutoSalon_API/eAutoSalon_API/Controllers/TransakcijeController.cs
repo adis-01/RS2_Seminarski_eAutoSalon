@@ -19,12 +19,13 @@ namespace eAutoSalon_API.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Korisnik,Administrator,Urednik")]
         public async Task<VMTransakcija> Insert([FromBody] TransakcijaInsert req)
         {
            return await _service.Insert(req);
         }
 
-        [Authorize(Roles = "Korisnik,Administrator")]
+        [Authorize(Roles = "Administrator")]
         [HttpGet]
         public async Task<List<VMTransakcija>> GetAll()
         {

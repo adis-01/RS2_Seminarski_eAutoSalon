@@ -102,7 +102,7 @@ class _NewsScreenState extends State<NewsScreen> {
   Container buildContainer(BuildContext context, News item) {
     return Container(
       width: 350,
-      height: 350,
+      height: 450,
       padding: const EdgeInsets.all(15),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
@@ -131,6 +131,7 @@ class _NewsScreenState extends State<NewsScreen> {
                     ),
               const SizedBox(height: 15),
               Text(item.naslov ?? "null",
+                  textAlign: TextAlign.center,
                   style: const TextStyle(
                       color: Colors.blueGrey,
                       fontWeight: FontWeight.bold,

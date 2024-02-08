@@ -20,7 +20,7 @@ namespace eAutoSalon_API.Controllers
             _service = service;
         }
 
-        [Authorize(Roles ="Korisnik")]
+        [Authorize(Roles ="Administrator")]
         public override async Task<VMAutomobil> Insert([FromBody] AutomobilInsert req)
         {
             return await base.Insert(req);
@@ -45,14 +45,14 @@ namespace eAutoSalon_API.Controllers
             return await _service.Recommend(id);
         }
 
-        [Authorize(Roles ="Korisnik")]
+        [Authorize(Roles ="Administrator,Korisnik,Urednik")]
         [HttpGet("Aktivni")]
         public async Task<PagedList<VMAutomobil>> GetAktivne([FromQuery]AutomobilSearchObject? search = null)
         {
             return await _service.GetAktivne(search);
         }
 
-        [Authorize(Roles = "Korisnik")]
+        [Authorize(Roles = "Administrator")]
         [HttpGet("Zavrseni")]
         public async Task<PagedList<VMAutomobil>> GetProdane([FromQuery] AutomobilSearchObject? search = null)
         {
@@ -60,14 +60,14 @@ namespace eAutoSalon_API.Controllers
         }
 
 
-        [Authorize(Roles ="Korisnik,Administrator")]
+        [Authorize(Roles ="Korisnik,Administrator,Urednik")]
         [HttpGet("GetProizvodjace")]
         public async Task<List<string>> GetProizvodjace()
         {
             return await _service.GetProizvodjace();
         }
 
-        [Authorize(Roles = "Korisnik,Administrator")]
+        [Authorize(Roles = "Korisnik,Administrator,Urednik")]
         [HttpGet("GetFiltered")]
         public async Task<PagedList<VMAutomobil>> GetFiltered([FromQuery]AutomobilSearchObject? search = null)
         {

@@ -78,7 +78,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text("User since ${user.registered ?? "[date null]"}", style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w400, color: Colors.blueGrey), textAlign: TextAlign.start,),
+                            Text("Registrovan od ${user.registrationDate}", style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w400, color: Colors.blueGrey), textAlign: TextAlign.start,),
                           ],
                         ),
                         const SizedBox(height: 10),

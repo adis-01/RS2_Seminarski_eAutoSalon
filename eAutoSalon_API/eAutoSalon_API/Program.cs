@@ -80,4 +80,10 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-app.Run();
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<EAutoSalonTestContext>();
+    context.Database.Migrate();
+}
+
+    app.Run();

@@ -25,7 +25,7 @@ namespace eAutoSalon_API.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Korisnik")]
+        [Authorize(Roles = "Administrator")]
         public async Task<VMOprema> Insert([FromBody] DodatnaOpremaInsert req)
         {
             return await _service.Insert(req);

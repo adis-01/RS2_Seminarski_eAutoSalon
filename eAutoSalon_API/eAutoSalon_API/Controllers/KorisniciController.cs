@@ -21,13 +21,13 @@ namespace eAutoSalon_API.Controllers
 
 
         [HttpPost("ChangePassword/{id}")]
-        [Authorize(Roles ="Korisnik")]
+        [Authorize(Roles ="Korisnik,Administrator, Urednik")]
         public async Task<VMKorisnik> ChangePass(int id, [FromBody] KorisnikPasswordRequest req)
         {
             return await _service.PasswordChange(id, req);
         }
 
-        [Authorize(Roles ="Korisnik")]
+        [Authorize(Roles ="Administrator")]
         public override Task<PagedList<VMKorisnik>> GetAll([FromQuery] SearchObject? search = null)
         {
             return base.GetAll(search);
@@ -43,7 +43,7 @@ namespace eAutoSalon_API.Controllers
 
 
         [HttpPost("ChangePicture/{id}")]
-        [Authorize(Roles = "Korisnik")]
+        [Authorize(Roles = "Korisnik, Administrator, Urednik")]
         public async Task ChangePicture(int id, [FromBody] SlikaRequest req)
         {
             await _service.PictureChange(id,req);
@@ -62,14 +62,14 @@ namespace eAutoSalon_API.Controllers
             return await _service.GetRoles(username);
         }
 
-        [Authorize(Roles ="Korisnik,Administrator")]
+        [Authorize(Roles ="Administrator")]
         [HttpGet("GetAktivne")]
         public async Task<PagedList<VMKorisnik>> GetAktivne([FromQuery]SearchObject? search = null)
         {
             return await _service.getAktivne(search);
         }
 
-        [Authorize(Roles = "Korisnik")]
+        [Authorize(Roles = "Administrator")]
         [HttpPut("ChangeState/{id}")]
         public async Task ChangeState(int id)
         {
@@ -77,13 +77,13 @@ namespace eAutoSalon_API.Controllers
         }
 
         [HttpGet("UserProfile")]
-        [Authorize(Roles ="Korisnik,Administrator")]
+        [Authorize(Roles ="Korisnik,Administrator, Urednik")]
         public async Task<VMKorisnik> GetUserProfile([FromQuery] string username)
         {
             return await _service.FetchUserProfile(username);
         }
 
-        [Authorize(Roles = "Korisnik")]
+        [Authorize(Roles = "Administrator")]
         public override async Task<VMKorisnik> Update(int id, [FromBody]KorisnikUpdate req)
         {
             return await base.Update(id, req);
@@ -96,7 +96,7 @@ namespace eAutoSalon_API.Controllers
             return await _service.GetUserId(username);
         }
 
-        [Authorize(Roles = "Korisnik,Administrator")]
+        [Authorize(Roles = "Korisnik,Administrator,Urednik")]
         [HttpGet("GetTotalNumber")]
         public async Task<int> GetTotal()
         {

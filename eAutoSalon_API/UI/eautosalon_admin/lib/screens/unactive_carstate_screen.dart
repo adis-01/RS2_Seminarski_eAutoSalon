@@ -151,7 +151,7 @@ class _PastCarsScreenState extends State<PastCarsScreen> {
                 ? () {
                     setState(() {
                       _currentPage--;
-                      isLoading = false;
+                      isLoading = true;
                     });
                     fetchData();
                   }

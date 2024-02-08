@@ -21,7 +21,7 @@ namespace eAutoSalon_API.Controllers
         }
 
         [HttpGet("GetAvailableAppointments/{id}")]
-        [Authorize(Roles = "Korisnik,Administrator")]
+        [Authorize(Roles = "Korisnik,Administrator,Urednik")]
         public List<string> Get(int id,[FromQuery] DateTime datum)
         {
             return _service.GetDostupne(id, datum);
@@ -35,28 +35,28 @@ namespace eAutoSalon_API.Controllers
         }
 
         [HttpGet("GetAktivne")]
-        [Authorize(Roles ="Korisnik")]
+        [Authorize(Roles ="Administrator")]
         public async Task<PagedList<VMTestnaVoznja>> GetAktivne([FromQuery] TestnaVoznjaSearchObject? search = null)
         {
             return await _service.GetAktivneTestne(search);
         }
 
         [HttpGet("GetZavrsene")]
-        [Authorize(Roles ="Korisnik")]
+        [Authorize(Roles ="Administrator")]
         public async Task<PagedList<VMTestnaVoznja>> GetZavrsene([FromQuery] TestnaVoznjaSearchObject? search = null)
         {
             return await _service.GetZavrseneTestne(search);
         }
 
         [HttpPut("Cancel/{id}")]
-        [Authorize(Roles = "Korisnik")]
+        [Authorize(Roles = "Administrator")]
         public async Task Cancel(int id)
         {
             await _service.Cancel(id);
         }
 
         [HttpPut("Complete/{id}")]
-        [Authorize(Roles ="Korisnik")]
+        [Authorize(Roles = "Administrator")]
         public async Task Complete (int id)
         {
             await _service.Complete(id);

@@ -178,7 +178,16 @@ class _LoginScreenState extends State<LoginScreen> {
       setState(() {
         isLoading=false;
       });
-      Navigator.of(context).push(MaterialPageRoute(builder: (builder) => const HomePageScreen()));
+      if(data.contains("Administrator")){
+        Navigator.of(context).push(MaterialPageRoute(builder: (builder) => const HomePageScreen()));
+      }
+      else if(data.contains("Urednik")){
+        Navigator.of(context).push(MaterialPageRoute(builder: (builder) => const NewsScreen()));
+      }
+      else{
+        CustomDialogs.showError(context, 'Pristup ograničen');
+      }
+      
     } catch (e) {
       setState(() {
         isLoading=false;

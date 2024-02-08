@@ -20,39 +20,39 @@ namespace eAutoSalon_API.Controllers
             _service = service;
         }
 
-        [Authorize(Roles ="Korisnik")]
+        [Authorize(Roles ="Administrator")]
         public override async Task<VMUposlenik> Insert([FromBody] UposlenikInsert req)
         { 
             return await base.Insert(req);    
         }
 
-        [Authorize(Roles = "Korisnik")]
+        [Authorize(Roles = "Administrator")]
         public override async Task Delete(int id)
         {
             await base.Delete(id);
         }
 
-        [Authorize(Roles = "Korisnik")]
+        [Authorize(Roles = "Administrator")]
         public override async Task<VMUposlenik> Update(int id, [FromBody] UposlenikUpdate req)
         {
             return await base.Update(id, req);
         }
 
         [HttpPost("ChangePic/{id}")]
-        [Authorize(Roles ="Korisnik,Administrator")]
+        [Authorize(Roles ="Administrator")]
         public async Task ChangePicture (int id, [FromBody] SlikaRequest req)
         {
             await _service.ChangePicture(id, req);
         }
 
-        [Authorize(Roles = "Korisnik,Administrator")]
+        [Authorize(Roles = "Korisnik,Administrator,Urednik")]
         [HttpGet("GetAktivne")]
         public async Task<PagedList<VMUposlenik>> GetAktivne([FromQuery]UposlenikSearchObject? search = null)
         {
             return await _service.getUposlene(search);
         }
 
-        [Authorize(Roles = "Korisnik")]
+        [Authorize(Roles = "Administrator")]
         [HttpPut("ChangeState/{id}")]
         public async Task ChangeState(int id)
         {

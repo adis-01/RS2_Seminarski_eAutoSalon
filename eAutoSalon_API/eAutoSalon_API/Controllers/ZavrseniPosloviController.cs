@@ -19,7 +19,7 @@ namespace eAutoSalon_API.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "Korisnik,Administrator")]
+        [Authorize(Roles = "Administrator")]
         public async Task<VMZavrseniWithSum> GetAll([FromQuery]ZavrseniSearchObject? search = null)
         {
             return await _service.GetAll(search);

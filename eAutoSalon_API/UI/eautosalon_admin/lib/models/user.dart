@@ -1,5 +1,6 @@
 
 
+import 'package:intl/intl.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'user.g.dart';
@@ -14,8 +15,8 @@ class User{
   String? slika;
   DateTime? registeredOn;
 
-  String? get registered{
-    return registeredOn?.toLocal().toString();
+  String? get registrationDate{
+    return registeredOn != null ? DateFormat.yMMMd().format(registeredOn!) : "date null";
   }
 
   User(this.korisnikId, this.firstName,this.lastName, this.email, this.slika, this.registeredOn);

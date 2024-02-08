@@ -20,27 +20,27 @@ namespace eAutoSalon_API.Controllers
             _service = service;
         }
 
-        [Authorize(Roles ="Korisnik")]
+        [Authorize(Roles ="Urednik")]
         public override async Task<VMNovosti> Insert([FromBody] NovostInsert req)
         {
             return await base.Insert(req);
         }
 
-        [Authorize(Roles = "Korisnik")]
+        [Authorize(Roles = "Urednik")]
         [HttpGet("GetVlastite")]
         public async Task<PagedList<VMNovosti>> getvl([FromQuery] string username, [FromQuery] NovostiSearchObject? search = null)
         {
             return await _service.getVlastite(username, search);
         }
 
-        [Authorize(Roles = "Korisnik")]
+        [Authorize(Roles = "Urednik")]
         [HttpGet("GetOstale")]
         public async Task<PagedList<VMNovosti>> getos([FromQuery] string username, [FromQuery] NovostiSearchObject? search = null)
         {
             return await _service.getOstale(username, search);
         }
 
-        [Authorize(Roles ="Korisnik")]
+        [Authorize(Roles ="Urednik")]
         public override async Task<VMNovosti> Update(int id, [FromBody] NovostUpdate req)
         {
             return await base.Update(id, req);

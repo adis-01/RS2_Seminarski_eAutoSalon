@@ -25,7 +25,7 @@ namespace eAutoSalon_API.Controllers
             return base.Insert(req);
         }
 
-        [Authorize(Roles = "Korisnik,Administrator")]
+        [Authorize(Roles = "Administrator")]
         public override Task Delete(int id)
         {
             return base.Delete(id);
@@ -40,7 +40,7 @@ namespace eAutoSalon_API.Controllers
 
         [Authorize(Roles ="Korisnik,Administrator,Urednik")]
         [HttpGet("ByKorisnik/{id}")]
-        public async Task<List<VMRecenzije>> getByKorisnik(int id)
+        public async Task<List<VMRecenzije>> GetByKorisnik(int id)
         {
             return await _service.GetByKorisnik(id);
         }

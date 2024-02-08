@@ -8,7 +8,6 @@ namespace eAutoSalon_API.Controllers
 {
     [Route("[controller]")]
     [ApiController]
-    [Authorize(Roles ="Korisnik")]
     public class ContactController : ControllerBase
     {
         IMailService _service;
@@ -18,6 +17,7 @@ namespace eAutoSalon_API.Controllers
         }
 
         [HttpPost("ContactPage")]
+        [Authorize(Roles = "Korisnik,Administrator,Urednik")]
         public async Task SendMailSupport([FromBody] MailObject req)
         {
            await _service.Contact(req);

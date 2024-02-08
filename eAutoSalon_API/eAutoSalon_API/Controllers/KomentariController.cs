@@ -27,6 +27,7 @@ namespace eAutoSalon_API.Controllers
             return await _service.GetAllKomentari_Novost(id,searchObject);
         }
 
+
         [HttpGet("TotalNumber/{id}")]
         public async Task<int> Total(int id)
         {
