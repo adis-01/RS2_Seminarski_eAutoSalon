@@ -262,6 +262,21 @@ class _ReportScreenState extends State<ReportScreen> {
         ),
         Column(
           children: [
+            const Text("Aktivni oglasi",
+                style: TextStyle(
+                    fontSize: 15,
+                    color: Colors.blueGrey,
+                    fontWeight: FontWeight.w600)),
+            const SizedBox(height: 3),
+            Text(totalUsers.toString(),
+                style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black87))
+          ],
+        ),
+        Column(
+          children: [
             const Text(
               "Prosječna ocjena",
               style: TextStyle(

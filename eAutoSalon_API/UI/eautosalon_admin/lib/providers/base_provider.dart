@@ -16,7 +16,7 @@ abstract class BaseProvider<T> with ChangeNotifier{
   String get endp => _endpoint;
 
   BaseProvider(String endpoint){
-    _baseUrl=const String.fromEnvironment("baseUrl", defaultValue: "https://localhost:7173/");
+    _baseUrl=const String.fromEnvironment("baseUrl", defaultValue: "http://localhost:7173/");
     _endpoint=endpoint;
   } 
 

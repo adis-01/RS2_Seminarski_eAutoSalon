@@ -3,11 +3,14 @@ using RabbitMQ.Client.Events;
 using RabbitMQ.Client;
 using System.Text;
 using Newtonsoft.Json;
-using eAutoSalon.Models.ViewModels;
 using eAutoSalon.RabbitMQ_C;
 
+var hostname = Environment.GetEnvironmentVariable("RABBITMQ_HOST") ?? "host";
+var username = Environment.GetEnvironmentVariable("RABBITMQ_USER") ?? "user";
+var password = Environment.GetEnvironmentVariable("RABBITMQ_PASS") ?? "pass";
 
-var factory = new ConnectionFactory { HostName = "localhost" };
+var factory = new ConnectionFactory { HostName = hostname, UserName = username, Password = password };
+
 using var connection = factory.CreateConnection();
 using var channel = connection.CreateModel();
 
@@ -17,7 +20,7 @@ channel.QueueDeclare(queue: "email_sending",
                      autoDelete: false,
                      arguments: null);
 
-Console.WriteLine(" [*] Waiting for messages.");
+Console.WriteLine("Listening to messages....");
 
 var consumer = new EventingBasicConsumer(channel);
 consumer.Received += (model, ea) =>
@@ -31,5 +34,5 @@ channel.BasicConsume(queue: "email_sending",
                      autoAck: true,
                      consumer: consumer);
 
-Console.WriteLine(" Press [enter] to exit.");
+Thread.Sleep(Timeout.Infinite);
 Console.ReadLine();

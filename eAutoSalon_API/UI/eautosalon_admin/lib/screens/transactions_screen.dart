@@ -20,19 +20,6 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
   late TransakcijaProvider _transakcijaProvider;
 
 
-  // List<Transakcija> lista = [
-  //   Transakcija('px_3213219fNAFNK21ll', '32852.0', 'USD'),
-  //   Transakcija('pjdasn23_321k231čalsas', '2244.0', 'BAM'),
-  //   Transakcija('XK_dsakn21kj0asjkl', '2143.0', 'USD'),
-  //   Transakcija('XK_dsakn21kj0asjkl', '2143.0', 'USD'),
-  //   Transakcija('XK_dsakn21kj0asjkl', '2143.0', 'USD'),
-  //   Transakcija('XK_dsakn21kj0asjkl', '2143.0', 'USD'),
-  //   Transakcija('XK_dsakn21kj0asjkl', '2143.0', 'USD'),
-  //   Transakcija('XK_dsakn21kj0asjkl', '2143.0', 'USD'),
-  //   Transakcija('XK_dsakn21kj0asjkl', '2143.0', 'USD'),
-  //   Transakcija('XK_dsakn21kj0asjkl', '2143.0', 'USD'),
-  // ];
-
   @override
   void initState() {
     super.initState();
@@ -106,7 +93,7 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
                                   width: 60,
                                   decoration: BoxDecoration(
                                       border: Border.all(
-                                          width: 0.5, color: Colors.white),
+                                          width: 0.5, color: Colors.black87),
                                       borderRadius: BorderRadius.circular(8)),
                                   child: const Center(
                                       child: Icon(

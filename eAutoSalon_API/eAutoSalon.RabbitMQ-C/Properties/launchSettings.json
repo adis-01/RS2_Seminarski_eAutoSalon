@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "eAutoSalon.RabbitMQ": {
+      "commandName": "Project"
+    },
+    "Docker": {
+      "commandName": "Docker"
+    }
+  }
+}

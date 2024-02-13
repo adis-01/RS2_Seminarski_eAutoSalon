@@ -33,7 +33,7 @@ services:
     build:
       context: .
     environment:
-      - ConnectionStrings:DefaultConnection=Server=eautosalon-sql,1433;Database=eAutoSalonDB;User=sa;Password=Test_123!;ConnectRetryCount=0; TrustServerCertificate=True
+      - ConnectionStrings:DefaultConnection=Server=eautosalon-sql,1433;Database=eAutoSalonDatabase;User=sa;Password=Test_123!;ConnectRetryCount=0; TrustServerCertificate=True
       - ASPNETCORE_ENVIRONMENT=Development
       - RABBITMQ_HOST=rabbitmq
       - RABBITMQ_USER=guest
@@ -47,7 +47,19 @@ services:
     depends_on:
       - eautosalon-sql
       - rabbitmq
-      
+  
+  eautosalon-console:
+    restart: unless-stopped
+    build:
+      context: ./eAutoSalon.RabbitMQ-C
+    environment:
+      - RABBITMQ_HOST=rabbitmq
+      - RABBITMQ_USER=guest
+      - RABBITMQ_PASS=guest
+    networks:
+      - eautosalonet
+    depends_on:
+      - rabbitmq
   
       
 networks:

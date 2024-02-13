@@ -57,7 +57,11 @@ namespace eAutoSalon.Services.Services
     
         public void StartRabbitMQ(VMEmail_Token obj)
         {
-            var factory = new ConnectionFactory { HostName = "localhost" };
+            var hostname = Environment.GetEnvironmentVariable("RABBITMQ_HOST") ?? "host";
+            var username = Environment.GetEnvironmentVariable("RABBITMQ_USER") ?? "user";
+            var password = Environment.GetEnvironmentVariable("RABBITMQ_PASS") ?? "pass";
+
+            var factory = new ConnectionFactory { HostName = hostname, UserName = username, Password = password};
             
             using var connection = factory.CreateConnection();
             using var channel = connection.CreateModel();
