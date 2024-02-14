@@ -256,5 +256,16 @@ namespace eAutoSalon.Services.Services
 
             return _mapper.Map<List<VMAutomobil>>(similarities);
         }
+
+        public async Task<int> GetUkupanBrojAktivnihOglasa()
+        {
+            int total = 0;
+            var count = await _context.Automobilis.Where(x => x.State == "Aktivan").CountAsync();
+            if (count != 0)
+            {
+                total = count;
+            }
+            return total;
+        }
     }
 }

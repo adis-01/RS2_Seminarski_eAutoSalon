@@ -23,6 +23,7 @@ class MyAppBar extends StatelessWidget {
               MyDialogs.showQuestion(context, 'Da li ste sigurni da se želite odjaviti?', () {
                 Authorization.username = "";
                 Authorization.password = "";
+                Authorization.userId = null;
                 Navigator.of(context).pop();
                 Navigator.of(context).push(MaterialPageRoute(builder: (builder) => const LoginScreen()));
                });

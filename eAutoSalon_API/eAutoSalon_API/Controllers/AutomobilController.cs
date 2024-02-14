@@ -73,6 +73,13 @@ namespace eAutoSalon_API.Controllers
         {
             return await _service.GetFiltered(search);
         }
+
+        [Authorize(Roles = "Administrator")]
+        [HttpGet("TotalNumber")]
+        public async Task<int> GetTotal()
+        {
+            return await _service.GetUkupanBrojAktivnihOglasa();
+        }
       
     }
 }

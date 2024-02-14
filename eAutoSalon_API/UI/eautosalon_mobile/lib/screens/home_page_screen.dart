@@ -44,6 +44,9 @@ class _HomePageState extends State<HomePage> {
           actions: [
             IconButton(onPressed: (){
               MyDialogs.showQuestion(context, 'Da li ste sigurni da se želite odjaviti?', () {
+                Authorization.username = "";
+                Authorization.password = "";
+                Authorization.userId=null;
                 Navigator.of(context).push(MaterialPageRoute(builder: (builder) => const LoginScreen()));
                });
             }, icon: const Icon(Icons.logout, size: 20, color: Colors.white,))

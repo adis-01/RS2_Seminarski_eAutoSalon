@@ -83,27 +83,26 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
                             vertical: 10, horizontal: 20),
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(12),
-                            color: Colors.grey[500]),
+                            color: Colors.grey[300]),
                         child: 
                             SizedBox(
                               width: double.infinity,
                               child: ListTile(
                                 leading: Container(
+                                  padding: const EdgeInsets.all(5),
                                   height: 60,
                                   width: 60,
-                                  decoration: BoxDecoration(
-                                      border: Border.all(
-                                          width: 0.5, color: Colors.black87),
-                                      borderRadius: BorderRadius.circular(8)),
-                                  child: const Center(
-                                      child: Icon(
-                                    Icons.payment,
-                                    color: Colors.white70,
-                                  )),
+                                  decoration: const BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Colors.white
+                                  ),
+                                  child: Center(
+                                      child: Image.asset("assets/images/credit-card.png", fit: BoxFit.cover,)
+                                  ),
                                 ),
-                                title: Text("\$${object.iznos}", style: const TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.w500),),
-                                subtitle: Text(object.valuta?.toUpperCase() ?? "null", style: const TextStyle(fontSize: 16, color: Colors.white70, letterSpacing: 1.5, fontWeight: FontWeight.w500),),
-                                trailing: Tooltip(message: 'Broj transakcije',child: Text("${object.brojTransakcije}", style: const TextStyle(fontSize: 15,letterSpacing: 0.5, fontWeight: FontWeight.w500, color: Colors.white),)),
+                                title: Text("\$${object.iznos}", style: TextStyle(color: Colors.green[600], fontSize: 16, fontWeight: FontWeight.bold),),
+                                subtitle: Text(object.valuta?.toUpperCase() ?? "null", style: const TextStyle(fontSize: 16, color: Colors.black54, letterSpacing: 1.5, fontWeight: FontWeight.w500),),
+                                trailing: Tooltip(message: 'Broj transakcije',child: Text("${object.brojTransakcije}", style: const TextStyle(fontSize: 15,letterSpacing: 0.2, fontWeight: FontWeight.w600, color: Colors.black54),)),
                               ),
                             ),
                         );

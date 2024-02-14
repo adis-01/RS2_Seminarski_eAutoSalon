@@ -323,9 +323,6 @@ class _CheckoutPageState extends State<CheckoutPage> {
         'AutomobilId' : widget.car.automobilId
       };
 
-      print(transaction);
-      print(finishedB);
-
       await _transactionProvider.insert(transaction);
       await _fbProvider.insert(finishedB);
       setState(() {

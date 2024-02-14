@@ -85,6 +85,7 @@ class _PassChangeState extends State<PassChange> {
                   () {
                 Authorization.username = "";
                 Authorization.password = "";
+                Authorization.userId = null;
                 Navigator.of(context).push(MaterialPageRoute(
                     builder: (builder) => const LoginScreen()));
               });

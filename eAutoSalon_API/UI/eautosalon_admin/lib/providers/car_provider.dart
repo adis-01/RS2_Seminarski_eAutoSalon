@@ -35,6 +35,24 @@ class CarProvider extends BaseProvider<Automobil>{
     }
   }
 
+  Future<int> getTotalNumber() async{
+    var url = "$baseUrl$endp/TotalNumber";
+    var uri = Uri.parse(url);
+
+    var headers=createHeaders();
+    var req = await http.get(uri,headers: headers);
+
+    if(isValidResponse(req)){
+      int total = 0;
+      var data = jsonDecode(req.body);
+      total=data;
+      return total;
+    }
+    else{
+      throw Exception('Greška...');
+    }
+  }
+
   Future<SearchResult<Automobil>> getZavrsene(dynamic params) async{
      var filters = getQueryString(params);
 

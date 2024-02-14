@@ -77,13 +77,13 @@ namespace eAutoSalon_API.Controllers
         }
 
         [HttpGet("UserProfile")]
-        [Authorize(Roles ="Korisnik,Administrator, Urednik")]
+        [Authorize(Roles ="Korisnik,Administrator,Urednik")]
         public async Task<VMKorisnik> GetUserProfile([FromQuery] string username)
         {
             return await _service.FetchUserProfile(username);
         }
 
-        [Authorize(Roles = "Administrator")]
+        [Authorize(Roles = "Korisnik,Administrator,Urednik")]
         public override async Task<VMKorisnik> Update(int id, [FromBody]KorisnikUpdate req)
         {
             return await base.Update(id, req);

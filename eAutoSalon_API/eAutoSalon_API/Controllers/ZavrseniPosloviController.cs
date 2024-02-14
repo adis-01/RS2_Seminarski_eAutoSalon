@@ -26,7 +26,7 @@ namespace eAutoSalon_API.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Korisnik,Administrator")]
+        [Authorize(Roles = "Korisnik,Administrator,Urednik")]
         public async Task<VMZavrseni_Poslovi> Insert([FromBody] ZavrseniPosaoInsert req)
         {
             return await _service.Insert(req);

@@ -17,5 +17,6 @@ namespace eAutoSalon.Services.Interfaces
         Task<PagedList<VMAutomobil>> GetFiltered(AutomobilSearchObject? search = null);
         Task<List<string>> GetProizvodjace();
         Task<List<VMAutomobil>> Recommend(int id);
+        Task<int> GetUkupanBrojAktivnihOglasa();
     }
 }

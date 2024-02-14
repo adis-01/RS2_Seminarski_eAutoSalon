@@ -28,7 +28,7 @@ namespace eAutoSalon_API.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Korisnik")]
+        [Authorize(Roles = "Korisnik,Administrator,Urednik")]
         public async Task<VMTestnaVoznja> Insert([FromBody] TestnaVoznjaInsert req)
         {
             return await _service.NovaTestna(req);

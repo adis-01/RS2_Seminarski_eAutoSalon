@@ -1,5 +1,6 @@
 import 'package:eautosalon_admin/models/report_dto.dart';
 import 'package:eautosalon_admin/models/report_model.dart';
+import 'package:eautosalon_admin/providers/car_provider.dart';
 import 'package:eautosalon_admin/providers/report_provider.dart';
 import 'package:eautosalon_admin/providers/review_provider.dart';
 import 'package:eautosalon_admin/providers/user_provider.dart';
@@ -24,10 +25,12 @@ class _ReportScreenState extends State<ReportScreen> {
   ReportModel? report;
   final _formKey = GlobalKey<FormBuilderState>();
   int totalUsers = 0;
+  int totalActiveProducts = 0;
   double average = 0.00;
   late ReviewProvider _reviewProvider;
   late UserProvider _userProvider;
   late ReportProvider _reportProvider;
+  late CarProvider _carProvider;
   bool isLoading = true;
 
   @override
@@ -36,6 +39,7 @@ class _ReportScreenState extends State<ReportScreen> {
     _reviewProvider = context.read<ReviewProvider>();
     _userProvider = context.read<UserProvider>();
     _reportProvider = context.read<ReportProvider>();
+    _carProvider=context.read<CarProvider>();
     fetchData();
   }
 
@@ -268,7 +272,7 @@ class _ReportScreenState extends State<ReportScreen> {
                     color: Colors.blueGrey,
                     fontWeight: FontWeight.w600)),
             const SizedBox(height: 3),
-            Text(totalUsers.toString(),
+            Text(totalActiveProducts.toString(),
                 style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
@@ -318,10 +322,12 @@ class _ReportScreenState extends State<ReportScreen> {
       var avg = await _reviewProvider.getAverage();
       var total = await _userProvider.getTotalNumber();
       var list = await _reportProvider.getZavrseni(filters: filter);
+      var totalCars = await _carProvider.getTotalNumber();
       setState(() {
         average = avg;
         totalUsers = total;
         report=list;
+        totalActiveProducts=totalCars;
         isLoading = false;
       });
     } catch (e) {
