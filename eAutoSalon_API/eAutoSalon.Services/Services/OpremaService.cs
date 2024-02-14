@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using eAutoSalon.Models;
 using eAutoSalon.Models.InsertRequests;
 using eAutoSalon.Models.ViewModels;
 using eAutoSalon.Services.Database;
@@ -27,7 +28,7 @@ namespace eAutoSalon.Services.Services
 
             if(entity == null)
             {
-                throw new Exception("Nema objekta sa tim id-om");
+                throw new UserException("Nema objekta sa tim id-om");
             }
 
             return _mapper.Map<VMOprema>(entity);

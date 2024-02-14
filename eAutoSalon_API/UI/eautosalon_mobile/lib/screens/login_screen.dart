@@ -38,7 +38,10 @@ class _LoginScreenState extends State<LoginScreen> {
         backgroundColor: Colors.grey[200],
         body: 
            Center(
-             child: SingleChildScrollView(
+             child: isLoading ? 
+             const Center(child: CircularProgressIndicator(color: Colors.black87,),) 
+             :
+              SingleChildScrollView(
                child: Container(
                 padding: const EdgeInsets.all(25),
                     child: Column(
@@ -143,13 +146,19 @@ class _LoginScreenState extends State<LoginScreen> {
   }
   
   Future<void> logIn() async{
+    setState(() {
+      isLoading=true;
+    });
     Authorization.username = _usernameController.text;
     Authorization.password = _passwordController.text;
     try {
      var data = await _userProvider.getUserId();
      Authorization.userId = data;
-     Navigator.of(context).push(MaterialPageRoute(builder: (builder) => const HomePage()));
+     Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (builder) => const HomePage()));
     } catch (e) {
+      setState(() {
+        isLoading=false;
+      });
       MyDialogs.showError(context, e.toString());
     }
   }

@@ -164,7 +164,7 @@ abstract class BaseProvider<T> with ChangeNotifier{
       dynamic message = "Nepredviđena greška";
       Map<String,dynamic> error = jsonDecode(response.body);
       if(error.containsKey('errors')){
-        message = error['errors']['error'][0];
+        message = error['errors']['ERROR'][0];
       }
       throw Exception(message);
     }

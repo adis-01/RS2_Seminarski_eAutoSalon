@@ -100,7 +100,7 @@ namespace eAutoSalon.Services.Services
 
         public async Task<int> getUserId(string username)
         {
-            var entity = await _context.Korisnicis.Where(x => x.Username == username).FirstOrDefaultAsync() ?? throw new Exception("No users with that username");
+            var entity = await _context.Korisnicis.Where(x => x.Username == username).FirstOrDefaultAsync() ?? throw new Exception("Nema korisnika sa tim ID poljem");
 
             int id = entity.KorisnikId;
             return id;
