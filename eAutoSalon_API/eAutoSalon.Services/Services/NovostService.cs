@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using eAutoSalon.Models;
 using eAutoSalon.Models.InsertRequests;
 using eAutoSalon.Models.SearchObjects;
 using eAutoSalon.Models.UpdateRequests;
@@ -100,7 +101,7 @@ namespace eAutoSalon.Services.Services
 
         public async Task<int> getUserId(string username)
         {
-            var entity = await _context.Korisnicis.Where(x => x.Username == username).FirstOrDefaultAsync() ?? throw new Exception("Nema korisnika sa tim ID poljem");
+            var entity = await _context.Korisnicis.Where(x => x.Username == username).FirstOrDefaultAsync() ?? throw new UserException("Nema korisnika sa tim ID poljem");
 
             int id = entity.KorisnikId;
             return id;

@@ -43,7 +43,7 @@ namespace eAutoSalon.Services.Services
 
         public async Task ChangeState(int userId)
         {
-            var uposlenik = await _context.Uposlenicis.FindAsync(userId) ?? throw new Exception("Nema uposlenika sa tim ID poljem");
+            var uposlenik = await _context.Uposlenicis.FindAsync(userId) ?? throw new UserException("Nema uposlenika sa tim ID poljem");
             uposlenik.State = "Izbrisan";
             await _context.SaveChangesAsync();
         }

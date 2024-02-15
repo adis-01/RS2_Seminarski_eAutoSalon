@@ -59,10 +59,13 @@ class _NewsDetailState extends State<NewsDetail> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           //autor
                           buildAuthorCreds(),
+                          const SizedBox(width: 3),
+                          const Text("|"),
+                          const SizedBox(width:3),
                           //datum
                           buildDate(),
                         ],
@@ -132,16 +135,12 @@ class _NewsDetailState extends State<NewsDetail> {
   Row buildDate() {
     return Row(
       children: [
-        const Icon(
-          Icons.date_range,
-          color: Colors.black54,
-        ),
-        const SizedBox(width: 3),
         Text(
-          widget.news.date ?? "DATE NULL",
+          widget.news.datum ?? "null",
           style: const TextStyle(
             color: Colors.black87,
-            fontWeight: FontWeight.w400,
+            fontWeight: FontWeight.w500,
+            fontSize: 13
           ),
         )
       ],
@@ -151,14 +150,9 @@ class _NewsDetailState extends State<NewsDetail> {
   Row buildAuthorCreds() {
     return Row(
       children: [
-        const Icon(
-          Icons.edit_note,
-          color: Colors.black54,
-        ),
-        const SizedBox(width: 5),
         Text(
           widget.news.korisnik?.fullname ?? "null",
-          style: const TextStyle(color: Colors.black87, fontWeight: FontWeight.w400),
+          style: const TextStyle(color: Colors.black87, fontWeight: FontWeight.w500, fontSize: 13),
         )
       ],
     );

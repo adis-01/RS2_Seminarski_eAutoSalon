@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using eAutoSalon.Models;
 using eAutoSalon.Models.InsertRequests;
 using eAutoSalon.Models.SearchObjects;
 using eAutoSalon.Models.ViewModels;
@@ -54,6 +55,11 @@ namespace eAutoSalon.Services.Services
 
         public async Task<VMZavrseni_Poslovi> Insert(ZavrseniPosaoInsert req)
         {
+            bool userExists = await _context.Korisnicis.AnyAsync(x => x.KorisnikId == req.KorisnikId);
+            if (!userExists)
+            {
+                throw new UserException("Nema korisnika sa tim ID poljem");
+            }
             ZavrseniPoslovi entity = new();
             _mapper.Map(req, entity);
             entity.DatumProdaje = DateTime.Now;

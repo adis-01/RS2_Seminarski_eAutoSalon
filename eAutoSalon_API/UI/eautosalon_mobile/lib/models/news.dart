@@ -21,8 +21,9 @@ class News{
     return "${korisnik?.firstName} ${korisnik?.lastName}";
   }
 
-  String? get date{
-    return datumObjave != null ? DateFormat.yMMMMd().format(datumObjave!) : "date null";
+
+  String? get datum{
+    return datumObjave != null ? DateFormat.yMd().format(datumObjave!) : "date null";
   }
 
   factory News.fromJson(Map<String,dynamic> json) => _$NewsFromJson(json);
