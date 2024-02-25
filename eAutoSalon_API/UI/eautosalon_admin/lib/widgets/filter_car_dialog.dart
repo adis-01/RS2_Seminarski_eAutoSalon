@@ -228,7 +228,7 @@ class _FilterCarDialogState extends State<FilterCarDialog> {
               cursorColor: Colors.grey,
               autovalidateMode: AutovalidateMode.onUserInteraction,
               validator: FormBuilderValidators.compose([
-                FormBuilderValidators.numeric(context,
+                FormBuilderValidators.integer(context,
                     errorText: 'Samo brojevi su dozvoljeni')
               ]),
               name: name,

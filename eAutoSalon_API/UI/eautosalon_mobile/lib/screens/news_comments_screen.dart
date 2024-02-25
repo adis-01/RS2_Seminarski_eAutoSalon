@@ -81,6 +81,8 @@ class _NewsCommentsState extends State<NewsComments> {
                       margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
                       width: double.infinity,
                       child: TextField(
+                        minLines: 2,
+                        maxLines: 2,
                         cursorColor: Colors.black54,
                         controller: _commentController,
                         decoration: const InputDecoration(

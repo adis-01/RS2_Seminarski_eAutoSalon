@@ -190,7 +190,7 @@ class _FilterCarState extends State<FilterCar> {
             focusedBorder:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
         validator: FormBuilderValidators.compose([
-          FormBuilderValidators.numeric(context, errorText: 'Samo brojevi'),
+          FormBuilderValidators.integer(context, errorText: 'Samo cijeli brojevi'),
           FormBuilderValidators.maxLength(context, 7, errorText: 'Max. 7 brojeva')
         ]),
       ),
@@ -210,7 +210,7 @@ class _FilterCarState extends State<FilterCar> {
             focusedBorder:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
         validator: FormBuilderValidators.compose([
-          FormBuilderValidators.numeric(context, errorText: 'Samo brojevi'),
+          FormBuilderValidators.integer(context, errorText: 'Samo cijeli brojevi'),
           FormBuilderValidators.maxLength(context, 4, errorText: 'Max. 4 broja')
         ]),
       ),

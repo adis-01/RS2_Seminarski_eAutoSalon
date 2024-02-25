@@ -211,7 +211,7 @@ class _NewCarScreenState extends State<NewCarScreen> {
             validator: FormBuilderValidators.compose([
               FormBuilderValidators.required(context,
                   errorText: 'Polje obavezno'),
-              FormBuilderValidators.numeric(context, errorText: 'Samo brojevi')
+              FormBuilderValidators.integer(context, errorText: 'Samo cijeli brojevi')
             ]),
           ),
         ),
@@ -229,7 +229,7 @@ class _NewCarScreenState extends State<NewCarScreen> {
             validator: FormBuilderValidators.compose([
               FormBuilderValidators.required(context,
                   errorText: 'Polje obavezno'),
-              FormBuilderValidators.numeric(context, errorText: 'Samo brojevi')
+              FormBuilderValidators.integer(context, errorText: 'Samo cijeli brojevi')
             ]),
           ),
         ),
@@ -271,6 +271,8 @@ class _NewCarScreenState extends State<NewCarScreen> {
             validator: FormBuilderValidators.compose([
               FormBuilderValidators.required(context,
                   errorText: 'Polje obavezno'),
+              FormBuilderValidators.integer(context, errorText: 'Samo cijeli brojevi'),
+              FormBuilderValidators.maxLength(context,1, errorText: 'Jednocifren broj')
             ]),
           ),
         ),
