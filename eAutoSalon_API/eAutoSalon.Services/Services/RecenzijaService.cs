@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using eAutoSalon.Models;
 using eAutoSalon.Models.InsertRequests;
 using eAutoSalon.Models.SearchObjects;
 using eAutoSalon.Models.UpdateRequests;
@@ -26,6 +27,11 @@ namespace eAutoSalon.Services.Services
             return query;
         }
 
+        public override IQueryable<Recenzije> AddFilter(IQueryable<Recenzije> query, RecenzijaSearchObject? search = null)
+        {
+            return base.AddFilter(query, search);
+        }
+
         public override IQueryable<Recenzije> AddInclude(IQueryable<Recenzije> query)
         {
             return query.Include("Korisnik");
@@ -50,6 +56,13 @@ namespace eAutoSalon.Services.Services
                 ToListAsync();
 
             return _mapper.Map<List<VMRecenzije>>(list);
+        }
+
+        public async Task HideReview(int reviewId)
+        {
+            var entity = await _context.Recenzijes.FirstOrDefaultAsync(x=>x.RecenzijaId == reviewId) ?? throw new UserException("Nema recenzije sa tim ID poljem");
+            //entity.State = "Sakrivena";
+            await _context.SaveChangesAsync();
         }
     }
 }

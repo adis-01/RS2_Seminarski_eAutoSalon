@@ -229,7 +229,7 @@ class _FilterCarDialogState extends State<FilterCarDialog> {
               autovalidateMode: AutovalidateMode.onUserInteraction,
               validator: FormBuilderValidators.compose([
                 FormBuilderValidators.integer(context,
-                    errorText: 'Samo brojevi su dozvoljeni')
+                    errorText: 'Samo cijeli brojevi su dozvoljeni')
               ]),
               name: name,
               textAlign: TextAlign.center,

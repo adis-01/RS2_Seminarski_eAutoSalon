@@ -44,5 +44,12 @@ namespace eAutoSalon_API.Controllers
         {
             return await _service.GetByKorisnik(id);
         }
+
+        [Authorize(Roles = "Administrator")]
+        [HttpPost("HideReview/{id}")]
+        public async Task HideReview(int id)
+        {
+            await _service.HideReview(id);
+        }
     }
 }

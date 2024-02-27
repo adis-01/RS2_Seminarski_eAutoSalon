@@ -141,16 +141,20 @@ class _CommentsScreenState extends State<CommentsScreen> {
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
                               Tooltip(
-                                message: 'Izbriši komentar',
+                                message: 'Sakrij komentar',
                                 child: IconButton( 
                                   splashRadius: 20,
                                   onPressed: (){
-                                    CustomDialogs.showQuestion(context, 'Izbrisati komentar korisnika ${item.komKorisnik}?', () async{
-                                        await _komentarProvider.delete(item.komentarId!);
+                                    CustomDialogs.showQuestion(context, 'Sakriti komentar korisnika ${item.komKorisnik}?', () async{
+                                        try {
+                                          await _komentarProvider.hideComment(item.komentarId!);
                                         Navigator.of(context).push(MaterialPageRoute(builder: (builder) => const NewsScreen()));
+                                        } catch (e) {
+                                          CustomDialogs.showError(context, e.toString());
+                                        }
                                      });
                                   },
-                                  icon: Icon(Icons.delete, color: Colors.red[300], size: 22)
+                                  icon: Icon(Icons.visibility_off, color: Colors.red[300], size: 22)
                                 ),
                               ),
                             ],

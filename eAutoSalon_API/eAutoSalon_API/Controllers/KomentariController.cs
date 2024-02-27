@@ -39,6 +39,13 @@ namespace eAutoSalon_API.Controllers
         {
             return await _service.GetHistorijuKomentara(id);
         }
+
+        [Authorize(Roles = "Urednik")]
+        [HttpPost("HideComment/{id}")]
+        public async Task HideComment(int id)
+        {
+            await _service.HideComment(id);
+        }
        
     }
 }

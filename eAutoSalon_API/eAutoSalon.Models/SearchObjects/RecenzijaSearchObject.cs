@@ -8,5 +8,6 @@ namespace eAutoSalon.Models.SearchObjects
 {
     public class RecenzijaSearchObject : BaseSearchObject
     {
+        bool IsHiddenReviewsIncluded {  get; set; }
     }
 }

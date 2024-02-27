@@ -25,6 +25,8 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
   SearchResult<Review>? result;
   late ReviewProvider _reviewProvider;
   bool isLoading = true;
+  bool sakriveneActive = false;
+  bool isHiddenIncluded = false;
 
   @override
   void initState() {
@@ -48,6 +50,19 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     buildBack(context),
+                    MaterialButton(
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(9)),
+                      color: Colors.black87,
+                      padding: const EdgeInsets.all(20),
+                      onPressed: (){
+                        setState(() {
+                          sakriveneActive = !sakriveneActive;
+                          currentPage = 1;
+                          isLoading = true;
+                        });
+                        loadData();
+                      }, 
+                    child: Text(sakriveneActive ? "PRIKAŽI AKTIVNE" : "PRIKAŽI SAKRIVENE", style: const TextStyle(fontSize: 14, color: Colors.white, fontWeight: FontWeight.w600, letterSpacing: 0.4),),),
                     Row(
                       children: [
                         Tooltip(
@@ -143,18 +158,26 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
                     child: Text(object.komentar ?? "", style: const TextStyle(fontSize: 15, color: Colors.blueGrey, fontWeight: FontWeight.w600),),
                   ) : const Center(child: Text("KOMENTAR NIJE OSTAVLJEN",style: TextStyle(fontSize: 15, color: Colors.blueGrey),)),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
+                      const Tooltip(
+                        message: 'Status',
+                        child: Text("AKTIVNA", style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500, color: Colors.black54, letterSpacing: 0.3),),
+                      ),
                       Tooltip(
-                        message: 'Obriši',
+                        message: 'Sakrij recenziju',
                         child: IconButton(
                           splashRadius: 20,
                           onPressed: (){
-                            CustomDialogs.showQuestion(context, 'Izbrisati recenziju korisnika ${object.korisnik?.username ?? "null"}?', () async{
-                                await _reviewProvider.delete(object.recenzijaId!);
-                                Navigator.of(context).push(MaterialPageRoute(builder: (builder) => const ReviewsScreen()));
+                            CustomDialogs.showQuestion(context, 'Sakriti recenziju korisnika ${object.korisnik?.username ?? "null"}?', () async{
+                                try {
+                                  await _reviewProvider.hideReview(object.recenzijaId!);
+                                  Navigator.of(context).push(MaterialPageRoute(builder: (builder) => const ReviewsScreen()));
+                                } catch (e) {
+                                  CustomDialogs.showError(context, e.toString());
+                                }
                              });
-                          }, icon: Icon(Icons.delete, color: Colors.red[400], size: 23)),
+                          }, icon: Icon(Icons.visibility_off, color: Colors.red[400], size: 23)),
                       )
                     ],
                   )

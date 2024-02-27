@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using eAutoSalon.Models;
 using eAutoSalon.Models.InsertRequests;
 using eAutoSalon.Models.SearchObjects;
 using eAutoSalon.Models.UpdateRequests;
@@ -86,6 +87,13 @@ namespace eAutoSalon.Services.Services
             int count = await list.CountAsync();
 
             return count;
+        }
+
+        public async Task HideComment(int commentId)
+        {
+            var entity = await _context.Komentaris.FirstOrDefaultAsync(x => x.KomentarId == commentId) ?? throw new UserException("Nema komentara sa tim ID poljem");
+            //entity.State = "Sakriven";
+            await _context.SaveChangesAsync();
         }
     }
 }
