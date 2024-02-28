@@ -86,7 +86,8 @@ class _ReviewInsertState extends State<ReviewInsert> {
         Navigator.of(context).pop({
           'Ocjena': currentRating,
           'Komentar': _commentController.text,
-          'KorisnikId': Authorization.userId
+          'KorisnikId': Authorization.userId,
+          'State' : 'Aktivna'
         });
       },
       child: Container(

@@ -41,6 +41,17 @@ class ReviewProvider extends BaseProvider<Review>{
     }
   }
 
+  Future<void> showReview(int reviewId) async{
+    var url = "$baseUrl$endp/ShowReview/$reviewId";
+    var uri = Uri.parse(url);
+
+    var headers = createHeaders();
+    var req = await http.post(uri,headers: headers);
+    if(!isValidResponse(req)){
+      throw Exception('Greška...');
+    }
+  }
+
 
 
   @override

@@ -85,6 +85,18 @@ class _ReportScreenState extends State<ReportScreen> {
                           ],
                         ),
                       ),
+                      const SizedBox(height: 15),
+                          Tooltip(
+                            message: 'Sačuvaj',
+                            child: MaterialButton(
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                              padding: const EdgeInsets.all(15),
+                              color: Colors.black87,
+                              onPressed: (){
+                          
+                              },
+                            child: const Icon(Icons.save_alt, size: 25, color: Colors.white,),),
+                          ),
                     ],
                   ),
                 ),

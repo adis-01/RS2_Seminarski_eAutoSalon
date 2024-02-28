@@ -13,6 +13,7 @@ namespace eAutoSalon.Models.ViewModels
         public int Ocjena { get; set; }
 
         public string? Komentar { get; set; }
+        public string State { get; set; } = null!;
 
         public virtual VMRecenzija_Korisnik? Korisnik { get; set; }
     }

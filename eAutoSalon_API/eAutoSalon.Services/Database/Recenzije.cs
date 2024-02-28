@@ -13,5 +13,7 @@ public partial class Recenzije
 
     public int? KorisnikId { get; set; }
 
+    public string State { get; set; } = null!;
+
     public virtual Korisnici? Korisnik { get; set; }
 }

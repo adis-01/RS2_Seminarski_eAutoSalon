@@ -10,6 +10,7 @@ namespace eAutoSalon.Models.ViewModels
     {
         public int KomentarId { get; set; }
         public string Sadrzaj { get; set; } = null!;
+        public string State { get; set; } = null!;
 
         public virtual VMKorisnik_Komentar Korisnik { get; set; } = null!;
 

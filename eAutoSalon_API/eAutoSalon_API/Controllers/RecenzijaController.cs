@@ -51,5 +51,12 @@ namespace eAutoSalon_API.Controllers
         {
             await _service.HideReview(id);
         }
+
+        [Authorize(Roles = "Administrator")]
+        [HttpPost("ShowReview/{id}")]
+        public async Task ShowReview(int id)
+        {
+            await _service.ShowReview(id);
+        }
     }
 }

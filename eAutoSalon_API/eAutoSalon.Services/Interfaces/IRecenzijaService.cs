@@ -15,5 +15,6 @@ namespace eAutoSalon.Services.Interfaces
         Task<double> GetAverage();
         Task<List<VMRecenzije>> GetByKorisnik(int korisnikId);
         Task HideReview(int reviewId);
+        Task ShowReview(int reviewId);
     }
 }

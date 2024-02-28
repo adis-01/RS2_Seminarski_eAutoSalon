@@ -102,6 +102,10 @@ public partial class EAutoSalonTestContext : DbContext
             entity.Property(e => e.KorisnikId).HasColumnName("KorisnikID");
             entity.Property(e => e.NovostiId).HasColumnName("NovostiID");
             entity.Property(e => e.Sadrzaj).HasColumnType("text");
+            entity.Property(e => e.State)
+                .HasMaxLength(255)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('Aktivan')");
 
             entity.HasOne(d => d.Korisnik).WithMany(p => p.Komentaris)
                 .HasForeignKey(d => d.KorisnikId)
@@ -202,6 +206,10 @@ public partial class EAutoSalonTestContext : DbContext
                 .HasMaxLength(255)
                 .IsUnicode(false);
             entity.Property(e => e.KorisnikId).HasColumnName("KorisnikID");
+            entity.Property(e => e.State)
+                .HasMaxLength(255)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('Aktivna')");
 
             entity.HasOne(d => d.Korisnik).WithMany(p => p.Recenzijes)
                 .HasForeignKey(d => d.KorisnikId)

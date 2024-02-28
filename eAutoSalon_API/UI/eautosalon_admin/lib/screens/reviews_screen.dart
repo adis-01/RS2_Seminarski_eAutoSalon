@@ -25,7 +25,6 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
   SearchResult<Review>? result;
   late ReviewProvider _reviewProvider;
   bool isLoading = true;
-  bool sakriveneActive = false;
   bool isHiddenIncluded = false;
 
   @override
@@ -56,13 +55,13 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
                       padding: const EdgeInsets.all(20),
                       onPressed: (){
                         setState(() {
-                          sakriveneActive = !sakriveneActive;
+                          isHiddenIncluded = !isHiddenIncluded;
                           currentPage = 1;
                           isLoading = true;
                         });
                         loadData();
                       }, 
-                    child: Text(sakriveneActive ? "PRIKAŽI AKTIVNE" : "PRIKAŽI SAKRIVENE", style: const TextStyle(fontSize: 14, color: Colors.white, fontWeight: FontWeight.w600, letterSpacing: 0.4),),),
+                    child: Text(!isHiddenIncluded ? "UKLJUČI SAKRIVENE" : "ISKLJUČI SAKRIVENE", style: const TextStyle(fontSize: 14, color: Colors.white, fontWeight: FontWeight.w600, letterSpacing: 0.4),),),
                     Row(
                       children: [
                         Tooltip(
@@ -160,24 +159,46 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Tooltip(
-                        message: 'Status',
-                        child: Text("AKTIVNA", style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500, color: Colors.black54, letterSpacing: 0.3),),
-                      ),
                       Tooltip(
+                        message: 'Status',
+                        child: Text(object.state?.toUpperCase() ?? "null", style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w500, color: Colors.black54, letterSpacing: 0.3),),
+                      ),
+                      object.state != null && object.state == "Aktivna"
+                      ? Tooltip(
                         message: 'Sakrij recenziju',
                         child: IconButton(
                           splashRadius: 20,
-                          onPressed: (){
-                            CustomDialogs.showQuestion(context, 'Sakriti recenziju korisnika ${object.korisnik?.username ?? "null"}?', () async{
-                                try {
-                                  await _reviewProvider.hideReview(object.recenzijaId!);
-                                  Navigator.of(context).push(MaterialPageRoute(builder: (builder) => const ReviewsScreen()));
-                                } catch (e) {
-                                  CustomDialogs.showError(context, e.toString());
-                                }
-                             });
+                          onPressed: () async{
+                            try {
+                              await _reviewProvider.hideReview(object.recenzijaId!);
+                              setState(() {
+                                isLoading=true;
+                                currentPage = 1;
+                              });
+                              loadData();
+                            } catch (e) {
+                              CustomDialogs.showError(context, e.toString());
+                            }
                           }, icon: Icon(Icons.visibility_off, color: Colors.red[400], size: 23)),
+                      )
+                      : Tooltip(
+                        message: 'Otkrij recenziju',
+                        child: IconButton(
+                          splashRadius: 20,
+                          onPressed: () async{
+                            try {
+                              await _reviewProvider.showReview(object.recenzijaId!);
+                              setState(() {
+                                isLoading=true;
+                                currentPage=1;
+                              });
+                              loadData();
+                            } catch (e) {
+                              CustomDialogs.showError(context, e.toString());
+                            }
+                          },
+                          icon: Icon(Icons.visibility, color: Colors.blue[400], size: 23,)
+                        ),
                       )
                     ],
                   )
@@ -244,7 +265,7 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
   
   Future<void> loadData() async{
     try {
-      var data = await _reviewProvider.getPaged({'Page': currentPage, 'PageSize' : _pageSize});
+      var data = await _reviewProvider.getPaged({'Page': currentPage, 'PageSize' : _pageSize, 'IsHiddenReviewsIncluded' : isHiddenIncluded});
       var avg = await _reviewProvider.getAverage();
       setState(() {
         result = data;

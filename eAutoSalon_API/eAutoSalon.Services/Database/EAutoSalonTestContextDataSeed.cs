@@ -54,9 +54,9 @@ namespace eAutoSalon.Services.Database
 
             modelBuilder.Entity<Recenzije>().HasData
             (
-                new Recenzije() { RecenzijaId = 1, KorisnikId = 1, Komentar = "Sve top", Ocjena = 5 },
-                new Recenzije() { RecenzijaId = 2, KorisnikId = 2, Komentar = "Osoblje neljubazno", Ocjena = 2 },
-                new Recenzije() { RecenzijaId = 3, KorisnikId = 3, Komentar = "Ponuda može biti bolja", Ocjena = 3 }
+                new Recenzije() { RecenzijaId = 1, KorisnikId = 1, Komentar = "Sve top", Ocjena = 5, State = "Aktivna" },
+                new Recenzije() { RecenzijaId = 2, KorisnikId = 2, Komentar = "Osoblje neljubazno", Ocjena = 2, State = "Aktivna" },
+                new Recenzije() { RecenzijaId = 3, KorisnikId = 3, Komentar = "Ponuda može biti bolja", Ocjena = 3, State = "Aktivna" }
             );
 
             modelBuilder.Entity<Novosti>().HasData
@@ -68,10 +68,10 @@ namespace eAutoSalon.Services.Database
 
             modelBuilder.Entity<Komentari>().HasData
             (
-                new Komentari() { KomentarId = 1, KorisnikId = 1, NovostiId = 1, Sadrzaj = "Odlična kolumna, sve pohvale" },
-                new Komentari() { KomentarId = 2, KorisnikId = 2, NovostiId = 1, Sadrzaj = "Bravo za autora" },
-                new Komentari() { KomentarId = 3, KorisnikId = 2, NovostiId = 2, Sadrzaj = "Bravo!!" },
-                new Komentari() { KomentarId = 4, KorisnikId = 1, NovostiId = 3, Sadrzaj = "Svaka cast!!" }
+                new Komentari() { KomentarId = 1, KorisnikId = 1, NovostiId = 1, Sadrzaj = "Odlična kolumna, sve pohvale", State = "Aktivan" },
+                new Komentari() { KomentarId = 2, KorisnikId = 2, NovostiId = 1, Sadrzaj = "Bravo za autora", State = "Aktivan" },
+                new Komentari() { KomentarId = 3, KorisnikId = 2, NovostiId = 2, Sadrzaj = "Bravo!!", State = "Aktivan" },
+                new Komentari() { KomentarId = 4, KorisnikId = 1, NovostiId = 3, Sadrzaj = "Svaka cast!!", State = "Aktivan" }
             );
 
             modelBuilder.Entity<Transakcije>().HasData

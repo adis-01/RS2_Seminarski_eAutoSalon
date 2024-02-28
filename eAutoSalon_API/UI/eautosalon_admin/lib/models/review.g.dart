@@ -13,11 +13,12 @@ Review _$ReviewFromJson(Map<String, dynamic> json) => Review(
       json['korisnik'] == null
           ? null
           : UserReview.fromJson(json['korisnik'] as Map<String, dynamic>),
-    );
+    )..state = json['state'] as String?;
 
 Map<String, dynamic> _$ReviewToJson(Review instance) => <String, dynamic>{
       'recenzijaId': instance.recenzijaId,
       'ocjena': instance.ocjena,
       'komentar': instance.komentar,
+      'state': instance.state,
       'korisnik': instance.korisnik,
     };

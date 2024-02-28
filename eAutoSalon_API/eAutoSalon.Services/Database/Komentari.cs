@@ -13,6 +13,8 @@ public partial class Komentari
 
     public int NovostiId { get; set; }
 
+    public string State { get; set; } = null!;
+
     public virtual Korisnici Korisnik { get; set; } = null!;
 
     public virtual Novosti Novosti { get; set; } = null!;

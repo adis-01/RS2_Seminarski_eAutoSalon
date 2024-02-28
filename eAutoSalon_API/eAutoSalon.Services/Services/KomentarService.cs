@@ -92,7 +92,7 @@ namespace eAutoSalon.Services.Services
         public async Task HideComment(int commentId)
         {
             var entity = await _context.Komentaris.FirstOrDefaultAsync(x => x.KomentarId == commentId) ?? throw new UserException("Nema komentara sa tim ID poljem");
-            //entity.State = "Sakriven";
+            entity.State = "Sakriven";
             await _context.SaveChangesAsync();
         }
     }

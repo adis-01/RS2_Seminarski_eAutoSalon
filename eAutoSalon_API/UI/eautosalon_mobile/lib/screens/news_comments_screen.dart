@@ -245,7 +245,8 @@ class _NewsCommentsState extends State<NewsComments> {
       await _komentarProvider.insert({
         'sadrzaj' : _commentController.text,
         'korisnikId' : Authorization.userId,
-        'novostiId' : widget.novostId
+        'novostiId' : widget.novostId,
+        'state' : 'Aktivan'
       });
       MyDialogs.showSuccess(context, 'Uspješno dodan komentar', () {
         Navigator.of(context).pop();

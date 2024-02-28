@@ -13,5 +13,7 @@ namespace eAutoSalon.Models.InsertRequests
         public string? Komentar { get; set; } = null!;
 
         public int KorisnikId { get; set; }
+
+        public string State { get; set; } = null!;
     }
 }

@@ -29,7 +29,12 @@ namespace eAutoSalon.Services.Services
 
         public override IQueryable<Recenzije> AddFilter(IQueryable<Recenzije> query, RecenzijaSearchObject? search = null)
         {
-            return base.AddFilter(query, search);
+            if (search!.IsHiddenReviewsIncluded)
+            {
+                return query;
+            }
+            query = query.Where(x => x.State == "Aktivna");
+            return query;
         }
 
         public override IQueryable<Recenzije> AddInclude(IQueryable<Recenzije> query)
@@ -58,10 +63,18 @@ namespace eAutoSalon.Services.Services
             return _mapper.Map<List<VMRecenzije>>(list);
         }
 
+
         public async Task HideReview(int reviewId)
         {
             var entity = await _context.Recenzijes.FirstOrDefaultAsync(x=>x.RecenzijaId == reviewId) ?? throw new UserException("Nema recenzije sa tim ID poljem");
-            //entity.State = "Sakrivena";
+            entity.State = "Sakrivena";
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task ShowReview(int reviewId)
+        {
+            var entity = await _context.Recenzijes.FirstOrDefaultAsync(x => x.RecenzijaId == reviewId) ?? throw new UserException("Nema recenzije sa tim ID poljem");
+            entity.State = "Aktivna";
             await _context.SaveChangesAsync();
         }
     }
