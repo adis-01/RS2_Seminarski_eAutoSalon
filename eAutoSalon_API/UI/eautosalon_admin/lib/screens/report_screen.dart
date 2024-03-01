@@ -1,3 +1,7 @@
+// ignore_for_file: use_build_context_synchronously
+
+import 'dart:io';
+
 import 'package:eautosalon_admin/models/report_dto.dart';
 import 'package:eautosalon_admin/models/report_model.dart';
 import 'package:eautosalon_admin/providers/car_provider.dart';
@@ -9,7 +13,10 @@ import 'package:eautosalon_admin/utils/dialogs.dart';
 import 'package:eautosalon_admin/widgets/master_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:pdf/pdf.dart';
 import 'package:provider/provider.dart';
+import 'package:pdf/widgets.dart' as pw;
 
 class ReportScreen extends StatefulWidget {
   const ReportScreen({super.key});
@@ -93,7 +100,8 @@ class _ReportScreenState extends State<ReportScreen> {
                               padding: const EdgeInsets.all(15),
                               color: Colors.black87,
                               onPressed: (){
-                          
+                                isLoading = true;
+                                generatePdf();
                               },
                             child: const Icon(Icons.save_alt, size: 25, color: Colors.white,),),
                           ),
@@ -342,6 +350,61 @@ class _ReportScreenState extends State<ReportScreen> {
         totalActiveProducts=totalCars;
         isLoading = false;
       });
+    } catch (e) {
+      CustomDialogs.showError(context, e.toString());
+    }
+  }
+  
+  void generatePdf() async{
+    try {
+      var pdf = pw.Document();
+      pdf.addPage(
+        pw.Page(
+          pageFormat: PdfPageFormat.a4,
+          build:(context) => pw.Column(
+            children: [
+              pw.Text('eAutoSalon - Izvjestaj', style: pw.TextStyle( fontWeight:pw.FontWeight.bold,letterSpacing: 0.5, fontSize: 13, color: PdfColors.black)),
+              pw.SizedBox(height: 15),
+              pw.Table.fromTextArray(
+                border: null,
+                headerDecoration: const pw.BoxDecoration(color: PdfColors.grey300),
+                cellAlignments:{
+                  0: pw.Alignment.centerLeft,
+                  1: pw.Alignment.center,
+                  2: pw.Alignment.center,
+                  3: pw.Alignment.centerRight
+                },
+                cellHeight: 20,
+                headers: ['Datum prodaje', 'Automobil', 'Kupac', 'Iznos'],
+                data: report?.list.map((e) => [e.datum, e.proizvod, e.kupac, "\$${e.formattedPrice}"]).toList() ?? []
+              ),
+              pw.SizedBox(height: 10),
+              pw.Divider(thickness: 0.5),
+              pw.SizedBox(height: 15),
+              pw.Row(
+                mainAxisAlignment: pw.MainAxisAlignment.end,
+                children: [
+                  pw.Text("UKUPNO: ", style: const pw.TextStyle(fontSize: 10, letterSpacing: 0.5)),
+                  pw.SizedBox(width: 3),
+                  pw.Text("\$${report?.formattedPrice ?? "null"}", style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 13))
+                ]
+              )
+            ]
+          ),
+        )
+      );
+
+      final dir = await getApplicationDocumentsDirectory();
+      final vrijeme = DateTime.now().millisecondsSinceEpoch;
+      String path = '${dir.path}/report_$vrijeme.pdf';
+      File file = File(path);
+      file.writeAsBytes(await pdf.save());
+      setState(() {
+        isLoading=false;
+      });
+      CustomDialogs.showSuccess(context, 'Saved at $path', () {
+        Navigator.of(context).pop();
+       });
     } catch (e) {
       CustomDialogs.showError(context, e.toString());
     }
