@@ -12,6 +12,7 @@ import 'package:eautosalon_admin/screens/home_page_screen.dart';
 import 'package:eautosalon_admin/utils/dialogs.dart';
 import 'package:eautosalon_admin/widgets/master_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
@@ -358,14 +359,22 @@ class _ReportScreenState extends State<ReportScreen> {
   void generatePdf() async{
     try {
       var pdf = pw.Document();
+      final regularFont = await rootBundle.load('lib/fonts/Roboto-Regular.ttf');
+      final boldFont = await rootBundle.load('lib/fonts/Roboto-Bold.ttf');
+      
+      final regularttf = pw.Font.ttf(regularFont.buffer.asByteData());
+      final boldttf = pw.Font.ttf(boldFont.buffer.asByteData());
+
       pdf.addPage(
         pw.Page(
           pageFormat: PdfPageFormat.a4,
           build:(context) => pw.Column(
             children: [
-              pw.Text('eAutoSalon - Izvjestaj', style: pw.TextStyle( fontWeight:pw.FontWeight.bold,letterSpacing: 0.5, fontSize: 13, color: PdfColors.black)),
+              pw.Text('eAutoSalon  |  Izvještaj', style: pw.TextStyle(fontSize: 15, font: boldttf, wordSpacing: 2)),
               pw.SizedBox(height: 15),
               pw.Table.fromTextArray(
+                cellStyle: pw.TextStyle(font: regularttf, fontSize: 11),
+                headerStyle: pw.TextStyle(font: boldttf, fontSize: 10, color: PdfColors.blueGrey),
                 border: null,
                 headerDecoration: const pw.BoxDecoration(color: PdfColors.grey300),
                 cellAlignments:{
@@ -375,7 +384,7 @@ class _ReportScreenState extends State<ReportScreen> {
                   3: pw.Alignment.centerRight
                 },
                 cellHeight: 20,
-                headers: ['Datum prodaje', 'Automobil', 'Kupac', 'Iznos'],
+                headers: ['DATUM', 'AUTOMOBIL', 'KUPAC', 'IZNOS'],
                 data: report?.list.map((e) => [e.datum, e.proizvod, e.kupac, "\$${e.formattedPrice}"]).toList() ?? []
               ),
               pw.SizedBox(height: 10),
@@ -384,9 +393,9 @@ class _ReportScreenState extends State<ReportScreen> {
               pw.Row(
                 mainAxisAlignment: pw.MainAxisAlignment.end,
                 children: [
-                  pw.Text("UKUPNO: ", style: const pw.TextStyle(fontSize: 10, letterSpacing: 0.5)),
+                  pw.Text("UKUPNO: ", style: pw.TextStyle(fontSize: 13, letterSpacing: 0.5, font: regularttf)),
                   pw.SizedBox(width: 3),
-                  pw.Text("\$${report?.formattedPrice ?? "null"}", style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 13))
+                  pw.Text("\$${report?.formattedPrice ?? "null"}", style: pw.TextStyle(font: boldttf,fontSize: 14))
                 ]
               )
             ]
@@ -402,7 +411,7 @@ class _ReportScreenState extends State<ReportScreen> {
       setState(() {
         isLoading=false;
       });
-      CustomDialogs.showSuccess(context, 'Saved at $path', () {
+      CustomDialogs.showSuccess(context, 'Izvještaj sačuvan na lokaciji $path', () {
         Navigator.of(context).pop();
        });
     } catch (e) {
