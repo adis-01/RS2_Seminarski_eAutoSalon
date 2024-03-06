@@ -31,9 +31,15 @@ namespace eAutoSalon.Services.Services
             return query;
         }
 
+        public override IQueryable<Komentari> AddFilter(IQueryable<Komentari> query, KomentariSearchObject? search = null)
+        {
+            query = query.Where(x => x.State == "Aktivan");
+            return query;
+        }
+
         public async Task<PagedList<VMKomentari>> GetAllKomentari_Novost(int id, KomentariSearchObject? searchObject = null)
         {
-            var comms =  _context.Komentaris.Where(x=>x.NovostiId==id).Include("Korisnik").OrderByDescending(x=>x.KomentarId).AsQueryable();
+            var comms =  _context.Komentaris.Where(x=>x.NovostiId==id && x.State == "Aktivan").Include("Korisnik").OrderByDescending(x=>x.KomentarId).AsQueryable();
 
             var list = new PagedList<VMKomentari>
             {
@@ -82,7 +88,7 @@ namespace eAutoSalon.Services.Services
 
         public async Task<int> TotalNumber(int novostId)
         {
-            var list = _context.Komentaris.Where(x => x.NovostiId == novostId);
+            var list = _context.Komentaris.Where(x => x.NovostiId == novostId && x.State == "Aktivan");
 
             int count = await list.CountAsync();
 

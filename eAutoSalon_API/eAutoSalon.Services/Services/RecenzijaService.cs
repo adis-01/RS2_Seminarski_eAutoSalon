@@ -29,11 +29,14 @@ namespace eAutoSalon.Services.Services
 
         public override IQueryable<Recenzije> AddFilter(IQueryable<Recenzije> query, RecenzijaSearchObject? search = null)
         {
-            if (search!.IsHiddenReviewsIncluded)
+            if(!search!.IsHiddenReviewsIncluded)
             {
-                return query;
+                query = query.Where(x => x.State == "Aktivna");
             }
-            query = query.Where(x => x.State == "Aktivna");
+            else
+            {
+                query = query.Where(x => x.State == "Sakrivena");
+            }
             return query;
         }
 
@@ -45,7 +48,7 @@ namespace eAutoSalon.Services.Services
         public async Task<double> GetAverage()
         {
             double average = 0;
-            List<int> ocjene = await _context.Recenzijes.Select(o => o.Ocjena).ToListAsync();
+            List<int> ocjene = await _context.Recenzijes.Where(x=>x.State == "Aktivna").Select(o => o.Ocjena).ToListAsync();
             if (ocjene.Any())
             {
                 average = ocjene.Average();

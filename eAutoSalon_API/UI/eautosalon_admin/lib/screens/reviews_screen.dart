@@ -61,11 +61,11 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
                         });
                         loadData();
                       }, 
-                    child: Text(!isHiddenIncluded ? "UKLJUČI SAKRIVENE" : "ISKLJUČI SAKRIVENE", style: const TextStyle(fontSize: 14, color: Colors.white, fontWeight: FontWeight.w600, letterSpacing: 0.4),),),
+                    child: Text(!isHiddenIncluded ? "PRIKAŽI SAKRIVENE" : "PRIKAŽI AKTIVNE", style: const TextStyle(fontSize: 14, color: Colors.white, fontWeight: FontWeight.w600, letterSpacing: 0.4),),),
                     Row(
                       children: [
                         Tooltip(
-                          message: 'Prosječna ocjena',
+                          message: 'Prosječna ocjena aktivnih recenzija',
                           child: Container(
                             padding: const EdgeInsets.all(5),
                             decoration: const BoxDecoration(

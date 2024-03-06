@@ -89,7 +89,8 @@ class _EditNewsDialogState extends State<EditNewsDialog> {
                             border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10)),
                             labelText: 'Sadržaj'),
-                        maxLines: null,
+                        minLines: 2,
+                        maxLines: 4,
                         validator: FormBuilderValidators.compose([
                           FormBuilderValidators.required(context,
                               errorText: 'Polje je obavezno')
