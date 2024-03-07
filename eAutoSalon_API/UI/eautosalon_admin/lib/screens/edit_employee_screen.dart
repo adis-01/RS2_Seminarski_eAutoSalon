@@ -115,6 +115,14 @@ class _EditEmployeeState extends State<EditEmployee> {
                             ),
                             validator: FormBuilderValidators.compose([
                               FormBuilderValidators.required(context, errorText: 'Polje obavezno'),
+                              (value){
+                                if(value != null && value.startsWith(" ")){
+                                  return 'Započnite slovom';
+                                }
+                                else{
+                                  return null;
+                                }
+                              }
                             ]),
                           ),
                         ),
@@ -131,6 +139,14 @@ class _EditEmployeeState extends State<EditEmployee> {
                             ),
                             validator: FormBuilderValidators.compose([
                               FormBuilderValidators.required(context, errorText: 'Polje obavezno'),
+                              (value){
+                                if(value != null && value.startsWith(" ")){
+                                  return 'Započnite slovom';
+                                }
+                                else{
+                                  return null;
+                                }
+                              }
                             ]),
                           ),
                         ),
@@ -149,6 +165,14 @@ class _EditEmployeeState extends State<EditEmployee> {
                             validator: FormBuilderValidators.compose([
                               FormBuilderValidators.required(context, errorText: 'Polje obavezno'),
                               FormBuilderValidators.email(context,errorText: 'Email neispravnog formata'),
+                              (value){
+                                if(value!=null && value.contains(" ")){
+                                  return 'Prazan prostor nije dozvoljen';
+                                }
+                                else{
+                                  return null;
+                                }
+                              }
                             ]),
                           ),
                         )

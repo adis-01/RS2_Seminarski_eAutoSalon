@@ -191,7 +191,15 @@ class _FilterCarState extends State<FilterCar> {
                 OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
         validator: FormBuilderValidators.compose([
           FormBuilderValidators.integer(context, errorText: 'Samo cijeli brojevi'),
-          FormBuilderValidators.maxLength(context, 7, errorText: 'Max. 7 brojeva')
+          FormBuilderValidators.maxLength(context, 7, errorText: 'Max. 7 brojeva'),
+          (value){
+            if(value!=null && value.contains(" ")){
+              return 'Prazan prostor nije dozvoljen';
+            }
+            else{
+              return null;
+            }
+          }
         ]),
       ),
     );
@@ -211,7 +219,15 @@ class _FilterCarState extends State<FilterCar> {
                 OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
         validator: FormBuilderValidators.compose([
           FormBuilderValidators.integer(context, errorText: 'Samo cijeli brojevi'),
-          FormBuilderValidators.maxLength(context, 4, errorText: 'Max. 4 broja')
+          FormBuilderValidators.maxLength(context, 4, errorText: 'Max. 4 broja'),
+          (value){
+            if(value != null && value.contains(" ")){
+              return 'Prazan prostor nije dozvoljen';
+            }
+            else{
+              return null;
+            }
+          }
         ]),
       ),
     );

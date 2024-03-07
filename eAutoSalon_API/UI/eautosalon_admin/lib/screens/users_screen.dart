@@ -288,7 +288,7 @@ class _UsersScreenState extends State<UsersScreen> {
             ),
             onChanged: (input) {
               setState(() {
-                _disabledButton = input.isEmpty;
+                _disabledButton = input.isEmpty || input.startsWith(" ");
               });
             },
           ),

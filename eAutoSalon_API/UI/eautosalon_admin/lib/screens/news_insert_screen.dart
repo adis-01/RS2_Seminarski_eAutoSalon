@@ -103,7 +103,15 @@ class _InsertNewScreenEditorState extends State<InsertNewScreenEditor> {
               FormBuilderValidators.required(context,
                   errorText: 'Polje obavezno'),
               FormBuilderValidators.maxLength(context, 50,
-                  errorText: 'Maksimalno 50 znakova')
+                  errorText: 'Maksimalno 50 znakova'),
+              (value){
+                if(value != null && value.startsWith(" ")){
+                  return 'Započnite slovom';
+                }
+                else{
+                  return null;
+                }
+              }
             ]),
             decoration: InputDecoration(
                 border:
@@ -176,8 +184,16 @@ class _InsertNewScreenEditorState extends State<InsertNewScreenEditor> {
             cursorColor: Colors.grey,
             autovalidateMode: AutovalidateMode.onUserInteraction,
             validator: FormBuilderValidators.compose([
+               (value){
+                if(value!=null && value.startsWith(" ")){
+                  return 'Prazno polje na početku nije dozvoljeno';
+                }
+                else{
+                  return null;
+                }
+              },
               FormBuilderValidators.minLength(context, 50,
-                  errorText: 'Minimalno 50 znakova')
+                  errorText: 'Minimalno 50 znakova'),
             ]),
             name: 'sadrzaj',
             decoration: InputDecoration(

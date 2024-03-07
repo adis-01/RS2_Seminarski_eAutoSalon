@@ -65,11 +65,25 @@ class _PasswordChangeState extends State<PasswordChange> {
                 SizedBox(
                   width: double.infinity,
                   child: FormBuilderTextField(
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
                     cursorColor: Colors.grey,
                     name: 'Stari_Pass',
                     obscureText: _obscure,
-                    validator: FormBuilderValidators.required(context,
-                        errorText: 'Polje obavezno'),
+                    validator:
+                      (value){
+                        if(value == null || value.isEmpty){
+                          return 'Polje obavezno';
+                        }
+                        else if(value.contains(" ")){
+                          return 'Prazno polje zabranjeno';
+                        }
+                        else if (value.contains(":")){
+                          return 'Dvotačka zabranjena';
+                        }
+                        else{
+                          return null;
+                        }
+                      },
                     decoration: InputDecoration(
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12)),
@@ -94,11 +108,24 @@ class _PasswordChangeState extends State<PasswordChange> {
                 SizedBox(
                   width: double.infinity,
                   child: FormBuilderTextField(
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
                     cursorColor: Colors.grey,
                     name: 'Novi_Pass',
                     obscureText: _obscure,
-                    validator: FormBuilderValidators.required(context,
-                        errorText: 'Polje obavezno'),
+                    validator:(value){
+                        if(value == null || value.isEmpty){
+                          return 'Polje obavezno';
+                        }
+                        else if(value.contains(" ")){
+                          return 'Prazno polje zabranjeno';
+                        }
+                        else if (value.contains(":")){
+                          return 'Dvotačka zabranjena';
+                        }
+                        else{
+                          return null;
+                        }
+                      },
                     decoration: InputDecoration(
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12)),

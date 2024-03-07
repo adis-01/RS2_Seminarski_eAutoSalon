@@ -108,7 +108,15 @@ class _EditProfileState extends State<EditProfile> {
                     ),
                   ),
                   validator: FormBuilderValidators.compose([
-                    FormBuilderValidators.required(context, errorText: 'Polje obavezno')
+                    FormBuilderValidators.required(context, errorText: 'Polje obavezno'),
+                    (value){
+                      if(value != null && value.startsWith(" ")){
+                        return 'Započnite slovom';
+                      }
+                      else{
+                        return null;
+                      }
+                    }
                   ]),
                 ),
               );
@@ -141,7 +149,15 @@ class _EditProfileState extends State<EditProfile> {
                     ),
                   ),
                   validator: FormBuilderValidators.compose([
-                    FormBuilderValidators.required(context, errorText: 'Polje obavezno')
+                    FormBuilderValidators.required(context, errorText: 'Polje obavezno'),
+                    (value){
+                      if(value != null && value.startsWith(" ")){
+                        return 'Započnite slovom';
+                      }
+                      else{
+                        return null;
+                      }
+                    }
                   ]),
                 ),
               );
@@ -180,6 +196,9 @@ class _EditProfileState extends State<EditProfile> {
                     else if(value.contains(":")){
                       return 'Dvotačka zabranjena';
                     }
+                    else if(value.contains(" ")){
+                      return 'Prazan prostor nije dozvoljen';
+                    }
                     else {
                       return null;
                     }
@@ -216,7 +235,15 @@ class _EditProfileState extends State<EditProfile> {
                   ),
                   validator: FormBuilderValidators.compose([
                     FormBuilderValidators.required(context, errorText: 'Polje obavezno'),
-                    FormBuilderValidators.email(context,errorText: 'Unesite validan format')
+                    (value){
+                      if(value!=null && value.contains(" ")){
+                        return 'Prazan prostor nije dozvoljen';
+                      }
+                      else{
+                        return null;
+                      }
+                    },
+                    FormBuilderValidators.email(context,errorText: 'Unesite validan format'),
                   ]),
                 ),
               );

@@ -67,7 +67,15 @@ class _MailSendScreenState extends State<MailSendScreen> {
                         errorStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500)
                       ),
                       validator: FormBuilderValidators.compose([
-                        FormBuilderValidators.required(context, errorText: 'Polje obavezno')
+                        FormBuilderValidators.required(context, errorText: 'Polje obavezno'),
+                        (value){
+                          if(value!=null && value.startsWith(" ")){
+                            return 'Započnite slovom';
+                          }
+                          else{
+                            return null;
+                          }
+                        }
                       ]),
                     ),
                   ),
@@ -88,7 +96,15 @@ class _MailSendScreenState extends State<MailSendScreen> {
                       ),
                       validator: FormBuilderValidators.compose([
                         FormBuilderValidators.required(context, errorText: 'Polje obavezno'),
-                        FormBuilderValidators.email(context, errorText: 'Neispravan format')
+                        (value){
+                          if(value!=null && value.contains(" ")){
+                            return 'Prazan prostor nije dozvoljen';
+                          }
+                          else{
+                            return null;
+                          }
+                        },
+                        FormBuilderValidators.email(context, errorText: 'Neispravan format'),
                       ]),
                     ),
                   ),
@@ -111,7 +127,15 @@ class _MailSendScreenState extends State<MailSendScreen> {
                       ),
                       validator: FormBuilderValidators.compose([
                         FormBuilderValidators.required(context, errorText: 'Polje obavezno'),
-                        FormBuilderValidators.maxLength(context, 200, errorText: 'Max. 200 znakova')
+                        FormBuilderValidators.maxLength(context, 200, errorText: 'Max. 200 znakova'),
+                        (value){
+                          if(value!=null && value.startsWith(" ")){
+                            return 'Započnite slovom';
+                          }
+                          else{
+                            return null;
+                          }
+                        }
                       ]),
                     ),
                   ),

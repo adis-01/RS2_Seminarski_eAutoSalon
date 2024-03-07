@@ -75,7 +75,15 @@ class _EditProfileState extends State<EditProfile> {
                     name: 'firstName',
                     validator: FormBuilderValidators.compose([
                       FormBuilderValidators.required(context,
-                          errorText: 'Polje je obavezno')
+                          errorText: 'Polje je obavezno'),
+                      (value){
+                        if(value != null && value.startsWith(" ")){
+                          return 'Započnite slovom';
+                        }
+                        else{
+                          return null;
+                        }
+                      }
                     ]),
                     decoration: InputDecoration(
                       labelText: 'Ime',
@@ -94,7 +102,15 @@ class _EditProfileState extends State<EditProfile> {
                     name: 'lastName',
                     validator: FormBuilderValidators.compose([
                       FormBuilderValidators.required(context,
-                          errorText: 'Polje je obavezno')
+                          errorText: 'Polje je obavezno'),
+                      (value){
+                        if(value != null && value.startsWith(" ")){
+                          return 'Započnite slovom';
+                        }
+                        else{
+                          return null;
+                        }
+                      }
                     ]),
                     decoration: InputDecoration(
                       labelText: 'Prezime',
@@ -113,7 +129,18 @@ class _EditProfileState extends State<EditProfile> {
                     name: 'username',
                     validator: FormBuilderValidators.compose([
                       FormBuilderValidators.required(context,
-                          errorText: 'Polje je obavezno')
+                          errorText: 'Polje je obavezno'),
+                      (value){
+                        if(value!=null && value.contains(":")){
+                          return "Dvotačka nije dozvoljena";
+                        }
+                        else if(value!=null && value.contains(" ")){
+                          return 'Prazno polje nije dozvoljeno';
+                        }
+                        else{
+                          return null;
+                        }
+                      }
                     ]),
                     decoration: InputDecoration(
                       labelText: 'Username',
@@ -134,7 +161,15 @@ class _EditProfileState extends State<EditProfile> {
                       FormBuilderValidators.required(context,
                           errorText: 'Polje je obavezno'),
                       FormBuilderValidators.email(context, 
-                                              errorText: 'Neispravan format')
+                                              errorText: 'Neispravan format'),
+                      (value){
+                        if(value!=null && value.contains(" ")){
+                          return 'Prazno polje nije dozvoljeno';
+                        }
+                        else{
+                          return null;
+                        }
+                      }
                     ]),
                     decoration: InputDecoration(
                       labelText: 'Email',

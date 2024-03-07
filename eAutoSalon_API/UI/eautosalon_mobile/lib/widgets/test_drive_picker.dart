@@ -122,6 +122,7 @@ class _TestDriveDialogState extends State<TestDriveDialog> {
                         datum = date;
                         isLoading=true;
                         termin = null;
+                        disabledButton=true;
                       });
                       getAvailableAppointments();
                     }

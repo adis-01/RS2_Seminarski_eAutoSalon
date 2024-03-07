@@ -178,7 +178,18 @@ class _PassChangeState extends State<PassChange> {
               ),
             )),
         validator: FormBuilderValidators.compose([
-          FormBuilderValidators.required(context, errorText: 'Polje obavezno')
+          FormBuilderValidators.required(context, errorText: 'Polje obavezno'),
+          (value){
+            if(value!=null && value.contains(" ")){
+              return 'Prazan prostor nije dozvoljen';
+            }
+            else if(value!=null && value.contains(":")){
+              return 'Dvotačka nije dozvoljena';
+            }
+            else{
+              return null;
+            }
+          }
         ]),
       ),
     );
@@ -212,7 +223,15 @@ class _PassChangeState extends State<PassChange> {
               ),
             )),
         validator: FormBuilderValidators.compose([
-          FormBuilderValidators.required(context, errorText: 'Polje obavezno')
+          FormBuilderValidators.required(context, errorText: 'Polje obavezno'),
+          (value){
+            if(value!=null && value.contains(" ")){
+              return 'Prazan prostor nije dozvoljen';
+            }
+            else{
+              return null;
+            }
+          }
         ]),
       ),
     );

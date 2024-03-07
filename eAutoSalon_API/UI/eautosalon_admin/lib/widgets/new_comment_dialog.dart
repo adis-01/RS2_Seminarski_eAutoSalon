@@ -95,7 +95,8 @@ class _NewCommentDialogState extends State<NewCommentDialog> {
                                     dynamic request = {
                                       'Sadrzaj': _commentController.text,
                                       'KorisnikId': userID,
-                                      'NovostiId': widget.novostId
+                                      'NovostiId': widget.novostId,
+                                      'State' : 'Aktivan'
                                     };
                                     saveData(request);
                                   },

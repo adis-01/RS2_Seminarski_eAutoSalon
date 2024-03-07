@@ -119,6 +119,9 @@ class _EditUserState extends State<EditUser> {
                                   if (value != null && value.contains(":")) {
                                     return "Dvotačka nije dozvoljena";
                                   }
+                                  else if(value!=null && value.contains(" ")){
+                                    return 'Prazno polje nije dozvoljeno';
+                                  }
                                   else{
                                     return null;
                                   }
@@ -140,6 +143,14 @@ class _EditUserState extends State<EditUser> {
                               validator: FormBuilderValidators.compose([
                                 FormBuilderValidators.required(context,
                                     errorText: 'Polje obavezno'),
+                                (value){
+                                  if(value != null && value.startsWith(" ")){
+                                    return 'Započnite slovom';
+                                  }
+                                  else{
+                                    return null;
+                                  }
+                                }
                               ]),
                             ),
                           ),
@@ -157,6 +168,14 @@ class _EditUserState extends State<EditUser> {
                               validator: FormBuilderValidators.compose([
                                 FormBuilderValidators.required(context,
                                     errorText: 'Polje obavezno'),
+                                (value){
+                                  if(value != null && value.startsWith(" ")){
+                                    return 'Započnite slovom';
+                                  }
+                                  else{
+                                    return null;
+                                  }
+                                }
                               ]),
                             ),
                           ),

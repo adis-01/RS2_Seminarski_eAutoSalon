@@ -92,7 +92,7 @@ class _NewsCommentsState extends State<NewsComments> {
                         ),
                         onChanged: (value){
                           setState(() {
-                            disabledCommentButton = value.isEmpty;
+                            disabledCommentButton = value.isEmpty || value.startsWith(" ");
                           });
                         },
                       ),

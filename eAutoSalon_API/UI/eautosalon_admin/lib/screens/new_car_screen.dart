@@ -37,27 +37,33 @@ class _NewCarScreenState extends State<NewCarScreen> {
     return MasterScreen(
       floatingEnabled: false,
       title: 'Novi automobil',
-      body: !insertLoading ? Container(
-        padding: const EdgeInsets.all(20),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              buildBack(context),
-              const SizedBox(height: 20),
-              Center(
-                child: Container(
-                  padding: const EdgeInsets.all(30),
-                  width: 600,
-                  decoration: BoxDecoration(
-                      color: Colors.white70,
-                      borderRadius: BorderRadius.circular(15)),
-                  child: buildForm(),
+      body: !insertLoading
+          ? Container(
+              padding: const EdgeInsets.all(20),
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    buildBack(context),
+                    const SizedBox(height: 20),
+                    Center(
+                      child: Container(
+                        padding: const EdgeInsets.all(30),
+                        width: 600,
+                        decoration: BoxDecoration(
+                            color: Colors.white70,
+                            borderRadius: BorderRadius.circular(15)),
+                        child: buildForm(),
+                      ),
+                    )
+                  ],
                 ),
-              )
-            ],
-          ),
-        ),
-      ) : const Center(child: CircularProgressIndicator(color: Colors.blueGrey,),),
+              ),
+            )
+          : const Center(
+              child: CircularProgressIndicator(
+                color: Colors.blueGrey,
+              ),
+            ),
     );
   }
 
@@ -138,7 +144,15 @@ class _NewCarScreenState extends State<NewCarScreen> {
             ),
             validator: FormBuilderValidators.compose([
               FormBuilderValidators.required(context,
-                  errorText: 'Polje obavezno')
+                  errorText: 'Polje obavezno'),
+              (value){
+                if(value != null && value.startsWith(" ")){
+                  return 'Počnite znakom';
+                }
+                else{
+                  return null;
+                }
+              }
             ]),
           ),
         ),
@@ -155,7 +169,15 @@ class _NewCarScreenState extends State<NewCarScreen> {
             ),
             validator: FormBuilderValidators.compose([
               FormBuilderValidators.required(context,
-                  errorText: 'Polje obavezno')
+                  errorText: 'Polje obavezno'),
+                  (value){
+                if(value != null && value.startsWith(" ")){
+                  return 'Počnite znakom';
+                }
+                else{
+                  return null;
+                }
+              }
             ]),
           ),
         ),
@@ -172,7 +194,15 @@ class _NewCarScreenState extends State<NewCarScreen> {
             ),
             validator: FormBuilderValidators.compose([
               FormBuilderValidators.required(context,
-                  errorText: 'Polje obavezno')
+                  errorText: 'Polje obavezno'),
+              (value) {
+                if (value != null && value.startsWith(" ")) {
+                  return 'Počnite sa nekim od slova';
+                }
+                else{
+                  return null;
+                }
+              }
             ]),
           ),
         ),
@@ -193,7 +223,15 @@ class _NewCarScreenState extends State<NewCarScreen> {
               FormBuilderValidators.minLength(context, 17,
                   errorText: 'Tačno 17 znakova'),
               FormBuilderValidators.maxLength(context, 17,
-                  errorText: 'Tačno 17 znakova')
+                  errorText: 'Tačno 17 znakova'),
+              (value) {
+                if (value != null && value.contains(" ")) {
+                  return 'Prazno polje nije dozvoljeno';
+                }
+                else{
+                  return null;
+                }
+              }
             ]),
           ),
         ),
@@ -211,7 +249,16 @@ class _NewCarScreenState extends State<NewCarScreen> {
             validator: FormBuilderValidators.compose([
               FormBuilderValidators.required(context,
                   errorText: 'Polje obavezno'),
-              FormBuilderValidators.integer(context, errorText: 'Samo cijeli brojevi')
+              FormBuilderValidators.integer(context,
+                  errorText: 'Samo cijeli brojevi'),
+              (value) {
+                if (value != null && value.contains(" ")) {
+                  return 'Prazno polje nije dozvoljeno';
+                }
+                else{
+                  return null;
+                }
+              }
             ]),
           ),
         ),
@@ -229,7 +276,16 @@ class _NewCarScreenState extends State<NewCarScreen> {
             validator: FormBuilderValidators.compose([
               FormBuilderValidators.required(context,
                   errorText: 'Polje obavezno'),
-              FormBuilderValidators.integer(context, errorText: 'Samo cijeli brojevi')
+              FormBuilderValidators.integer(context,
+                  errorText: 'Samo cijeli brojevi'),
+              (value) {
+                if (value != null && value.contains(" ")) {
+                  return 'Prazno polje nije dozvoljeno';
+                }
+                else{
+                  return null;
+                }
+              }
             ]),
           ),
         ),
@@ -244,16 +300,16 @@ class _NewCarScreenState extends State<NewCarScreen> {
               border: OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(15))),
             ),
-            validator: (value){
-              if(value == null || value.isEmpty){
-                          return 'Polje je obavezno';
-                        }
-                        else if(!value.contains("KS") && !value.contains("KW")){
-                          return 'Jačina mora biti izražena u KS ili KW';
-                        }
-                        else{
-                          return null;
-                        }
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Polje je obavezno';
+              } else if (value.contains(" ")) {
+                return 'Prazno polje nije dozvoljeno';
+              } else if (!value.contains("KS") && !value.contains("KW")) {
+                return 'Jačina mora biti izražena u KS ili KW';
+              } else {
+                return null;
+              }
             },
           ),
         ),
@@ -271,53 +327,65 @@ class _NewCarScreenState extends State<NewCarScreen> {
             validator: FormBuilderValidators.compose([
               FormBuilderValidators.required(context,
                   errorText: 'Polje obavezno'),
-              FormBuilderValidators.integer(context, errorText: 'Samo cijeli brojevi'),
-              FormBuilderValidators.maxLength(context,1, errorText: 'Jednocifren broj')
+              FormBuilderValidators.integer(context,
+                  errorText: 'Samo cijeli brojevi'),
+              FormBuilderValidators.maxLength(context, 1,
+                  errorText: 'Jednocifren broj')
             ]),
           ),
         ),
         buildDropdown(),
-         SizedBox(
-                    width: 250,
-                    child: FormBuilderTextField(
-                      cursorColor: Colors.grey,
-                       autovalidateMode: AutovalidateMode.onUserInteraction,
-                      name: 'Cijena',
-                      validator: FormBuilderValidators.compose([
-                        FormBuilderValidators.required(context, errorText: 'Polje je obavezno'),
-                        FormBuilderValidators.numeric(context, errorText: 'Samo brojevi, primjer 25321.99')
-                      ]),
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
-                        labelText: 'Cijena'
-                      ),
-                    ),
-                  ),
-         FormBuilderField(
-            name: 'slikaBase64',
-            validator: (value) {
-              if (_image == null) {
-                return 'Polje je obavezno';
-              } else {
-                return null;
+        SizedBox(
+          width: 250,
+          child: FormBuilderTextField(
+            cursorColor: Colors.grey,
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+            name: 'Cijena',
+            validator: FormBuilderValidators.compose([
+              FormBuilderValidators.required(context,
+                  errorText: 'Polje je obavezno'),
+              FormBuilderValidators.numeric(context,
+                  errorText: 'Samo brojevi, primjer 25321.99'),
+              (value) {
+                if (value != null && value.contains(" ")) {
+                  return 'Prazno polje nije dozvoljeno';
+                }
+                else{
+                  return null;
+                }
               }
-            },
-            builder: (field) {
-              return SizedBox(
-                width: 250,
-                child: TextField(
-                  readOnly: true,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
+            ]),
+            decoration: const InputDecoration(
+                border: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(10))),
+                labelText: 'Cijena'),
+          ),
+        ),
+        FormBuilderField(
+          name: 'slikaBase64',
+          validator: (value) {
+            if (_image == null) {
+              return 'Polje je obavezno';
+            } else {
+              return null;
+            }
+          },
+          builder: (field) {
+            return SizedBox(
+              width: 250,
+              child: TextField(
+                readOnly: true,
+                decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15)),
                     hintText: hint,
                     suffixIcon: const Icon(Icons.upload),
-                    errorText: field.errorText
-                  ),
-                  onTap: uploadImage,
-                ),
-              );
-            },
-          ),
+                    errorText: field.errorText),
+                onTap: uploadImage,
+              ),
+            );
+          },
+        ),
       ],
     );
   }
@@ -361,7 +429,7 @@ class _NewCarScreenState extends State<NewCarScreen> {
                 child: Text("Plin",
                     style: TextStyle(
                         color: Colors.black87, fontWeight: FontWeight.bold))),
-             DropdownMenuItem(
+            DropdownMenuItem(
                 value: "Hibrid",
                 child: Text("Hibrid",
                     style: TextStyle(
@@ -403,12 +471,13 @@ class _NewCarScreenState extends State<NewCarScreen> {
           onPressed: () async {
             if (_formKey.currentState != null) {
               if (_formKey.currentState!.saveAndValidate()) {
-                Map<String,dynamic> map = Map.from(_formKey.currentState!.value);
+                Map<String, dynamic> map =
+                    Map.from(_formKey.currentState!.value);
                 map['slikaBase64'] = _base64image;
                 try {
                   await _carProvider.insert(map);
                   setState(() {
-                    insertLoading=false;
+                    insertLoading = false;
                   });
                   CustomDialogs.showSuccess(
                       context, 'Uspješno dodan novi automobil', () {
@@ -417,14 +486,17 @@ class _NewCarScreenState extends State<NewCarScreen> {
                   });
                 } catch (e) {
                   setState(() {
-                    insertLoading=false;
+                    insertLoading = false;
                   });
                   CustomDialogs.showError(context, e.toString());
                 }
               }
             }
           },
-          child: const Text('Spasi', style: TextStyle(fontSize: 15, color: Colors.white),)),
+          child: const Text(
+            'Spasi',
+            style: TextStyle(fontSize: 15, color: Colors.white),
+          )),
     );
   }
 }

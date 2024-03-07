@@ -103,7 +103,15 @@ class _ChangeCarStateDialogState extends State<ChangeCarStateDialog> {
                         ),
                         validator: FormBuilderValidators.compose([
                           FormBuilderValidators.integer(context,errorText: 'Samo brojevi'),
-                          FormBuilderValidators.required(context, errorText: 'Polje obavezno')
+                          FormBuilderValidators.required(context, errorText: 'Polje obavezno'),
+                          (value){
+                            if(value!=null && value.contains(" ")){
+                              return 'Bez praznog prostora';
+                            }
+                            else{
+                              return null;
+                            }
+                          }
                         ]),
                       ),
                     ],

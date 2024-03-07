@@ -74,7 +74,16 @@ class _EditNewsDialogState extends State<EditNewsDialog> {
                             labelText: 'Naslov'),
                         validator: FormBuilderValidators.compose([
                           FormBuilderValidators.required(context,
-                              errorText: 'Polje je obavezno')
+                              errorText: 'Polje je obavezno'),
+                          FormBuilderValidators.maxLength(context, 50,errorText: 'Maksimalno 50 znakova'),
+                          (value){
+                            if(value != null && value.startsWith(" ")){
+                              return 'Započnite slovom';
+                            }
+                            else{
+                              return null;
+                            }
+                          }
                         ]),
                       ),
                     ),
@@ -93,7 +102,16 @@ class _EditNewsDialogState extends State<EditNewsDialog> {
                         maxLines: 4,
                         validator: FormBuilderValidators.compose([
                           FormBuilderValidators.required(context,
-                              errorText: 'Polje je obavezno')
+                              errorText: 'Polje je obavezno'),
+                              (value){
+                            if(value != null && value.startsWith(" ")){
+                              return 'Započnite slovom';
+                            }
+                            else{
+                              return null;
+                            }
+                          },
+                          FormBuilderValidators.minLength(context, 50, errorText: 'Minimalno 50 znakova'),
                         ]),
                       ),
                     )

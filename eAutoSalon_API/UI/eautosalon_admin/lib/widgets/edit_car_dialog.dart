@@ -111,7 +111,15 @@ class _EditCarState extends State<EditCar> {
                        autovalidateMode: AutovalidateMode.onUserInteraction,
                       name: 'Proizvodjac',
                       validator: FormBuilderValidators.compose([
-                        FormBuilderValidators.required(context, errorText: 'Polje je obavezno')
+                        FormBuilderValidators.required(context, errorText: 'Polje je obavezno'),
+                        (value){
+                          if(value!=null && value.startsWith(" ")){
+                            return 'Počnite znakom';
+                          }
+                          else{
+                            return null;
+                          }
+                        }
                       ]),
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
@@ -126,7 +134,15 @@ class _EditCarState extends State<EditCar> {
                        autovalidateMode: AutovalidateMode.onUserInteraction,
                       name: 'Model',
                       validator: FormBuilderValidators.compose([
-                        FormBuilderValidators.required(context, errorText: 'Polje je obavezno')
+                        FormBuilderValidators.required(context, errorText: 'Polje je obavezno'),
+                        (value){
+                          if(value!=null && value.startsWith(" ")){
+                            return 'Počnite znakom';
+                          }
+                          else{
+                            return null;
+                          }
+                        }
                       ]),
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
@@ -147,6 +163,9 @@ class _EditCarState extends State<EditCar> {
                         else if(!value.contains("KS") && !value.contains("KW")){
                           return 'Jačina mora biti izražena u KS ili KW';
                         }
+                        else if(value.contains(" ")){
+                          return 'Prazno polje nije dozvoljeno';
+                        }
                         else{
                           return null;
                         }
@@ -166,7 +185,15 @@ class _EditCarState extends State<EditCar> {
                       validator: FormBuilderValidators.compose([
                         FormBuilderValidators.required(context, errorText: 'Polje je obavezno'),
                         FormBuilderValidators.minLength(context, 17, errorText: 'Tačno 17 znakova'),
-                        FormBuilderValidators.maxLength(context, 17, errorText: 'Tačno 17 znakova')
+                        FormBuilderValidators.maxLength(context, 17, errorText: 'Tačno 17 znakova'),
+                        (value){
+                          if(value != null && value.contains(" ")){
+                            return 'Prazno polje nije dozvoljeno';
+                          }
+                          else{
+                            return null;
+                          }
+                        }
                       ]),
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
@@ -182,7 +209,15 @@ class _EditCarState extends State<EditCar> {
                       name: 'GodinaProizvodnje',
                       validator: FormBuilderValidators.compose([
                         FormBuilderValidators.required(context, errorText: 'Polje je obavezno'),
-                        FormBuilderValidators.integer(context, errorText: 'Samo brojevi')
+                        FormBuilderValidators.integer(context, errorText: 'Samo brojevi'),
+                        (value){
+                          if(value != null && value.contains(" ")){
+                            return 'Prazno polje nije dozvoljeno';
+                          }
+                          else{
+                            return null;
+                          }
+                        }
                       ]),
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
@@ -198,7 +233,15 @@ class _EditCarState extends State<EditCar> {
                       name: 'Cijena',
                       validator: FormBuilderValidators.compose([
                         FormBuilderValidators.required(context, errorText: 'Polje je obavezno'),
-                        FormBuilderValidators.numeric(context, errorText: 'Samo brojevi, primjer 25321.99')
+                        FormBuilderValidators.numeric(context, errorText: 'Samo brojevi, primjer 25321.99'),
+                        (value){
+                          if(value != null && value.contains(" ")){
+                            return 'Prazno polje nije dozvoljeno';
+                          }
+                          else{
+                            return null;
+                          }
+                        }
                       ]),
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
