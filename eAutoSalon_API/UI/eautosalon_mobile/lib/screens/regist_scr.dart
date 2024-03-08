@@ -236,6 +236,14 @@ class _RegistrationState extends State<Registration> {
         ),
         validator: FormBuilderValidators.compose([
           FormBuilderValidators.required(context, errorText: 'Polje obavezno'),
+          (value){
+            if(value!=null && value.startsWith(" ")){
+              return 'Započnite slovom';
+            }
+            else{
+              return null;
+            }
+          },
           FormBuilderValidators.minLength(context, 2,
               errorText: 'Min. 2 slova'),
           FormBuilderValidators.maxLength(context, 35,
@@ -327,6 +335,14 @@ class _RegistrationState extends State<Registration> {
         ),
         validator: FormBuilderValidators.compose([
           FormBuilderValidators.required(context, errorText: 'Polje obavezno'),
+          (value){
+            if(value != null && value.contains(" ")){
+              return 'Prazno polje zabranjeno';
+            }
+            else{
+              return null;
+            }
+          },
           FormBuilderValidators.email(context,
               errorText: 'Format mail adrese neispravan')
         ]),
@@ -369,7 +385,7 @@ class _RegistrationState extends State<Registration> {
           } else if (value.length < 3) {
             return 'Min. 3 znaka';
           } else if (value.length > 15) {
-            return 'Max. 3 znaka';
+            return 'Max. 15 znakova';
           } else if (value.contains(" ")) {
             return 'Prazno polje zabranjeno';
           } else {

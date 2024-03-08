@@ -74,7 +74,7 @@ class _NewCommentDialogState extends State<NewCommentDialog> {
                         maxLines: null,
                         onChanged: (value) {
                           setState(() {
-                            buttonDisabled = value.isEmpty;
+                            buttonDisabled = value.isEmpty || value.startsWith(" ");
                           });
                         },
                       )),
