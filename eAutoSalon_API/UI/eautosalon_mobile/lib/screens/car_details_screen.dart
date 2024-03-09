@@ -270,7 +270,7 @@ class _CarDetailsState extends State<CarDetails> {
   
   Future<void> fetchData() async{
     try {
-      var data = await _carProvider.recommend(widget.automobil.automobilId!);
+      var data = await _carProvider.recommend(Authorization.userId!);
       if(mounted){
         setState(() {
         _list=data;

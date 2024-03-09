@@ -40,9 +40,9 @@ namespace eAutoSalon_API.Controllers
 
         [Authorize(Roles ="Korisnik,Administrator,Urednik")]
         [HttpGet("Recommend/{id}")]
-        public async Task<List<VMAutomobil>> Recommend(int id)
+        public List<VMAutomobil> Recommend(int id)
         {
-            return await _service.Recommend(id);
+            return  _service.Recommend(id);
         }
 
         [Authorize(Roles ="Administrator,Korisnik,Urednik")]

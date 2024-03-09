@@ -6,11 +6,16 @@ using eAutoSalon.Models.ViewModels;
 using eAutoSalon.Services.Database;
 using eAutoSalon.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.ML.Data;
+using Microsoft.ML.Trainers;
+using Microsoft.ML;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Runtime.ConstrainedExecution;
+using Microsoft.ML.Transforms;
 
 namespace eAutoSalon.Services.Services
 {
@@ -46,8 +51,8 @@ namespace eAutoSalon.Services.Services
             {
                 "Svi"
             };
-            var proizvodjaci = await _context.Automobilis.Where(x=>x.State=="Aktivan").Select(p=>p.Proizvodjac).Distinct().ToListAsync();
-            foreach(var item in proizvodjaci)
+            var proizvodjaci = await _context.Automobilis.Where(x => x.State == "Aktivan").Select(p => p.Proizvodjac).Distinct().ToListAsync();
+            foreach (var item in proizvodjaci)
             {
                 list.Add(item);
             }
@@ -60,7 +65,7 @@ namespace eAutoSalon.Services.Services
             Automobili entity = new();
 
             _mapper.Map(req, entity);
-            if (!string.IsNullOrEmpty(req?.slikaBase64)) { entity.Slika = Convert.FromBase64String(req.slikaBase64);}
+            if (!string.IsNullOrEmpty(req?.slikaBase64)) { entity.Slika = Convert.FromBase64String(req.slikaBase64); }
             entity.DatumObjave = DateTime.Now;
             entity.State = "Aktivan";
             await _context.AddAsync(entity);
@@ -73,7 +78,7 @@ namespace eAutoSalon.Services.Services
         public double CalculateCosineSimilarity(Automobili product1, Automobili product2)
         {
             double[] vector1 = new double[] { product1.GodinaProizvodnje, product1.BrojVrata, product1.PredjeniKilometri, (double)product1.Cijena!, ConvertToDouble(product1.VrstaGoriva) };
-            double[] vector2 = new double[] { product2.GodinaProizvodnje, product2.BrojVrata, product2.PredjeniKilometri, (double)product2.Cijena!, ConvertToDouble(product2.VrstaGoriva)};
+            double[] vector2 = new double[] { product2.GodinaProizvodnje, product2.BrojVrata, product2.PredjeniKilometri, (double)product2.Cijena!, ConvertToDouble(product2.VrstaGoriva) };
 
             double dotProduct = vector1.Zip(vector2, (a, b) => a * b).Sum();
 
@@ -92,7 +97,7 @@ namespace eAutoSalon.Services.Services
 
             foreach (var product in allProducts)
             {
-                if (product != selectedProduct) 
+                if (product != selectedProduct)
                 {
                     double similarity = CalculateCosineSimilarity(selectedProduct, product);
                     similarities.Add(product, similarity);
@@ -115,43 +120,7 @@ namespace eAutoSalon.Services.Services
 
         public async Task<PagedList<VMAutomobil>> GetAktivne(AutomobilSearchObject? search = null)
         {
-            var query = _context.Automobilis.Where(x=>x.State == "Aktivan").OrderByDescending(x=>x.AutomobilId).AsQueryable();
-
-            var list = new PagedList<VMAutomobil>()
-            {
-               PageCount = await query.CountAsync(),
-            };
-
-            if (search?.PageSize != null)
-            {
-                double? pageCount = list.PageCount;
-                double? pageSize = search.PageSize; 
-                if (pageCount.HasValue && pageSize.HasValue)
-                {
-                    list.TotalPages = (int)Math.Ceiling(pageCount.Value / pageSize.Value);
-                }
-            }
-
-            if (search?.Page.HasValue == true && search?.PageSize.HasValue == true)
-            {
-                query = query.Skip(search.PageSize.Value * (search.Page.Value - 1)).Take(search.PageSize.Value);
-                list.HasNext = search.Page.Value < list.TotalPages;
-            }
-
-            var lista = await query.ToListAsync();
-
-            list.List = _mapper.Map<List<VMAutomobil>>(lista);
-
-            return list;
-        }
-
-        
-
-        public async Task<PagedList<VMAutomobil>> GetProdane(AutomobilSearchObject? search = null)
-        {
-            var query = _context.Automobilis.Where(x => x.State == "Prodano").OrderByDescending(x => x.AutomobilId).AsQueryable();
-
-            
+            var query = _context.Automobilis.Where(x => x.State == "Aktivan").OrderByDescending(x => x.AutomobilId).AsQueryable();
 
             var list = new PagedList<VMAutomobil>()
             {
@@ -181,7 +150,43 @@ namespace eAutoSalon.Services.Services
             return list;
         }
 
-  
+
+
+        public async Task<PagedList<VMAutomobil>> GetProdane(AutomobilSearchObject? search = null)
+        {
+            var query = _context.Automobilis.Where(x => x.State == "Prodano").OrderByDescending(x => x.AutomobilId).AsQueryable();
+
+
+
+            var list = new PagedList<VMAutomobil>()
+            {
+                PageCount = await query.CountAsync(),
+            };
+
+            if (search?.PageSize != null)
+            {
+                double? pageCount = list.PageCount;
+                double? pageSize = search.PageSize;
+                if (pageCount.HasValue && pageSize.HasValue)
+                {
+                    list.TotalPages = (int)Math.Ceiling(pageCount.Value / pageSize.Value);
+                }
+            }
+
+            if (search?.Page.HasValue == true && search?.PageSize.HasValue == true)
+            {
+                query = query.Skip(search.PageSize.Value * (search.Page.Value - 1)).Take(search.PageSize.Value);
+                list.HasNext = search.Page.Value < list.TotalPages;
+            }
+
+            var lista = await query.ToListAsync();
+
+            list.List = _mapper.Map<List<VMAutomobil>>(lista);
+
+            return list;
+        }
+
+
 
         public async Task<PagedList<VMAutomobil>> GetFiltered(AutomobilSearchObject? search = null)
         {
@@ -189,15 +194,15 @@ namespace eAutoSalon.Services.Services
 
             if (!string.IsNullOrWhiteSpace(search?.Proizvodjac))
             {
-                if(search.Proizvodjac != "Svi")
+                if (search.Proizvodjac != "Svi")
                 {
                     query = query.Where(x => x.Proizvodjac == search.Proizvodjac);
                 }
             }
 
-            if(!string.IsNullOrWhiteSpace(search?.TipGoriva))
+            if (!string.IsNullOrWhiteSpace(search?.TipGoriva))
             {
-                if(search.TipGoriva != "Svi")
+                if (search.TipGoriva != "Svi")
                 {
                     query = query.Where(x => x.VrstaGoriva == search.TipGoriva);
                 }
@@ -246,17 +251,6 @@ namespace eAutoSalon.Services.Services
             return list;
         }
 
-        public async Task<List<VMAutomobil>> Recommend(int id)
-        {
-            var selectedCar = await _context.Automobilis.FindAsync(id);
-
-            var list = await _context.Automobilis.Where(x=>x.State=="Aktivan").ToListAsync();
-
-            var similarities = GetTopSimilarProducts(selectedCar!, list);
-
-            return _mapper.Map<List<VMAutomobil>>(similarities);
-        }
-
         public async Task<int> GetUkupanBrojAktivnihOglasa()
         {
             int total = 0;
@@ -266,6 +260,92 @@ namespace eAutoSalon.Services.Services
                 total = count;
             }
             return total;
+        }
+
+        static MLContext mlContext = null;
+        static object isLocked = new object();
+        static ITransformer model = null;
+        public List<VMAutomobil> Recommend(int userId)
+        {
+            lock (isLocked)
+            {
+                if (mlContext == null)
+                {
+                    mlContext = new MLContext();
+
+                    var testDrives = _context.TestnaVoznjas.Include(x => x.Automobil).ToList();
+
+                    if (testDrives.Count == 0)
+                    {
+                        return new List<VMAutomobil>();
+                    }
+
+                    var data = new List<UserItemEntry>();
+
+                    foreach (var x in testDrives)
+                    {
+                        data.Add(new UserItemEntry()
+                        {
+                            UserId = (uint)x.KorisnikId,
+                            ItemId = (uint)x.AutomobilId,
+                            Rating = 1
+                        });
+                    }
+
+                    var trainData = mlContext.Data.LoadFromEnumerable(data);
+
+                    MatrixFactorizationTrainer.Options options = new MatrixFactorizationTrainer.Options();
+                    options.MatrixColumnIndexColumnName = nameof(UserItemEntry.UserId);
+                    options.MatrixRowIndexColumnName = nameof(UserItemEntry.ItemId);
+                    options.LabelColumnName = "Rating";
+                    options.LossFunction = MatrixFactorizationTrainer.LossFunctionType.SquareLossOneClass;
+                    options.Alpha = 0.01;
+                    options.Lambda = 0.025;
+                    options.NumberOfIterations = 100;
+                    options.C = 0.00001;
+
+                    var est = mlContext.Recommendation().Trainers.MatrixFactorization(options);
+
+                    model = est.Fit(trainData);
+                }
+            }
+
+            var cars = _context.Automobilis.Where(x=> x.State == "Aktivan" && !_context.TestnaVoznjas.Any(y => y.KorisnikId == userId && y.AutomobilId == x.AutomobilId)).ToList();
+
+            var predictionResult = new List<Tuple<Automobili, float>>();
+
+            foreach (var car in cars)
+            {
+                var predictionEngine = mlContext.Model.CreatePredictionEngine<UserItemEntry, UserBasedPrediction>(model);
+                var prediction = predictionEngine.Predict(
+                    new UserItemEntry()
+                    {
+                        UserId = (uint)userId,
+                        ItemId = (uint)car.AutomobilId
+                    });
+
+                predictionResult.Add(new Tuple<Automobili, float>(car, prediction.Score));
+            }
+
+            var finalResult = predictionResult.OrderByDescending(x => x.Item2).Select(y => y.Item1).Take(3).ToList();
+
+            return _mapper.Map<List<VMAutomobil>>(finalResult);
+        }
+
+        public class UserItemEntry
+        {
+            [KeyType(count: 10)]
+            public uint UserId { get; set; }
+
+            [KeyType(count: 10)]
+            public uint ItemId { get; set; }
+
+            public float Rating { get; set; }
+        }
+
+        public class UserBasedPrediction
+        {
+            public float Score { get; set; }
         }
     }
 }

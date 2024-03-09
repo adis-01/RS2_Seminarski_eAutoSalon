@@ -198,6 +198,14 @@ class _RegistrationState extends State<Registration> {
         ),
         validator: FormBuilderValidators.compose([
           FormBuilderValidators.required(context, errorText: 'Polje obavezno'),
+          (value){
+            if(value != null && value.startsWith(" ")){
+              return 'Započnite slovom';
+            }
+            else{
+              return null;
+            }
+          },
           FormBuilderValidators.minLength(context, 2,
               errorText: 'Min. 2 slova'),
           FormBuilderValidators.maxLength(context, 25,
