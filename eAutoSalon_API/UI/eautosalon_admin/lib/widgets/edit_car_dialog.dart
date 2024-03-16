@@ -114,7 +114,7 @@ class _EditCarState extends State<EditCar> {
                         FormBuilderValidators.required(context, errorText: 'Polje je obavezno'),
                         (value){
                           if(value!=null && value.startsWith(" ")){
-                            return 'Počnite znakom';
+                            return 'Počnite slovom';
                           }
                           else{
                             return null;
@@ -137,7 +137,7 @@ class _EditCarState extends State<EditCar> {
                         FormBuilderValidators.required(context, errorText: 'Polje je obavezno'),
                         (value){
                           if(value!=null && value.startsWith(" ")){
-                            return 'Počnite znakom';
+                            return 'Počnite slovom';
                           }
                           else{
                             return null;

@@ -78,6 +78,14 @@ class _InsertEmployeeState extends State<InsertEmployee> {
                         validator: FormBuilderValidators.compose([
                           FormBuilderValidators.required(context,
                               errorText: 'Polje obavezno'),
+                          (value){
+                            if(value!=null && value.startsWith(" ")){
+                              return 'Započnite slovom';
+                            }
+                            else{
+                              return null;
+                            }
+                          },
                           FormBuilderValidators.minLength(context, 2,
                               errorText: 'Unesite više od 1 znaka')
                         ]),
@@ -96,6 +104,14 @@ class _InsertEmployeeState extends State<InsertEmployee> {
                         validator: FormBuilderValidators.compose([
                           FormBuilderValidators.required(context,
                               errorText: 'Polje obavezno'),
+                           (value){
+                            if(value!=null && value.startsWith(" ")){
+                              return 'Započnite slovom';
+                            }
+                            else{
+                              return null;
+                            }
+                          },   
                           FormBuilderValidators.minLength(context, 2,
                               errorText:
                                   'Polje mora imati minimalno 2 slova'),
@@ -115,6 +131,14 @@ class _InsertEmployeeState extends State<InsertEmployee> {
                         validator: FormBuilderValidators.compose([
                           FormBuilderValidators.required(context,
                               errorText: 'Polje obavezno'),
+                          (value){
+                            if(value!=null && value.contains(" ")){
+                              return 'Prazno polje zabranjeno';
+                            }
+                            else{
+                              return null;
+                            }
+                          },
                           FormBuilderValidators.email(context,
                               errorText: 'ime.prezime@{mailprovider}.{com}')
                         ]),

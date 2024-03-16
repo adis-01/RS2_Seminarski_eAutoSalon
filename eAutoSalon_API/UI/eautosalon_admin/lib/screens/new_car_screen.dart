@@ -147,7 +147,7 @@ class _NewCarScreenState extends State<NewCarScreen> {
                   errorText: 'Polje obavezno'),
               (value){
                 if(value != null && value.startsWith(" ")){
-                  return 'Počnite znakom';
+                  return 'Počnite sa nekim od slova';
                 }
                 else{
                   return null;
@@ -172,7 +172,7 @@ class _NewCarScreenState extends State<NewCarScreen> {
                   errorText: 'Polje obavezno'),
                   (value){
                 if(value != null && value.startsWith(" ")){
-                  return 'Počnite znakom';
+                  return 'Počnite sa nekim od slova';
                 }
                 else{
                   return null;
