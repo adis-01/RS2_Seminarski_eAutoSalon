@@ -15,10 +15,10 @@ namespace eAutoSalon.Services.Services
 {
     public class MailService : IMailService
     {
-       private readonly string serverAddress = "smtp.gmail.com";
-       private readonly string mailSender = "eautosalon.verif@gmail.com";
-       private readonly string mailPass = "frhaexjyedayript";
-       private readonly int port = 587;
+       private readonly string serverAddress = Environment.GetEnvironmentVariable("SERVER_ADDRESS") ??  "smtp.gmail.com";
+       private readonly string mailSender = Environment.GetEnvironmentVariable("MAIL_SENDER") ?? "eautosalon.verif@gmail.com";
+       private readonly string mailPass = Environment.GetEnvironmentVariable("MAIL_PASS") ?? "frhaexjyedayript";
+       private readonly int port = int.Parse(Environment.GetEnvironmentVariable("MAIL_PORT") ?? "587");
 
         public async Task Contact(MailObject req)
         {
@@ -43,6 +43,7 @@ namespace eAutoSalon.Services.Services
 
             try
             {
+                Console.WriteLine("ADDRESS: " + serverAddress + "| SENDER: " + mailSender + "| PASS: " + mailPass + "| PORT: " + port.ToString());
                 await smtpClient.SendMailAsync(message);
                 Console.WriteLine("Mail sent");
             }

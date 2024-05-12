@@ -38,6 +38,10 @@ services:
       - RABBITMQ_HOST=rabbitmq
       - RABBITMQ_USER=guest
       - RABBITMQ_PASS=guest
+      - SERVER_ADDRESS=smtp.gmail.com
+      - MAIL_SENDER=eautosalon.verif@gmail.com
+      - MAIL_PASS=frhaexjyedayript
+      - MAIL_PORT=587
     ports:
       - 7173:7173
     networks:
@@ -56,6 +60,10 @@ services:
       - RABBITMQ_HOST=rabbitmq
       - RABBITMQ_USER=guest
       - RABBITMQ_PASS=guest
+      - SERVER_ADDRESS=smtp.gmail.com
+      - MAIL_SENDER=eautosalon.verif@gmail.com
+      - MAIL_PASS=frhaexjyedayript
+      - MAIL_PORT=587
     networks:
       - eautosalonet
     depends_on:

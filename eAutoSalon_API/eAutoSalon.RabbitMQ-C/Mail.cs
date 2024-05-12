@@ -12,10 +12,11 @@ namespace eAutoSalon.RabbitMQ_C
     {
         public static void Send(VMEmail_Token obj)
         {
-            string serverAddress = "smtp.gmail.com";
-            string mailSender = "eautosalon.verif@gmail.com";
-            string mailPass = "frhaexjyedayript";
-            int port = 587;
+            string serverAddress = Environment.GetEnvironmentVariable("SERVER_ADDRESS") ?? "smtp.gmail.com";
+            string mailSender = Environment.GetEnvironmentVariable("MAIL_SENDER") ?? "eautosalon.verif@gmail.com";
+            string mailPass = Environment.GetEnvironmentVariable("MAIL_PASS") ?? "frhaexjyedayript";
+            int port = int.Parse(Environment.GetEnvironmentVariable("MAIL_PORT") ?? "587");
+
             string to = obj.Mail;
             string subject = "Mail Verification";
             string content = $"<p>Poštovani,</p> <br>Hvala Vam na pruženoj prilici i registraciji. Kako biste kompletirali registraciju, potrebno je da iskoristite token u nastavku maila. <br>" +
@@ -37,6 +38,7 @@ namespace eAutoSalon.RabbitMQ_C
 
             try
             {
+                Console.WriteLine("ADDRESS: " + serverAddress + "| SENDER: " + mailSender + "| PASS: " + mailPass + "| PORT: " + port.ToString());
                 client.Send(mail);
                 Console.WriteLine("Mail uspješno poslan na " + obj.Mail);
             }
